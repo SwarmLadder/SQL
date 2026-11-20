@@ -15,6 +15,14 @@ Study lessons in order. Each lesson has a brief explanation, a runnable `.sql` f
 | 08 | [Set operations](lessons/08_set_operations.md) |
 | 09 | [Views and savepoints](lessons/09_views_savepoints.md) |
 
+## Interview preparation
+
+```bash
+python tools/interview_practice.py list --level intermediate
+```
+
+Write answers in `interview/starter/` and check them against two datasets. See [mock interview rounds](../interview/MOCK_INTERVIEWS.md).
+
 ## Practice
 
 - [20 exercises](exercises/README.md)

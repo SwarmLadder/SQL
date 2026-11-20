@@ -1,45 +1,56 @@
-# SQL & Database Engineering
+# SQL & Backend Database Interviews
 
-Practical SQL course by **SwarmLadder**. Short lessons, runnable queries, exercises, and projects.
+A hands-on SQL course for **backend developer interviews and database engineering practice**.
 
-| Level | Lessons | Practice | Projects |
-|---|---:|---:|---:|
-| [Basics](basics/README.md) | 10 | 20 tasks | 2 |
-| [Intermediate](intermediate/README.md) | 10 | 20 tasks | 2 |
-| [Advanced](advanced/README.md) | 10 | 20 tasks | 2 |
-| **Total** | **30** | **60** | **6** |
+| Learning material | Count |
+|---|---:|
+| [Guided lessons](basics/README.md) across 3 levels | 30 |
+| [Graded interview challenges](interview/README.md) | 48 |
+| Additional [course exercises](basics/exercises/README.md) | 60 |
+| [Projects](basics/projects/README.md) | 6 |
+| Backend SQL recipes | 8 |
+| [PostgreSQL labs](advanced/postgresql/README.md) | 6 |
 
-Also includes **24 worked reference queries** and optional **PostgreSQL-specific examples**.
-
-## Start
-
-Requires **Python 3.10+**; SQLite is included with Python. No pip packages or database server needed.
+## Start an interview question
 
 ```bash
 git clone https://github.com/SwarmLadder/sql-course.git
 cd sql-course
-python tools/run_sql.py basics/lessons/00_select.sql
+python tools/interview_practice.py list
+python tools/interview_practice.py show B10
 ```
 
-The runner loads a fresh **in-memory SQLite database** each time. It won't change local databases.
-
-## Check everything
+Write your answer in `interview/starter/B10.sql`, then check:
 
 ```bash
+python tools/interview_practice.py check B10 interview/starter/B10.sql
+```
+
+The checker compares output against **two datasets**, including edge cases. It runs locally with Python 3.10+ and SQLite, with no external database.
+
+## Learning paths
+
+- [Basics](basics/README.md): SQL foundations, joins, aggregation, updates.
+- [Intermediate](intermediate/README.md): CTEs, window functions, dates, reports.
+- [Advanced](advanced/README.md): indexes, transactions, concurrency-related SQL, reconciliation.
+- [Backend engineering lab](backend/README.md): tenancy, safe SQL, N+1, keyset pagination, optimistic locking, stock reservation, idempotent requests, outbox.
+- [Mock interview rounds](interview/MOCK_INTERVIEWS.md): junior, backend, senior.
+- [48 short backend Q&As](interview/BACKEND_QA.md) and [12 design scenarios](backend/SCENARIOS.md).
+- [Four-week interview plan](interview/ROADMAP.md).
+
+## Run and test
+
+```bash
+python tools/run_sql.py basics/lessons/00_select.sql
+python -m backend.lab
+python -m backend.query_patterns
+python tools/interview_practice.py verify-reference
 python tools/run_sql.py --check
 python -m unittest discover -s tests -v
 ```
 
-## Course content
+**Dataset:** fictional customers, orders, products, payments, and employees. Every SQLite run uses a fresh **in-memory database**.
 
-- [Basics](basics/README.md): SELECT, filters, sorting, aggregation, joins, editing rows.
-- [Intermediate](intermediate/README.md): subqueries, CTEs, windows, dates, views, transactions.
-- [Advanced](advanced/README.md): indexes, EXPLAIN, recursion, constraints, UPSERT, triggers, reconciliation.
-- [Dataset and schema](data/README.md): customers, orders, products, payments, employees.
-- [PostgreSQL lab](advanced/postgresql/README.md): optional database-server examples.
+**PostgreSQL:** optional dialect-specific labs require a separate disposable PostgreSQL server; they are not part of SQLite CI.
 
-**Learning routine:** Read a lesson's Markdown, run its matching SQL file, then solve its three questions. Work through the 20-task practice set and two projects per level.
-
-**Note:** Main lessons use SQLite syntax. PostgreSQL examples are separate and are not part of automated SQLite checks.
-
-[MIT License](LICENSE).
+[MIT License](LICENSE) · [Contributing](CONTRIBUTING.md)
