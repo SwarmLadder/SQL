@@ -15,3 +15,8 @@ jobs:
 
       - name: Validate backend interview reference queries
         run: python tools/interview_practice.py verify-reference
+
+      - name: Run backend hands-on examples
+        run: |
+          python -m backend.lab
+          python -m backend.query_patterns

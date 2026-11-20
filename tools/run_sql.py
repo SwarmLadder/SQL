@@ -65,6 +65,7 @@ def sql_files():
     for level in ("basics", "intermediate", "advanced"):
         for part in ("lessons", "projects", "solutions"):
             paths.extend((ROOT / level / part).glob("*.sql"))
+    paths.extend((ROOT / "backend" / "sql").glob("*.sql"))
     return sorted(paths)
 
 
