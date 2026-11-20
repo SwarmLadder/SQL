@@ -1,0 +1,4 @@
+-- A13: Audit counts by month
+-- Return month (YYYY-MM),event_type,event_count from audit_events, sorted month,event_type.
+-- Hint: GROUP BY month and event_type.
+-- Add one read-only SELECT query ending in semicolon.

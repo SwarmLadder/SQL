@@ -1,0 +1,1 @@
+WITH first_paid AS (SELECT customer_id,MIN(ordered_at) AS first_date FROM orders WHERE status='paid' GROUP BY customer_id) SELECT c.customer_id,SUBSTR(c.joined_at,1,7) AS signup_month,SUBSTR(p.first_date,1,7) AS first_paid_month FROM customers c LEFT JOIN first_paid p ON p.customer_id=c.customer_id ORDER BY c.customer_id;

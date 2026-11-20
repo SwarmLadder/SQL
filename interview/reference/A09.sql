@@ -1,0 +1,1 @@
+SELECT t.team_name,COUNT(e.employee_id) AS headcount,AVG(e.salary_cents) AS avg_salary_cents FROM teams t LEFT JOIN employees e ON e.team_id=t.team_id GROUP BY t.team_id,t.team_name ORDER BY t.team_name;

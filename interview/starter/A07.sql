@@ -1,0 +1,4 @@
+-- A07: Signup-to-purchase cohort
+-- Return customer_id,signup_month,first_paid_month for all customers (NULL first_paid_month if none); sorted by customer_id.
+-- Hint: Aggregate first paid date then left join.
+-- Add one read-only SELECT query ending in semicolon.

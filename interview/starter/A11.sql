@@ -1,0 +1,4 @@
+-- A11: Unsold active SKUs
+-- Return sku,product_name for ACTIVE products never appearing in a paid order line; sort sku.
+-- Hint: Use NOT EXISTS with paid status.
+-- Add one read-only SELECT query ending in semicolon.

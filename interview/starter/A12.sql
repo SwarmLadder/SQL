@@ -1,0 +1,4 @@
+-- A12: Paid order mismatches
+-- Return order_id,discrepancy_cents (item total minus payment total) for PAID orders where totals differ, missing payment counts 0; sort id. Normal dataset has none, edge dataset has a discrepancy.
+-- Hint: The edge fixture changes an existing payment.
+-- Add one read-only SELECT query ending in semicolon.

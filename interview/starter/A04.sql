@@ -1,0 +1,4 @@
+-- A04: Direct-report counts
+-- Return manager_id,manager_name,direct_reports for ALL employees incl zero reports; sort reports DESC,id ASC.
+-- Hint: Self LEFT JOIN then COUNT(child ID).
+-- Add one read-only SELECT query ending in semicolon.

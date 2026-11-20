@@ -1,0 +1,4 @@
+-- A14: Customers with no paid orders
+-- Return customer_id,full_name for customers without a paid order, even if pending/cancelled orders exist; sort id.
+-- Hint: NOT EXISTS only paid orders.
+-- Add one read-only SELECT query ending in semicolon.

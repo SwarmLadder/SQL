@@ -1,0 +1,1 @@
+SELECT m.employee_id AS manager_id,m.full_name AS manager_name,COUNT(e.employee_id) AS direct_reports FROM employees m LEFT JOIN employees e ON e.manager_id=m.employee_id GROUP BY m.employee_id,m.full_name ORDER BY direct_reports DESC,m.employee_id;

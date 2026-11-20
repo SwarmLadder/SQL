@@ -1,0 +1,4 @@
+-- A15: Last paid date and lifetime spend
+-- Return customer_id,full_name,last_paid_at,paid_cents for EVERY customer; NULL date and 0 spend if none; sort id.
+-- Hint: Use one row per order before aggregation.
+-- Add one read-only SELECT query ending in semicolon.

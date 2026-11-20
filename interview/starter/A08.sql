@@ -1,0 +1,4 @@
+-- A08: Customer payment totals
+-- Return customer_id,full_name,total_payment_cents for ALL customers including zero, sorted total DESC then customer_id.
+-- Hint: Aggregate payment facts through orders.
+-- Add one read-only SELECT query ending in semicolon.

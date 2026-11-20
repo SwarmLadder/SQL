@@ -1,0 +1,4 @@
+-- A05: Keyset pagination
+-- Return order_id,ordered_at for 5 orders strictly after cursor ('2026-04-06',105), ascending ordered_at,order_id.
+-- Hint: Compare date and ID as composite cursor.
+-- Add one read-only SELECT query ending in semicolon.

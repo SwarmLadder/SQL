@@ -1,0 +1,4 @@
+-- A02: Two latest paid orders per customer
+-- Return customer_id,order_id,ordered_at for at most two paid orders per customer; sort customer_id,date DESC,id DESC.
+-- Hint: ROW_NUMBER over customer partitions.
+-- Add one read-only SELECT query ending in semicolon.

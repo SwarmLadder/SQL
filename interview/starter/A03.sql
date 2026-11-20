@@ -1,0 +1,4 @@
+-- A03: Recursive org depth
+-- Return employee_id,full_name,depth for all employees; leaders depth=0, reports increment; sort employee_id.
+-- Hint: Seed managers IS NULL, then recurse.
+-- Add one read-only SELECT query ending in semicolon.

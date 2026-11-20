@@ -1,0 +1,1 @@
+WITH sums AS (SELECT o.customer_id,SUM(p.amount_cents) AS cents FROM orders o JOIN payments p ON p.order_id=o.order_id GROUP BY o.customer_id) SELECT c.customer_id,c.full_name,COALESCE(s.cents,0) AS total_payment_cents FROM customers c LEFT JOIN sums s ON s.customer_id=c.customer_id ORDER BY total_payment_cents DESC,c.customer_id;

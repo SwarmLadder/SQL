@@ -1,0 +1,4 @@
+-- A06: Order outstanding amounts
+-- Return order_id,status,item_cents,paid_cents,due_cents for every order, due=max(item_cents-paid_cents,0); sort order_id.
+-- Hint: Compute each fact separately before joining.
+-- Add one read-only SELECT query ending in semicolon.

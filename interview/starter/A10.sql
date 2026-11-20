@@ -1,0 +1,4 @@
+-- A10: Category revenue share
+-- Return category_name,revenue_cents,share_pct (percent of total paid-line revenue, rounded to 2 decimals) for ALL categories. Sort revenue DESC then category_name.
+-- Hint: Revenue CTE then SUM OVER all categories.
+-- Add one read-only SELECT query ending in semicolon.

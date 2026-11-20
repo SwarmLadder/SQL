@@ -1,0 +1,4 @@
+-- A09: Team headcount
+-- Return team_name,headcount,avg_salary_cents for ALL teams including empty ones, NULL average if no staff; sort team_name.
+-- Hint: COUNT(e.id), not COUNT(*).
+-- Add one read-only SELECT query ending in semicolon.

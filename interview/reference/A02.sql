@@ -1,0 +1,1 @@
+WITH ranked AS (SELECT customer_id,order_id,ordered_at,ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY ordered_at DESC,order_id DESC) AS rn FROM orders WHERE status='paid') SELECT customer_id,order_id,ordered_at FROM ranked WHERE rn<=2 ORDER BY customer_id,ordered_at DESC,order_id DESC;

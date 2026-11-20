@@ -1,0 +1,4 @@
+-- A16: Top SKU per category
+-- Return category_name,sku,paid_units for ONE top paid-selling product per category with sales; tie-break sku ascending; sort category_name.
+-- Hint: Rank products inside each category.
+-- Add one read-only SELECT query ending in semicolon.

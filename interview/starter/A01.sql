@@ -1,0 +1,4 @@
+-- A01: Order/payment reconciliation
+-- Return order_id,status,item_cents,payment_cents,result for ALL orders; 0 for missing totals, result MATCH for paid and equal, MISMATCH for other paid, NOT_PAID otherwise; sort order_id.
+-- Hint: Aggregate payments and order lines separately.
+-- Add one read-only SELECT query ending in semicolon.

@@ -1,0 +1,1 @@
+WITH RECURSIVE tree(employee_id,full_name,depth) AS (SELECT employee_id,full_name,0 FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.employee_id,e.full_name,t.depth+1 FROM employees e JOIN tree t ON e.manager_id=t.employee_id WHERE t.depth<20) SELECT employee_id,full_name,depth FROM tree ORDER BY employee_id;

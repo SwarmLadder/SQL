@@ -1,0 +1,130 @@
+[
+  {
+    "id": "A01",
+    "level": "advanced",
+    "title": "Order/payment reconciliation",
+    "prompt": "Return order_id,status,item_cents,payment_cents,result for ALL orders; 0 for missing totals, result MATCH for paid and equal, MISMATCH for other paid, NOT_PAID otherwise; sort order_id.",
+    "hint": "Aggregate payments and order lines separately.",
+    "ordered": true
+  },
+  {
+    "id": "A02",
+    "level": "advanced",
+    "title": "Two latest paid orders per customer",
+    "prompt": "Return customer_id,order_id,ordered_at for at most two paid orders per customer; sort customer_id,date DESC,id DESC.",
+    "hint": "ROW_NUMBER over customer partitions.",
+    "ordered": true
+  },
+  {
+    "id": "A03",
+    "level": "advanced",
+    "title": "Recursive org depth",
+    "prompt": "Return employee_id,full_name,depth for all employees; leaders depth=0, reports increment; sort employee_id.",
+    "hint": "Seed managers IS NULL, then recurse.",
+    "ordered": true
+  },
+  {
+    "id": "A04",
+    "level": "advanced",
+    "title": "Direct-report counts",
+    "prompt": "Return manager_id,manager_name,direct_reports for ALL employees incl zero reports; sort reports DESC,id ASC.",
+    "hint": "Self LEFT JOIN then COUNT(child ID).",
+    "ordered": true
+  },
+  {
+    "id": "A05",
+    "level": "advanced",
+    "title": "Keyset pagination",
+    "prompt": "Return order_id,ordered_at for 5 orders strictly after cursor ('2026-04-06',105), ascending ordered_at,order_id.",
+    "hint": "Compare date and ID as composite cursor.",
+    "ordered": true
+  },
+  {
+    "id": "A06",
+    "level": "advanced",
+    "title": "Order outstanding amounts",
+    "prompt": "Return order_id,status,item_cents,paid_cents,due_cents for every order, due=max(item_cents-paid_cents,0); sort order_id.",
+    "hint": "Compute each fact separately before joining.",
+    "ordered": true
+  },
+  {
+    "id": "A07",
+    "level": "advanced",
+    "title": "Signup-to-purchase cohort",
+    "prompt": "Return customer_id,signup_month,first_paid_month for all customers (NULL first_paid_month if none); sorted by customer_id.",
+    "hint": "Aggregate first paid date then left join.",
+    "ordered": true
+  },
+  {
+    "id": "A08",
+    "level": "advanced",
+    "title": "Customer payment totals",
+    "prompt": "Return customer_id,full_name,total_payment_cents for ALL customers including zero, sorted total DESC then customer_id.",
+    "hint": "Aggregate payment facts through orders.",
+    "ordered": true
+  },
+  {
+    "id": "A09",
+    "level": "advanced",
+    "title": "Team headcount",
+    "prompt": "Return team_name,headcount,avg_salary_cents for ALL teams including empty ones, NULL average if no staff; sort team_name.",
+    "hint": "COUNT(e.id), not COUNT(*).",
+    "ordered": true
+  },
+  {
+    "id": "A10",
+    "level": "advanced",
+    "title": "Category revenue share",
+    "prompt": "Return category_name,revenue_cents,share_pct (percent of total paid-line revenue, rounded to 2 decimals) for ALL categories. Sort revenue DESC then category_name.",
+    "hint": "Revenue CTE then SUM OVER all categories.",
+    "ordered": true
+  },
+  {
+    "id": "A11",
+    "level": "advanced",
+    "title": "Unsold active SKUs",
+    "prompt": "Return sku,product_name for ACTIVE products never appearing in a paid order line; sort sku.",
+    "hint": "Use NOT EXISTS with paid status.",
+    "ordered": true
+  },
+  {
+    "id": "A12",
+    "level": "advanced",
+    "title": "Paid order mismatches",
+    "prompt": "Return order_id,discrepancy_cents (item total minus payment total) for PAID orders where totals differ, missing payment counts 0; sort id. Normal dataset has none, edge dataset has a discrepancy.",
+    "hint": "The edge fixture changes an existing payment.",
+    "ordered": true
+  },
+  {
+    "id": "A13",
+    "level": "advanced",
+    "title": "Audit counts by month",
+    "prompt": "Return month (YYYY-MM),event_type,event_count from audit_events, sorted month,event_type.",
+    "hint": "GROUP BY month and event_type.",
+    "ordered": true
+  },
+  {
+    "id": "A14",
+    "level": "advanced",
+    "title": "Customers with no paid orders",
+    "prompt": "Return customer_id,full_name for customers without a paid order, even if pending/cancelled orders exist; sort id.",
+    "hint": "NOT EXISTS only paid orders.",
+    "ordered": true
+  },
+  {
+    "id": "A15",
+    "level": "advanced",
+    "title": "Last paid date and lifetime spend",
+    "prompt": "Return customer_id,full_name,last_paid_at,paid_cents for EVERY customer; NULL date and 0 spend if none; sort id.",
+    "hint": "Use one row per order before aggregation.",
+    "ordered": true
+  },
+  {
+    "id": "A16",
+    "level": "advanced",
+    "title": "Top SKU per category",
+    "prompt": "Return category_name,sku,paid_units for ONE top paid-selling product per category with sales; tie-break sku ascending; sort category_name.",
+    "hint": "Rank products inside each category.",
+    "ordered": true
+  }
+]
