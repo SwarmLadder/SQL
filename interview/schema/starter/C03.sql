@@ -1,0 +1,4 @@
+-- C03: Queue claim index
+-- Create jobs(job_id INTEGER primary key, tenant_id TEXT NOT NULL, status TEXT NOT NULL CHECK queued/processing/done, attempt_count INTEGER NOT NULL DEFAULT 0 CHECK >=0, created_at TEXT NOT NULL). Add an index with columns (status,created_at,job_id) in this order.
+-- Hint: Validate attempt_count and add a composite claim index.
+-- Write CREATE TABLE and CREATE INDEX statements below.

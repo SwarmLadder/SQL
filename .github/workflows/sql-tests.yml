@@ -20,3 +20,6 @@ jobs:
         run: |
           python -m backend.lab
           python -m backend.query_patterns
+
+      - name: Grade reference schema designs
+        run: python tools/schema_practice.py verify-reference

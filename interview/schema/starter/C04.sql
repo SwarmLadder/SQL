@@ -1,0 +1,4 @@
+-- C04: Tenant-scoped webhook deduplication
+-- Create inbox(tenant_id,event_key,payload_hash,status) with tenant_id,event_key as a composite primary key; other fields NOT NULL; status accepted/failed. Create outbox(message_id INTEGER primary key,tenant_id,event_key,payload_json), unique per tenant+event, and a composite foreign key to inbox.
+-- Hint: Composite uniqueness and foreign-key integrity.
+-- Write CREATE TABLE and CREATE INDEX statements below.

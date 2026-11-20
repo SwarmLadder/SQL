@@ -1,0 +1,2 @@
+CREATE TABLE inbox(tenant_id TEXT NOT NULL,event_key TEXT NOT NULL,payload_hash TEXT NOT NULL,status TEXT NOT NULL CHECK(status IN('accepted','failed')),PRIMARY KEY(tenant_id,event_key));
+CREATE TABLE outbox(message_id INTEGER PRIMARY KEY,tenant_id TEXT NOT NULL,event_key TEXT NOT NULL,payload_json TEXT NOT NULL,UNIQUE(tenant_id,event_key),FOREIGN KEY(tenant_id,event_key) REFERENCES inbox(tenant_id,event_key));

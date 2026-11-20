@@ -1,0 +1,4 @@
+-- C01: Customer balances
+-- Design an accounts table with account_id INTEGER primary key, unique non-NULL email, and balance_cents INTEGER NOT NULL >= 0.
+-- Hint: Use UNIQUE, NOT NULL and CHECK.
+-- Write CREATE TABLE and CREATE INDEX statements below.

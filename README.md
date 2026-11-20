@@ -5,7 +5,8 @@ A hands-on SQL course for **backend developer interviews and database engineerin
 | Learning material | Count |
 |---|---:|
 | [Guided lessons](basics/README.md) across 3 levels | 30 |
-| [Graded interview challenges](interview/README.md) | 48 |
+| [Graded SQL interview challenges](interview/README.md) | 48 |
+| [Graded schema design challenges](interview/schema/README.md) | 4 |
 | Additional [course exercises](basics/exercises/README.md) | 60 |
 | [Projects](basics/projects/README.md) | 6 |
 | Backend SQL recipes | 8 |
@@ -35,6 +36,7 @@ The checker compares output against **two datasets**, including edge cases. It r
 - [Advanced](advanced/README.md): indexes, transactions, concurrency-related SQL, reconciliation.
 - [Backend engineering lab](backend/README.md): tenancy, safe SQL, N+1, keyset pagination, optimistic locking, stock reservation, idempotent requests, outbox.
 - [Mock interview rounds](interview/MOCK_INTERVIEWS.md): junior, backend, senior.
+- [Schema design interviews](interview/schema/README.md): constraints, partial indexes, queues, webhook deduplication.
 - [48 short backend Q&As](interview/BACKEND_QA.md) and [12 design scenarios](backend/SCENARIOS.md).
 - [Four-week interview plan](interview/ROADMAP.md).
 
@@ -45,6 +47,7 @@ python tools/run_sql.py basics/lessons/00_select.sql
 python -m backend.lab
 python -m backend.query_patterns
 python tools/interview_practice.py verify-reference
+python tools/schema_practice.py verify-reference
 python tools/run_sql.py --check
 python -m unittest discover -s tests -v
 ```

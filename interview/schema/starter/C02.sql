@@ -1,0 +1,4 @@
+-- C02: Active reservation uniqueness
+-- Create reservations(reservation_id INTEGER primary key, tenant_id TEXT NOT NULL, resource_id TEXT NOT NULL, status TEXT NOT NULL CHECK held/confirmed/cancelled). Only one held/confirmed reservation may exist per (tenant_id,resource_id); cancelled reservations may coexist.
+-- Hint: Use a partial UNIQUE index scoped to active statuses.
+-- Write CREATE TABLE and CREATE INDEX statements below.
