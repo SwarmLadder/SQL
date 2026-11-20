@@ -1,0 +1,1 @@
+WITH x AS (SELECT t.team_name,e.full_name AS employee,e.salary_cents,e.employee_id,AVG(e.salary_cents) OVER(PARTITION BY e.team_id) AS team_average FROM employees e JOIN teams t ON t.team_id=e.team_id) SELECT team_name,employee,salary_cents FROM x WHERE salary_cents>team_average ORDER BY team_name,salary_cents DESC,employee_id;

@@ -1,0 +1,4 @@
+-- I05: Last order incl inactive buyers
+-- Return customer_id,full_name,last_order_date for every customer (NULL if no orders), sorted customer_id.
+-- Hint: LEFT JOIN and MAX.
+-- Add a read-only SELECT query ending in semicolon.

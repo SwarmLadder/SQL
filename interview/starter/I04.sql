@@ -1,0 +1,4 @@
+-- I04: Top two salaries by team
+-- Return team_name,employee,salary_cents for top 2 employees per team; tie-break employee_id; sort team_name,salary DESC,employee_id.
+-- Hint: Rank within each team.
+-- Add a read-only SELECT query ending in semicolon.

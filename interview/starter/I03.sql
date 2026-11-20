@@ -1,0 +1,4 @@
+-- I03: Latest paid order per customer
+-- Return customer_id,order_id,ordered_at of the latest paid order for each paying customer; date DESC,id DESC tie-break; sort customer_id.
+-- Hint: ROW_NUMBER PARTITION BY customer_id.
+-- Add a read-only SELECT query ending in semicolon.

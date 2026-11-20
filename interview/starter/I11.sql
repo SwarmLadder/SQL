@@ -1,0 +1,4 @@
+-- I11: First paid date
+-- Return customer_id,first_paid_date for paying customers, sorted customer_id.
+-- Hint: Filter to paid before MIN.
+-- Add a read-only SELECT query ending in semicolon.

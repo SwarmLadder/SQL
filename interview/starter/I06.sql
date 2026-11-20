@@ -1,0 +1,4 @@
+-- I06: Products selling >2 units
+-- Return sku,paid_units for products with >2 units on paid orders, ordered units DESC,sku.
+-- Hint: HAVING SUM(quantity)>2.
+-- Add a read-only SELECT query ending in semicolon.

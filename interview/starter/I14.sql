@@ -1,0 +1,4 @@
+-- I14: Customers both paid and pending
+-- Return customer_id for customers with at least one paid and one pending order, sorted ASC.
+-- Hint: INTERSECT or conditional HAVING.
+-- Add a read-only SELECT query ending in semicolon.

@@ -1,0 +1,4 @@
+-- I16: Active products by category
+-- Return category_name,active_products for all categories including zero products, sorted name.
+-- Hint: active filter belongs in ON.
+-- Add a read-only SELECT query ending in semicolon.

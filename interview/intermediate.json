@@ -1,0 +1,130 @@
+[
+  {
+    "id": "I01",
+    "level": "intermediate",
+    "title": "Lifetime paid spend",
+    "prompt": "Return customer_id,full_name,spend_cents for ALL customers, including zero spend. Only count paid order lines; sort spend DESC,customer_id.",
+    "hint": "Preaggregate before LEFT JOIN.",
+    "ordered": true
+  },
+  {
+    "id": "I02",
+    "level": "intermediate",
+    "title": "Monthly paid revenue",
+    "prompt": "Return month (YYYY-MM),revenue_cents from paid item lines, ascending by month.",
+    "hint": "GROUP BY paid order month.",
+    "ordered": true
+  },
+  {
+    "id": "I03",
+    "level": "intermediate",
+    "title": "Latest paid order per customer",
+    "prompt": "Return customer_id,order_id,ordered_at of the latest paid order for each paying customer; date DESC,id DESC tie-break; sort customer_id.",
+    "hint": "ROW_NUMBER PARTITION BY customer_id.",
+    "ordered": true
+  },
+  {
+    "id": "I04",
+    "level": "intermediate",
+    "title": "Top two salaries by team",
+    "prompt": "Return team_name,employee,salary_cents for top 2 employees per team; tie-break employee_id; sort team_name,salary DESC,employee_id.",
+    "hint": "Rank within each team.",
+    "ordered": true
+  },
+  {
+    "id": "I05",
+    "level": "intermediate",
+    "title": "Last order incl inactive buyers",
+    "prompt": "Return customer_id,full_name,last_order_date for every customer (NULL if no orders), sorted customer_id.",
+    "hint": "LEFT JOIN and MAX.",
+    "ordered": true
+  },
+  {
+    "id": "I06",
+    "level": "intermediate",
+    "title": "Products selling >2 units",
+    "prompt": "Return sku,paid_units for products with >2 units on paid orders, ordered units DESC,sku.",
+    "hint": "HAVING SUM(quantity)>2.",
+    "ordered": true
+  },
+  {
+    "id": "I07",
+    "level": "intermediate",
+    "title": "Above-team-average earners",
+    "prompt": "Return team_name,employee,salary_cents for employees above their team's average salary. Sort team_name,salary DESC,employee_id.",
+    "hint": "AVG window partition by team.",
+    "ordered": true
+  },
+  {
+    "id": "I08",
+    "level": "intermediate",
+    "title": "Order status counts per customer",
+    "prompt": "Return customer_id,paid_count,pending_count,cancelled_count for every customer including zero orders, sorted customer_id.",
+    "hint": "Conditional sums.",
+    "ordered": true
+  },
+  {
+    "id": "I09",
+    "level": "intermediate",
+    "title": "Products with zero paid sales",
+    "prompt": "Return sku,product_name of products never referenced by PAID order lines (pending/cancelled do not count); sort sku.",
+    "hint": "NOT EXISTS with o.status='paid'.",
+    "ordered": true
+  },
+  {
+    "id": "I10",
+    "level": "intermediate",
+    "title": "Running monthly revenue",
+    "prompt": "Return month,revenue_cents,running_cents based on paid line totals, sorted month ASC.",
+    "hint": "Monthly CTE then window SUM.",
+    "ordered": true
+  },
+  {
+    "id": "I11",
+    "level": "intermediate",
+    "title": "First paid date",
+    "prompt": "Return customer_id,first_paid_date for paying customers, sorted customer_id.",
+    "hint": "Filter to paid before MIN.",
+    "ordered": true
+  },
+  {
+    "id": "I12",
+    "level": "intermediate",
+    "title": "Revenue by category",
+    "prompt": "Return category_name,revenue_cents for ALL categories including zero revenue; based on paid line totals. Sort revenue DESC then category_name.",
+    "hint": "CTE aggregates first.",
+    "ordered": true
+  },
+  {
+    "id": "I13",
+    "level": "intermediate",
+    "title": "Rank category revenue",
+    "prompt": "Return category_name,revenue_cents,revenue_rank using DENSE_RANK from highest revenue (include empty categories), sort rank then name.",
+    "hint": "Rank the category totals.",
+    "ordered": true
+  },
+  {
+    "id": "I14",
+    "level": "intermediate",
+    "title": "Customers both paid and pending",
+    "prompt": "Return customer_id for customers with at least one paid and one pending order, sorted ASC.",
+    "hint": "INTERSECT or conditional HAVING.",
+    "ordered": true
+  },
+  {
+    "id": "I15",
+    "level": "intermediate",
+    "title": "Cumulative spend per buyer",
+    "prompt": "Return customer_id,order_id,running_cents for paid orders in customer,date,id order, sorted customer_id,ordered_at,order_id.",
+    "hint": "Aggregate per paid order before running total.",
+    "ordered": true
+  },
+  {
+    "id": "I16",
+    "level": "intermediate",
+    "title": "Active products by category",
+    "prompt": "Return category_name,active_products for all categories including zero products, sorted name.",
+    "hint": "active filter belongs in ON.",
+    "ordered": true
+  }
+]

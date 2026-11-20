@@ -1,0 +1,4 @@
+-- I09: Products with zero paid sales
+-- Return sku,product_name of products never referenced by PAID order lines (pending/cancelled do not count); sort sku.
+-- Hint: NOT EXISTS with o.status='paid'.
+-- Add a read-only SELECT query ending in semicolon.

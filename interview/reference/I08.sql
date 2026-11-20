@@ -1,0 +1,1 @@
+SELECT c.customer_id,SUM(CASE WHEN o.status='paid' THEN 1 ELSE 0 END) AS paid_count,SUM(CASE WHEN o.status='pending' THEN 1 ELSE 0 END) AS pending_count,SUM(CASE WHEN o.status='cancelled' THEN 1 ELSE 0 END) AS cancelled_count FROM customers c LEFT JOIN orders o ON o.customer_id=c.customer_id GROUP BY c.customer_id ORDER BY c.customer_id;

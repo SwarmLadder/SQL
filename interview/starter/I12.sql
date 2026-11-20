@@ -1,0 +1,4 @@
+-- I12: Revenue by category
+-- Return category_name,revenue_cents for ALL categories including zero revenue; based on paid line totals. Sort revenue DESC then category_name.
+-- Hint: CTE aggregates first.
+-- Add a read-only SELECT query ending in semicolon.

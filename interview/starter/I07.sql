@@ -1,0 +1,4 @@
+-- I07: Above-team-average earners
+-- Return team_name,employee,salary_cents for employees above their team's average salary. Sort team_name,salary DESC,employee_id.
+-- Hint: AVG window partition by team.
+-- Add a read-only SELECT query ending in semicolon.

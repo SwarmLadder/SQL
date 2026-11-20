@@ -1,0 +1,1 @@
+WITH ranked AS (SELECT t.team_name,e.full_name AS employee,e.salary_cents,e.employee_id,ROW_NUMBER() OVER(PARTITION BY e.team_id ORDER BY e.salary_cents DESC,e.employee_id) AS rn FROM employees e JOIN teams t ON t.team_id=e.team_id) SELECT team_name,employee,salary_cents FROM ranked WHERE rn<=2 ORDER BY team_name,salary_cents DESC,employee_id;

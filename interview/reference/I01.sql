@@ -1,0 +1,1 @@
+WITH paid AS (SELECT o.customer_id,SUM(i.quantity*i.unit_price_cents) AS spend FROM orders o JOIN order_items i ON i.order_id=o.order_id WHERE o.status='paid' GROUP BY o.customer_id) SELECT c.customer_id,c.full_name,COALESCE(p.spend,0) AS spend_cents FROM customers c LEFT JOIN paid p ON p.customer_id=c.customer_id ORDER BY spend_cents DESC,c.customer_id;

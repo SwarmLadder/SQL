@@ -1,0 +1,4 @@
+-- I02: Monthly paid revenue
+-- Return month (YYYY-MM),revenue_cents from paid item lines, ascending by month.
+-- Hint: GROUP BY paid order month.
+-- Add a read-only SELECT query ending in semicolon.

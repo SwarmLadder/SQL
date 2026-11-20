@@ -1,0 +1,4 @@
+-- I13: Rank category revenue
+-- Return category_name,revenue_cents,revenue_rank using DENSE_RANK from highest revenue (include empty categories), sort rank then name.
+-- Hint: Rank the category totals.
+-- Add a read-only SELECT query ending in semicolon.

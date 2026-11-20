@@ -1,0 +1,4 @@
+-- I10: Running monthly revenue
+-- Return month,revenue_cents,running_cents based on paid line totals, sorted month ASC.
+-- Hint: Monthly CTE then window SUM.
+-- Add a read-only SELECT query ending in semicolon.

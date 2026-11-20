@@ -1,0 +1,4 @@
+-- I15: Cumulative spend per buyer
+-- Return customer_id,order_id,running_cents for paid orders in customer,date,id order, sorted customer_id,ordered_at,order_id.
+-- Hint: Aggregate per paid order before running total.
+-- Add a read-only SELECT query ending in semicolon.

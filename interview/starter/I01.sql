@@ -1,0 +1,4 @@
+-- I01: Lifetime paid spend
+-- Return customer_id,full_name,spend_cents for ALL customers, including zero spend. Only count paid order lines; sort spend DESC,customer_id.
+-- Hint: Preaggregate before LEFT JOIN.
+-- Add a read-only SELECT query ending in semicolon.

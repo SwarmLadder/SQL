@@ -1,0 +1,4 @@
+-- I08: Order status counts per customer
+-- Return customer_id,paid_count,pending_count,cancelled_count for every customer including zero orders, sorted customer_id.
+-- Hint: Conditional sums.
+-- Add a read-only SELECT query ending in semicolon.

@@ -1,0 +1,1 @@
+SELECT p.sku,p.product_name FROM products p WHERE NOT EXISTS(SELECT 1 FROM order_items i JOIN orders o ON o.order_id=i.order_id WHERE i.product_id=p.product_id AND o.status='paid') ORDER BY p.sku;

@@ -1,0 +1,1 @@
+SELECT p.sku,SUM(i.quantity) AS paid_units FROM products p JOIN order_items i ON i.product_id=p.product_id JOIN orders o ON o.order_id=i.order_id WHERE o.status='paid' GROUP BY p.product_id,p.sku HAVING SUM(i.quantity)>2 ORDER BY paid_units DESC,p.sku;
