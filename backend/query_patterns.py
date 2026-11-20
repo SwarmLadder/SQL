@@ -39,11 +39,11 @@ def search_catalog(db: sqlite3.Connection, term: str) -> list[tuple[str, str]]:
     """Substring search; escape LIKE wildcard characters and bind the value."""
     if not isinstance(term, str) or len(term) > 64:
         raise ValueError("term must be text of at most 64 characters")
-    literal = (term.strip().replace("\\", "\\\\")
-               .replace("%", "\\%").replace("_", "\\_"))
+    literal = (term.strip().replace("!", "!!")
+               .replace("%", "!%").replace("_", "!_"))
     return db.execute(
         """SELECT sku,product_name FROM products
-           WHERE LOWER(product_name) LIKE LOWER(?) ESCAPE '\'
+           WHERE LOWER(product_name) LIKE LOWER(?) ESCAPE '!'
            ORDER BY sku""",
         ("%" + literal + "%",),
     ).fetchall()
