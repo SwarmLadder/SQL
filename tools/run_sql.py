@@ -40,21 +40,21 @@ def run_file(path: Path, *, verbose: bool = False) -> int:
     if not path.is_file() or path.suffix != ".sql":
         raise ValueError(f"Not a .sql file: {path}")
     query_count = 0
-    with new_database() as db:
-        try:
-            for statement in statements(path.read_text(encoding="utf-8")):
-                cursor = db.execute(statement)
-                query_count += 1
-                if verbose:
-                    print(f"\n--- Statement {query_count} ---")
-                    if cursor.description:
-                        print(" | ".join(col[0] for col in cursor.description))
-                        for row in cursor.fetchall():
-                            print(" | ".join("NULL" if x is None else str(x) for x in row))
-                    else:
-                        print(f"Rows changed: {max(cursor.rowcount, 0)}")
-        finally:
-            db.close()
+    db = new_database()
+    try:
+        for statement in statements(path.read_text(encoding="utf-8")):
+            cursor = db.execute(statement)
+            query_count += 1
+            if verbose:
+                print(f"\n--- Statement {query_count} ---")
+                if cursor.description:
+                    print(" | ".join(col[0] for col in cursor.description))
+                    for row in cursor.fetchall():
+                        print(" | ".join("NULL" if x is None else str(x) for x in row))
+                else:
+                    print(f"Rows changed: {max(cursor.rowcount, 0)}")
+    finally:
+        db.close()
     if verbose:
         print(f"\nExecuted {query_count} statements from {path.relative_to(ROOT)}")
     return query_count
