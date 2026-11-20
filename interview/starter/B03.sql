@@ -1,0 +1,4 @@
+-- B03: Customer city
+-- Return full_name,email for customers from Bucharest, sorted by full_name.
+-- Hint: Use an exact city predicate.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

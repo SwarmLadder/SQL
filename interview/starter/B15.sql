@@ -1,0 +1,4 @@
+-- B15: Customer 1 order history
+-- Return order_id,ordered_at for customer_id=1, sorted latest date then highest id.
+-- Hint: Scope to customer_id=1.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

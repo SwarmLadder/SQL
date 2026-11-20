@@ -1,0 +1,4 @@
+-- B07: Customers with zero orders
+-- Return customer_id,full_name for customers with no orders, sorted by id.
+-- Hint: Use NOT EXISTS.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

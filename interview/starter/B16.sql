@@ -1,0 +1,4 @@
+-- B16: Average category price
+-- Return category_name,avg_price_cents for all categories (NULL if empty), sorted by name.
+-- Hint: LEFT JOIN and AVG.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

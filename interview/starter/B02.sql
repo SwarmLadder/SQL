@@ -1,0 +1,4 @@
+-- B02: Pending orders
+-- Return order_id,customer_id for pending orders, sorted by order_id.
+-- Hint: WHERE status='pending'.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

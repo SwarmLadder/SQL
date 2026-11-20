@@ -1,0 +1,4 @@
+-- B06: Orders by status
+-- Return status,order_count for each present status, sorted by status.
+-- Hint: GROUP BY status.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

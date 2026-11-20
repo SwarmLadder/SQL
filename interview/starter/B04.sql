@@ -1,0 +1,4 @@
+-- B04: Most expensive products
+-- Return sku,unit_price_cents for top 3 most expensive products, price DESC then sku ASC.
+-- Hint: ORDER BY before LIMIT.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

@@ -1,0 +1,4 @@
+-- B12: Recent orders
+-- Return order_id,ordered_at of latest 3 orders by date DESC,id DESC.
+-- Hint: Deterministic tie-break.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

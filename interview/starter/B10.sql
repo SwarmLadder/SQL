@@ -1,0 +1,4 @@
+-- B10: Paid order totals
+-- Return order_id,total_cents for paid orders using item price*quantity; sorted by id.
+-- Hint: Aggregate order lines.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

@@ -1,0 +1,4 @@
+-- B09: Line-item totals
+-- Return order_id,product_name,quantity,line_cents for all order items; sort by order_id,product_name.
+-- Hint: Use historical price on order_items.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

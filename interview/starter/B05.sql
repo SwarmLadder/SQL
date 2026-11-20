@@ -1,0 +1,4 @@
+-- B05: Products per category
+-- Return category_name,product_count for every category (include empty), sorted by name.
+-- Hint: LEFT JOIN and COUNT(p.product_id).
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

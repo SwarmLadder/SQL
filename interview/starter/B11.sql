@@ -1,0 +1,4 @@
+-- B11: Never ordered SKUs
+-- Return sku,product_name for products never referenced in order_items, sorted by sku.
+-- Hint: NOT EXISTS anti-match.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

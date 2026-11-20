@@ -1,0 +1,4 @@
+-- B14: Payment method totals
+-- Return method,total_cents (sum of payments), sorted by method.
+-- Hint: No join needed.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

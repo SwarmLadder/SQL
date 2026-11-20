@@ -1,0 +1,4 @@
+-- B08: Employee and manager
+-- Return employee,manager for every employee (NULL manager if none), in employee_id order.
+-- Hint: Self LEFT JOIN.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

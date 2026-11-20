@@ -1,0 +1,130 @@
+[
+  {
+    "id": "B01",
+    "level": "basics",
+    "title": "Active catalog",
+    "prompt": "Return sku, product_name for active products, sorted by sku.",
+    "hint": "Filter active=1.",
+    "ordered": true
+  },
+  {
+    "id": "B02",
+    "level": "basics",
+    "title": "Pending orders",
+    "prompt": "Return order_id,customer_id for pending orders, sorted by order_id.",
+    "hint": "WHERE status='pending'.",
+    "ordered": true
+  },
+  {
+    "id": "B03",
+    "level": "basics",
+    "title": "Customer city",
+    "prompt": "Return full_name,email for customers from Bucharest, sorted by full_name.",
+    "hint": "Use an exact city predicate.",
+    "ordered": true
+  },
+  {
+    "id": "B04",
+    "level": "basics",
+    "title": "Most expensive products",
+    "prompt": "Return sku,unit_price_cents for top 3 most expensive products, price DESC then sku ASC.",
+    "hint": "ORDER BY before LIMIT.",
+    "ordered": true
+  },
+  {
+    "id": "B05",
+    "level": "basics",
+    "title": "Products per category",
+    "prompt": "Return category_name,product_count for every category (include empty), sorted by name.",
+    "hint": "LEFT JOIN and COUNT(p.product_id).",
+    "ordered": true
+  },
+  {
+    "id": "B06",
+    "level": "basics",
+    "title": "Orders by status",
+    "prompt": "Return status,order_count for each present status, sorted by status.",
+    "hint": "GROUP BY status.",
+    "ordered": true
+  },
+  {
+    "id": "B07",
+    "level": "basics",
+    "title": "Customers with zero orders",
+    "prompt": "Return customer_id,full_name for customers with no orders, sorted by id.",
+    "hint": "Use NOT EXISTS.",
+    "ordered": true
+  },
+  {
+    "id": "B08",
+    "level": "basics",
+    "title": "Employee and manager",
+    "prompt": "Return employee,manager for every employee (NULL manager if none), in employee_id order.",
+    "hint": "Self LEFT JOIN.",
+    "ordered": true
+  },
+  {
+    "id": "B09",
+    "level": "basics",
+    "title": "Line-item totals",
+    "prompt": "Return order_id,product_name,quantity,line_cents for all order items; sort by order_id,product_name.",
+    "hint": "Use historical price on order_items.",
+    "ordered": true
+  },
+  {
+    "id": "B10",
+    "level": "basics",
+    "title": "Paid order totals",
+    "prompt": "Return order_id,total_cents for paid orders using item price*quantity; sorted by id.",
+    "hint": "Aggregate order lines.",
+    "ordered": true
+  },
+  {
+    "id": "B11",
+    "level": "basics",
+    "title": "Never ordered SKUs",
+    "prompt": "Return sku,product_name for products never referenced in order_items, sorted by sku.",
+    "hint": "NOT EXISTS anti-match.",
+    "ordered": true
+  },
+  {
+    "id": "B12",
+    "level": "basics",
+    "title": "Recent orders",
+    "prompt": "Return order_id,ordered_at of latest 3 orders by date DESC,id DESC.",
+    "hint": "Deterministic tie-break.",
+    "ordered": true
+  },
+  {
+    "id": "B13",
+    "level": "basics",
+    "title": "Repeat order customers",
+    "prompt": "Return customer_id,order_count for customers with >=2 orders of any status, sorted by id.",
+    "hint": "HAVING count.",
+    "ordered": true
+  },
+  {
+    "id": "B14",
+    "level": "basics",
+    "title": "Payment method totals",
+    "prompt": "Return method,total_cents (sum of payments), sorted by method.",
+    "hint": "No join needed.",
+    "ordered": true
+  },
+  {
+    "id": "B15",
+    "level": "basics",
+    "title": "Customer 1 order history",
+    "prompt": "Return order_id,ordered_at for customer_id=1, sorted latest date then highest id.",
+    "hint": "Scope to customer_id=1.",
+    "ordered": true
+  },
+  {
+    "id": "B16",
+    "level": "basics",
+    "title": "Average category price",
+    "prompt": "Return category_name,avg_price_cents for all categories (NULL if empty), sorted by name.",
+    "hint": "LEFT JOIN and AVG.",
+    "ordered": true
+  }
+]

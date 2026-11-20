@@ -1,0 +1,4 @@
+-- B13: Repeat order customers
+-- Return customer_id,order_count for customers with >=2 orders of any status, sorted by id.
+-- Hint: HAVING count.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.

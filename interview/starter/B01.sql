@@ -1,0 +1,4 @@
+-- B01: Active catalog
+-- Return sku, product_name for active products, sorted by sku.
+-- Hint: Filter active=1.
+-- Add one read-only SELECT (or WITH...SELECT), ending with semicolon.
