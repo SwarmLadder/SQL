@@ -12,3 +12,6 @@ jobs:
         run: python tools/run_sql.py --check
       - name: Run dataset and course tests
         run: python -m unittest discover -s tests -v
+
+      - name: Validate backend interview reference queries
+        run: python tools/interview_practice.py verify-reference
