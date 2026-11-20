@@ -16,6 +16,9 @@ psql -v ON_ERROR_STOP=1 -d your_disposable_database -f advanced/postgresql/01_js
 | [04](04_materialized_view.sql) | Materialized views and refresh |
 | [05](05_skip_locked.sql) | SKIP LOCKED work queues |
 | [06](06_isolation.sql) | Transaction isolation |
+| [07](07_keyset_index.sql) | Keyset pagination and composite indexes |
+| [08](08_outbox_transaction.sql) | Atomic outbox storage |
+| [09](09_optimistic_concurrency.sql) | Version-checked updates |
 
 Each lab rolls back its demonstration writes where applicable. These scripts are **not checked in SQLite CI**; run them separately in PostgreSQL before relying on them.
 

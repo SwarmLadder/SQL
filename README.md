@@ -9,7 +9,7 @@ A hands-on SQL course for **backend developer interviews and database engineerin
 | Additional [course exercises](basics/exercises/README.md) | 60 |
 | [Projects](basics/projects/README.md) | 6 |
 | Backend SQL recipes | 8 |
-| [PostgreSQL labs](advanced/postgresql/README.md) | 6 |
+| [PostgreSQL labs](advanced/postgresql/README.md) | 9 |
 
 ## Start an interview question
 
