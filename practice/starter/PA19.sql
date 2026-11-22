@@ -1,0 +1,7 @@
+-- PA19: Top customers with DENSE_RANK  (advanced, query)
+-- Return customer_id, lifetime_cents (sum of payments) and spend_rank (DENSE_RANK, highest
+-- spender = 1) for customers with payments. Sort by spend_rank, then customer_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PA19
+-- Hints:  python tools/practice.py hint PA19 1

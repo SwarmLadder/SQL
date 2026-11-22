@@ -1,0 +1,7 @@
+-- PI19: No paid order yet  (intermediate, query)
+-- Return customer_id, full_name for customers with no paid order, including customers with
+-- no orders at all. Sort by customer_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI19
+-- Hints:  python tools/practice.py hint PI19 1

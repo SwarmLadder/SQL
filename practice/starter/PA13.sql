@@ -1,0 +1,9 @@
+-- PA13: Snapshot that goes stale  (advanced, script)
+-- Create a table (not a view) category_revenue_snapshot(category_id, revenue_cents)
+-- holding paid revenue per category (quantity × unit_price_cents of order lines in paid
+-- orders), for categories with revenue. The checker then records a new paid sale and reads
+-- your snapshot, which should not change until it is rebuilt.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PA13
+-- Hints:  python tools/practice.py hint PA13 1

@@ -1,0 +1,8 @@
+-- PI18: Undo part of a transaction  (intermediate, script)
+-- In one transaction: set product 1's price to 0, then undo only that change with a
+-- savepoint, then set product 2's price to 300 and commit. The checker reads both prices
+-- afterwards.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PI18
+-- Hints:  python tools/practice.py hint PI18 1

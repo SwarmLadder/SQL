@@ -1,0 +1,7 @@
+-- PB14: Repeat customers  (basics, query)
+-- Return customer_id, order_count for customers with more than one order (any status),
+-- sorted by customer_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB14
+-- Hints:  python tools/practice.py hint PB14 1

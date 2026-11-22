@@ -33,25 +33,28 @@ def questions() -> dict[str, dict]:
     return index
 
 
+EDGE_SQL = """
+INSERT INTO customers VALUES
+    (9,'Iris Test','iris@example.test','Bucharest','2026-07-01');
+INSERT INTO categories VALUES (5,'Gifts');
+INSERT INTO products VALUES (10,'P10',4,'Sample Coupon',250,1);
+INSERT INTO teams VALUES (4,'Operations');
+INSERT INTO employees VALUES (9,'Ivana',1,11000000,1);
+INSERT INTO orders VALUES (112,8,'2026-10-01','paid');
+INSERT INTO order_items VALUES (112,2,2,250);
+INSERT INTO payments VALUES (9,112,500,'card','2026-10-01');
+INSERT INTO orders VALUES (113,4,'2026-04-06','pending');
+INSERT INTO order_items VALUES (113,1,1,1200);
+UPDATE payments SET amount_cents = amount_cents - 100
+  WHERE payment_id = 1;
+"""
+
+
 def sample_db(edge: bool = False) -> sqlite3.Connection:
     """A new private in-memory DB, with a second test fixture for edge cases."""
     db = new_database()
     if edge:
-        db.executescript("""
-            INSERT INTO customers VALUES
-                (9,'Iris Test','iris@example.test','Bucharest','2026-07-01');
-            INSERT INTO categories VALUES (5,'Gifts');
-            INSERT INTO products VALUES (10,'P10',4,'Sample Coupon',250,1);
-            INSERT INTO teams VALUES (4,'Operations');
-            INSERT INTO employees VALUES (9,'Ivana',1,11000000,1);
-            INSERT INTO orders VALUES (112,8,'2026-10-01','paid');
-            INSERT INTO order_items VALUES (112,2,2,250);
-            INSERT INTO payments VALUES (9,112,500,'card','2026-10-01');
-            INSERT INTO orders VALUES (113,4,'2026-04-06','pending');
-            INSERT INTO order_items VALUES (113,1,1,1200);
-            UPDATE payments SET amount_cents = amount_cents - 100
-              WHERE payment_id = 1;
-        """)
+        db.executescript(EDGE_SQL)
     db.execute("PRAGMA query_only=ON")
     return db
 

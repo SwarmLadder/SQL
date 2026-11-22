@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check runnable SQLite lessons, solutions, and projects
+      - name: Check runnable SQLite lessons, solutions, worked examples, and projects
         run: python tools/run_sql.py --check
       - name: Run dataset and course tests
         run: python -m unittest discover -s tests -v
@@ -23,3 +23,9 @@ jobs:
 
       - name: Grade reference schema designs
         run: python tools/schema_practice.py verify-reference
+
+      - name: Grade reference practice answers on both fixtures
+        run: python tools/practice.py verify-reference
+
+      - name: Practice tables are up to date
+        run: python tools/practice_docs.py --check

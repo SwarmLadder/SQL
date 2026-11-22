@@ -1,0 +1,12 @@
+{
+  "name": "SQL & Backend Database Interviews",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "customizations": {
+    "vscode": {
+      "extensions": ["qwtel.sqlite-viewer"]
+    },
+    "codespaces": {
+      "openFiles": ["README.md", "practice/README.md", "practice/starter/PB01.sql"]
+    }
+  }
+}

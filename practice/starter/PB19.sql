@@ -1,0 +1,7 @@
+-- PB19: Never ordered  (basics, query)
+-- Return sku, product_name for products that never appear in any order line, sorted by
+-- sku. (The course dataset has none; the edge fixture has one.)
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB19
+-- Hints:  python tools/practice.py hint PB19 1

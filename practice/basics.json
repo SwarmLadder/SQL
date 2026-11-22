@@ -1,0 +1,264 @@
+[
+  {
+    "id": "PB01",
+    "level": "basics",
+    "lesson": "basics/lessons/00_select.md",
+    "title": "Active catalog",
+    "kind": "query",
+    "prompt": "Return sku, product_name for every active product (active = 1), sorted by sku.",
+    "hints": [
+      "Only two columns are needed, both from products.",
+      "Active is stored as the integer 1, not as text.",
+      "SELECT ... FROM products WHERE active = ... ORDER BY ...;"
+    ]
+  },
+  {
+    "id": "PB02",
+    "level": "basics",
+    "lesson": "basics/lessons/00_select.md",
+    "title": "Customer labels",
+    "kind": "query",
+    "prompt": "Return customer_id and the customer's full name under the alias customer_label, sorted by customer_id. The column names are checked.",
+    "check_columns": true,
+    "hints": [
+      "An alias renames a column in the result, not in the table.",
+      "Use AS after the expression you want to rename.",
+      "SELECT customer_id, full_name AS ... FROM customers ORDER BY ...;"
+    ]
+  },
+  {
+    "id": "PB03",
+    "level": "basics",
+    "lesson": "basics/lessons/00_select.md",
+    "title": "Distinct order statuses",
+    "kind": "query",
+    "prompt": "Return each order status once, in a column named status, sorted alphabetically.",
+    "hints": [
+      "Several orders share a status; you need each value only once.",
+      "DISTINCT removes duplicate result rows.",
+      "SELECT DISTINCT status FROM orders ORDER BY ...;"
+    ]
+  },
+  {
+    "id": "PB04",
+    "level": "basics",
+    "lesson": "basics/lessons/01_where_null.md",
+    "title": "Cheap products",
+    "kind": "query",
+    "prompt": "Return sku, unit_price_cents for products cheaper than 500 cents (any active state), cheapest first, ties by sku.",
+    "hints": [
+      "Prices are integers in cents, so 500 means €5.00.",
+      "Cheaper than means strictly less than.",
+      "Sort by two keys: price first, then sku."
+    ]
+  },
+  {
+    "id": "PB05",
+    "level": "basics",
+    "lesson": "basics/lessons/01_where_null.md",
+    "title": "Orders needing attention",
+    "kind": "query",
+    "prompt": "Return order_id, status for orders that are pending or cancelled, sorted by order_id.",
+    "hints": [
+      "Two different status values qualify.",
+      "IN (...) is a compact way to write several OR conditions.",
+      "WHERE status IN ('...', '...')"
+    ]
+  },
+  {
+    "id": "PB06",
+    "level": "basics",
+    "lesson": "basics/lessons/01_where_null.md",
+    "title": "Top of the org chart",
+    "kind": "query",
+    "prompt": "Return employee_id, full_name for employees without a manager, sorted by employee_id.",
+    "hints": [
+      "A missing manager is stored as NULL.",
+      "manager_id = NULL is never true. NULL needs its own operator.",
+      "WHERE manager_id IS NULL"
+    ]
+  },
+  {
+    "id": "PB07",
+    "level": "basics",
+    "lesson": "basics/lessons/02_sort_limit.md",
+    "title": "Latest three orders",
+    "kind": "query",
+    "prompt": "Return order_id, ordered_at for the three most recent orders. Newest first; break date ties by the higher order_id first.",
+    "hints": [
+      "Sort first, then keep only the first rows.",
+      "Dates stored as YYYY-MM-DD text sort correctly as text.",
+      "ORDER BY ordered_at DESC, order_id DESC LIMIT 3"
+    ]
+  },
+  {
+    "id": "PB08",
+    "level": "basics",
+    "lesson": "basics/lessons/02_sort_limit.md",
+    "title": "Premium shelf",
+    "kind": "query",
+    "prompt": "Return sku, product_name, unit_price_cents for the three most expensive active products, price high to low, ties by sku.",
+    "hints": [
+      "Filter to active products before ranking them.",
+      "LIMIT is applied after ORDER BY.",
+      "WHERE active = 1 ORDER BY unit_price_cents DESC, sku LIMIT 3"
+    ]
+  },
+  {
+    "id": "PB09",
+    "level": "basics",
+    "lesson": "basics/lessons/03_expressions.md",
+    "title": "Product labels",
+    "kind": "query",
+    "prompt": "Return one column named product_label in the form 'P01: Notebook' (sku, colon, space, product name) for every product, sorted by sku. The column name is checked.",
+    "check_columns": true,
+    "hints": [
+      "SQLite joins text with the || operator.",
+      "The separator ': ' is a text literal in single quotes.",
+      "SELECT sku || ': ' || product_name AS product_label ..."
+    ]
+  },
+  {
+    "id": "PB10",
+    "level": "basics",
+    "lesson": "basics/lessons/04_aggregates.md",
+    "title": "Catalog size",
+    "kind": "query",
+    "prompt": "Return one row with two columns: customer_count (all customers) and product_count (all products).",
+    "hints": [
+      "The two counts come from two different tables.",
+      "A subquery in the SELECT list can return a single value.",
+      "SELECT (SELECT COUNT(*) FROM ...) AS customer_count, (...) AS product_count;"
+    ]
+  },
+  {
+    "id": "PB11",
+    "level": "basics",
+    "lesson": "basics/lessons/04_aggregates.md",
+    "title": "Units sold",
+    "kind": "query",
+    "prompt": "Return one row, total_quantity: the sum of quantity across all order lines (every status).",
+    "hints": [
+      "Order lines live in order_items.",
+      "An aggregate without GROUP BY returns one row.",
+      "SELECT SUM(...) AS total_quantity FROM order_items;"
+    ]
+  },
+  {
+    "id": "PB12",
+    "level": "basics",
+    "lesson": "basics/lessons/04_aggregates.md",
+    "title": "Active price range",
+    "kind": "query",
+    "prompt": "Return one row with min_price and max_price, the lowest and highest unit_price_cents among active products.",
+    "hints": [
+      "Two aggregates can share one SELECT.",
+      "The filter runs before the aggregates.",
+      "SELECT MIN(...), MAX(...) FROM products WHERE active = 1;"
+    ]
+  },
+  {
+    "id": "PB13",
+    "level": "basics",
+    "lesson": "basics/lessons/05_group_by_having.md",
+    "title": "Orders by status",
+    "kind": "query",
+    "prompt": "Return status, order_count for each order status, sorted by status.",
+    "hints": [
+      "One output row per status value.",
+      "GROUP BY creates the groups; COUNT(*) counts rows in each.",
+      "SELECT status, COUNT(*) ... GROUP BY status ORDER BY status;"
+    ]
+  },
+  {
+    "id": "PB14",
+    "level": "basics",
+    "lesson": "basics/lessons/05_group_by_having.md",
+    "title": "Repeat customers",
+    "kind": "query",
+    "prompt": "Return customer_id, order_count for customers with more than one order (any status), sorted by customer_id.",
+    "hints": [
+      "Count orders per customer first, then filter the groups.",
+      "WHERE filters rows before grouping; HAVING filters groups after.",
+      "GROUP BY customer_id HAVING COUNT(*) > 1"
+    ]
+  },
+  {
+    "id": "PB15",
+    "level": "basics",
+    "lesson": "basics/lessons/05_group_by_having.md",
+    "title": "Revenue by payment method",
+    "kind": "query",
+    "prompt": "Return method, paid_cents (sum of amount_cents) for each payment method that has payments, sorted by method.",
+    "hints": [
+      "Payments already store the amount actually received.",
+      "Group by the method column.",
+      "SELECT method, SUM(amount_cents) ... GROUP BY method ..."
+    ]
+  },
+  {
+    "id": "PB16",
+    "level": "basics",
+    "lesson": "basics/lessons/06_joins.md",
+    "title": "Products with categories",
+    "kind": "query",
+    "prompt": "Return sku, product_name, category_name for every product, sorted by sku.",
+    "hints": [
+      "category_name lives in categories; products hold category_id.",
+      "Join on the shared key, and use table aliases to keep it short.",
+      "FROM products p JOIN categories c ON c.category_id = p.category_id"
+    ]
+  },
+  {
+    "id": "PB17",
+    "level": "basics",
+    "lesson": "basics/lessons/06_joins.md",
+    "title": "Who placed each order",
+    "kind": "query",
+    "prompt": "Return order_id, full_name, ordered_at for every order, sorted by order_id.",
+    "hints": [
+      "Every order references exactly one customer.",
+      "An inner join is enough because the foreign key is NOT NULL.",
+      "FROM orders o JOIN customers c ON c.customer_id = o.customer_id"
+    ]
+  },
+  {
+    "id": "PB18",
+    "level": "basics",
+    "lesson": "basics/lessons/07_left_join.md",
+    "title": "Employees and managers",
+    "kind": "query",
+    "prompt": "Return employee (the employee's name) and manager (the manager's name, NULL when there is none) for every employee, sorted by employee_id.",
+    "hints": [
+      "The manager is also a row in employees: join the table to itself.",
+      "An inner join would drop employees with no manager.",
+      "FROM employees e LEFT JOIN employees m ON m.employee_id = e.manager_id"
+    ]
+  },
+  {
+    "id": "PB19",
+    "level": "basics",
+    "lesson": "basics/lessons/07_left_join.md",
+    "title": "Never ordered",
+    "kind": "query",
+    "prompt": "Return sku, product_name for products that never appear in any order line, sorted by sku. (The course dataset has none; the edge fixture has one.)",
+    "hints": [
+      "Look for products with no matching order line.",
+      "After a LEFT JOIN, unmatched rows have NULL in every right-hand column.",
+      "LEFT JOIN order_items i ON ... WHERE i.product_id IS NULL"
+    ]
+  },
+  {
+    "id": "PB20",
+    "level": "basics",
+    "lesson": "basics/lessons/09_review.md",
+    "title": "Paid order summary",
+    "kind": "query",
+    "prompt": "For paid orders only, return order_id, line_count (number of order lines) and total_cents (sum of quantity × unit_price_cents), sorted by order_id.",
+    "hints": [
+      "Combine a join, a filter and a grouping.",
+      "Multiply inside SUM, per line, using the price stored on the line.",
+      "JOIN order_items ... WHERE o.status = 'paid' GROUP BY o.order_id"
+    ]
+  }
+]

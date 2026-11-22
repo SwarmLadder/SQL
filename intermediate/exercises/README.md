@@ -1,26 +1,38 @@
 # Intermediate Practice · 20 tasks
 
-Use the [sample database](../../data/README.md). Write your answers in a new SQL file and run it with `python tools/run_sql.py path/to/file.sql`. Every result needs a check for filters, duplicates, and missing values.
+20 of these tasks are **graded automatically** on the course dataset and on an edge-case fixture. Each one has three hints that get more specific.
 
-1. Create customer lifetime totals using a CTE.
-2. Show items and payment totals without duplicate multiplication.
-3. Find products above the average price via scalar subquery.
-4. Find customers with paid orders using EXISTS.
-5. Find products without a paid order using NOT EXISTS.
-6. List customers with pending orders and paid orders using INTERSECT.
-7. Create a readable two-stage CTE report.
-8. Count paid/pending/cancelled in one query with CASE.
-9. Classify products by three price bands.
-10. Rank employees within teams by salary.
-11. Return top two earners per team.
-12. Compute order history with LAG for each customer.
-13. Compute running paid revenue by month.
-14. Show each customer's signup month.
-15. Find orders more than seven days after signup using date functions.
-16. Compare UNION and UNION ALL row counts.
-17. Build a view for paid customer lifetime totals.
-18. Update one row inside a savepoint and roll it back.
-19. List customers with no paid order, keeping zero-order customers.
-20. Build a dashboard showing monthly paid revenue and change.
+```bash
+python tools/practice.py list --level intermediate
+python tools/practice.py show PI01
+python tools/practice.py check PI01      # grades practice/starter/PI01.sql
+python tools/practice.py hint PI01 1
+python tools/practice.py progress intermediate
+```
 
-Representative answers: [solutions](../solutions/README.md).
+<!-- exercises:start -->
+| ID | Exercise | Kind | Lesson |
+|---|---|---|---|
+| `PI01` | [Customer lifetime totals](../../practice/starter/PI01.sql) | query | [03 cte](../../intermediate/lessons/03_cte.md) |
+| `PI02` | [Items vs payments without fan-out](../../practice/starter/PI02.sql) | query | [00 multi table reports](../../intermediate/lessons/00_multi_table_reports.md) |
+| `PI03` | [Above-average prices](../../practice/starter/PI03.sql) | query | [01 subqueries](../../intermediate/lessons/01_subqueries.md) |
+| `PI04` | [Customers who paid](../../practice/starter/PI04.sql) | query | [02 exists](../../intermediate/lessons/02_exists.md) |
+| `PI05` | [Products nobody paid for](../../practice/starter/PI05.sql) | query | [02 exists](../../intermediate/lessons/02_exists.md) |
+| `PI06` | [Pending and paid](../../practice/starter/PI06.sql) | query | [08 set operations](../../intermediate/lessons/08_set_operations.md) |
+| `PI07` | [Two-stage order report](../../practice/starter/PI07.sql) | query | [03 cte](../../intermediate/lessons/03_cte.md) |
+| `PI08` | [Status counts in one row](../../practice/starter/PI08.sql) | query | [04 case conditional](../../intermediate/lessons/04_case_conditional.md) |
+| `PI09` | [Price bands](../../practice/starter/PI09.sql) | query | [04 case conditional](../../intermediate/lessons/04_case_conditional.md) |
+| `PI10` | [Salary rank within team](../../practice/starter/PI10.sql) | query | [05 windows ranking](../../intermediate/lessons/05_windows_ranking.md) |
+| `PI11` | [Top two earners per team](../../practice/starter/PI11.sql) | query | [05 windows ranking](../../intermediate/lessons/05_windows_ranking.md) |
+| `PI12` | [Previous order date](../../practice/starter/PI12.sql) | query | [06 windows running](../../intermediate/lessons/06_windows_running.md) |
+| `PI13` | [Running revenue by month](../../practice/starter/PI13.sql) | query | [06 windows running](../../intermediate/lessons/06_windows_running.md) |
+| `PI14` | [Signup month](../../practice/starter/PI14.sql) | query | [07 dates strings](../../intermediate/lessons/07_dates_strings.md) |
+| `PI15` | [Orders long after signup](../../practice/starter/PI15.sql) | query | [07 dates strings](../../intermediate/lessons/07_dates_strings.md) |
+| `PI16` | [UNION vs UNION ALL](../../practice/starter/PI16.sql) | query | [08 set operations](../../intermediate/lessons/08_set_operations.md) |
+| `PI17` | [A reusable view](../../practice/starter/PI17.sql) | script | [09 views savepoints](../../intermediate/lessons/09_views_savepoints.md) |
+| `PI18` | [Undo part of a transaction](../../practice/starter/PI18.sql) | script | [09 views savepoints](../../intermediate/lessons/09_views_savepoints.md) |
+| `PI19` | [No paid order yet](../../practice/starter/PI19.sql) | query | [02 exists](../../intermediate/lessons/02_exists.md) |
+| `PI20` | [Monthly revenue dashboard](../../practice/starter/PI20.sql) | query | [06 windows running](../../intermediate/lessons/06_windows_running.md) |
+<!-- exercises:end -->
+
+See [how practice works](../../practice/README.md). Stuck? Read the hints before the [worked examples](../worked_examples/README.md).

@@ -1,0 +1,9 @@
+-- PA14: Constraints that reject bad data  (advanced, script)
+-- Create coupons(code TEXT, percent_off INTEGER, expires_at TEXT) where code is required
+-- and unique, percent_off is required and between 1 and 90, and expires_at is required.
+-- Insert one valid coupon: ('WELCOME10', 10, '2026-12-31'). The checker then tries five
+-- inserts, some of which must be rejected.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PA14
+-- Hints:  python tools/practice.py hint PA14 1

@@ -1,0 +1,7 @@
+-- PB20: Paid order summary  (basics, query)
+-- For paid orders only, return order_id, line_count (number of order lines) and
+-- total_cents (sum of quantity × unit_price_cents), sorted by order_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB20
+-- Hints:  python tools/practice.py hint PB20 1

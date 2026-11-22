@@ -1,0 +1,6 @@
+-- PB05: Orders needing attention  (basics, query)
+-- Return order_id, status for orders that are pending or cancelled, sorted by order_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB05
+-- Hints:  python tools/practice.py hint PB05 1

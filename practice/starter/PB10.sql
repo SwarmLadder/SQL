@@ -1,0 +1,7 @@
+-- PB10: Catalog size  (basics, query)
+-- Return one row with two columns: customer_count (all customers) and product_count (all
+-- products).
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB10
+-- Hints:  python tools/practice.py hint PB10 1

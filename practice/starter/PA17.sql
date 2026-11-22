@@ -1,0 +1,8 @@
+-- PA17: The NOT IN trap  (advanced, query)
+-- Return employee_id, full_name for employees who manage nobody, sorted by employee_id.
+-- Try NOT IN (SELECT manager_id FROM employees) first and explain to yourself why it
+-- returns no rows, then write a version that works.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PA17
+-- Hints:  python tools/practice.py hint PA17 1

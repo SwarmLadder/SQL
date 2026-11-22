@@ -1,0 +1,9 @@
+-- PA11: Price change log  (advanced, script)
+-- Create price_changes(product_id INTEGER, old_price_cents INTEGER, new_price_cents
+-- INTEGER) and a trigger that adds a row whenever a product's unit_price_cents actually
+-- changes. Updates that leave the price the same, or touch only other columns, must not
+-- log anything. The checker runs three updates.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PA11
+-- Hints:  python tools/practice.py hint PA11 1

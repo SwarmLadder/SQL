@@ -1,0 +1,7 @@
+-- PI03: Above-average prices  (intermediate, query)
+-- Return sku, unit_price_cents for products priced above the average price of all
+-- products. Sort by price descending, then sku.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI03
+-- Hints:  python tools/practice.py hint PI03 1

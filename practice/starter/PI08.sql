@@ -1,0 +1,7 @@
+-- PI08: Status counts in one row  (intermediate, query)
+-- Return one row with paid_count, pending_count, cancelled_count using conditional
+-- aggregation over orders.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI08
+-- Hints:  python tools/practice.py hint PI08 1

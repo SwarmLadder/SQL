@@ -25,9 +25,11 @@ Write answers in `interview/starter/` and check them against two datasets. See [
 
 ## Practice
 
-- [20 exercises](exercises/README.md)
+- [20 graded exercises](exercises/README.md) with hints, checked on two datasets: `python tools/practice.py show PI01`
+- [Worked examples](worked_examples/README.md): plan → wrong attempt → fix → test
 - [8 reference queries](solutions/README.md)
 - [Two projects](projects/README.md)
+- [Glossary](GLOSSARY.md) · [Final assessment](ASSESSMENT.md)
 
 ## Run
 

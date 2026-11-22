@@ -1,0 +1,10 @@
+-- PA10: Replay or conflict?  (advanced, query)
+-- Start your query with these CTEs: stored(request_key, request_hash) AS (VALUES
+-- ('req-1','h1'), ('req-2','h2')) and incoming(request_key, request_hash) AS (VALUES
+-- ('req-1','h1'), ('req-2','hX'), ('req-3','h3')). Return request_key, decision for each
+-- incoming request: 'replay' if stored with the same hash, 'conflict' if stored with a
+-- different hash, 'new' if not stored. Sort by request_key.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PA10
+-- Hints:  python tools/practice.py hint PA10 1

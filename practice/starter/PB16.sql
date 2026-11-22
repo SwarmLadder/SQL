@@ -1,0 +1,6 @@
+-- PB16: Products with categories  (basics, query)
+-- Return sku, product_name, category_name for every product, sorted by sku.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB16
+-- Hints:  python tools/practice.py hint PB16 1

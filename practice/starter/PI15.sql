@@ -1,0 +1,8 @@
+-- PI15: Orders long after signup  (intermediate, query)
+-- Return order_id, customer_id, days_after_signup (whole days between joined_at and
+-- ordered_at, as an integer) for orders placed more than 7 days after the customer joined.
+-- Sort by order_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI15
+-- Hints:  python tools/practice.py hint PI15 1

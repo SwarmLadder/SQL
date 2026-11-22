@@ -1,0 +1,306 @@
+[
+  {
+    "id": "PA01",
+    "level": "advanced",
+    "lesson": "advanced/lessons/00_indexes_explain.md",
+    "title": "Index for a hot query",
+    "kind": "script",
+    "prompt": "The payments screen runs: SELECT payment_id, amount_cents FROM payments WHERE method = 'card' ORDER BY paid_at. Create one index so SQLite can both filter and sort through it (no full scan, no temporary sort). Check your plan with EXPLAIN QUERY PLAN first.",
+    "verify": [
+      "SELECT COUNT(*) > 0 FROM sqlite_master WHERE type = 'index' AND tbl_name = 'payments' AND sql IS NOT NULL"
+    ],
+    "plan": {
+      "query": "SELECT payment_id, amount_cents FROM payments WHERE method = 'card' ORDER BY paid_at",
+      "require_any": [
+        "USING INDEX",
+        "USING COVERING INDEX"
+      ],
+      "forbid": [
+        "TEMP B-TREE",
+        "SCAN payments"
+      ]
+    },
+    "hints": [
+      "Run EXPLAIN QUERY PLAN on the query before and after your index.",
+      "Put the equality column first and the sort column second.",
+      "CREATE INDEX ... ON payments(method, paid_at);"
+    ]
+  },
+  {
+    "id": "PA02",
+    "level": "advanced",
+    "lesson": "advanced/lessons/00_indexes_explain.md",
+    "title": "The cost of indexes",
+    "kind": "written",
+    "prompt": "Every index speeds up some reads and slows down every write to its table. For the index you created in PA01, list which statements get slower, estimate the storage cost, and describe how you would decide whether to keep it in production.",
+    "hints": []
+  },
+  {
+    "id": "PA03",
+    "level": "advanced",
+    "lesson": "advanced/lessons/01_query_rewrites.md",
+    "title": "EXISTS rewritten as a JOIN",
+    "kind": "query",
+    "prompt": "Return customer_id, full_name for customers who bought at least one product from the Books category (any order status). Write it with JOINs, not EXISTS, without returning a customer twice. Sort by customer_id.",
+    "hints": [
+      "A customer with two Books orders produces two joined rows.",
+      "The join chain is customers → orders → order_items → products → categories.",
+      "SELECT DISTINCT c.customer_id, c.full_name FROM customers c JOIN orders ... WHERE cat.category_name = 'Books'"
+    ]
+  },
+  {
+    "id": "PA04",
+    "level": "advanced",
+    "lesson": "advanced/lessons/01_query_rewrites.md",
+    "title": "Correlated subquery to aggregate CTE",
+    "kind": "query",
+    "prompt": "Return customer_id, order_count and last_ordered_at for every customer (0 and NULL for customers without orders), computed with one aggregate CTE joined back to customers rather than two correlated subqueries. Sort by customer_id.",
+    "hints": [
+      "A correlated subquery runs once per customer; an aggregate runs once in total.",
+      "Customers without orders vanish with an inner join.",
+      "WITH stats AS (SELECT customer_id, COUNT(*), MAX(ordered_at) ... GROUP BY customer_id) ... LEFT JOIN stats ... COALESCE(..., 0)"
+    ]
+  },
+  {
+    "id": "PA05",
+    "level": "advanced",
+    "lesson": "advanced/lessons/02_recursive_cte.md",
+    "title": "Walk the org chart",
+    "kind": "query",
+    "prompt": "With WITH RECURSIVE, return employee_id, full_name, depth for every employee, where top-level managers have depth 0 and each report is one deeper than their manager. Sort by depth, then employee_id.",
+    "hints": [
+      "A recursive CTE has an anchor query and a recursive query joined by UNION ALL.",
+      "The anchor is the employees without a manager.",
+      "WITH RECURSIVE chain AS (SELECT ..., 0 FROM employees WHERE manager_id IS NULL UNION ALL SELECT ..., chain.depth + 1 FROM employees e JOIN chain ON e.manager_id = chain.employee_id)"
+    ]
+  },
+  {
+    "id": "PA06",
+    "level": "advanced",
+    "lesson": "advanced/lessons/02_recursive_cte.md",
+    "title": "Reporting paths with a depth limit",
+    "kind": "query",
+    "prompt": "Return employee_id and path, where path is the chain of names from the top manager down, joined with ' > ' (for example 'Ada > Ben'). Stop at depth 1 (top managers and their direct reports only), and guard against cycles by never revisiting a name already in the path. Sort by path.",
+    "hints": [
+      "Carry the path and the depth as columns of the recursive CTE.",
+      "The depth limit belongs in the recursive member's WHERE, not in the final SELECT.",
+      "WHERE chain.depth < 1 AND instr(chain.path, e.full_name) = 0"
+    ]
+  },
+  {
+    "id": "PA07",
+    "level": "advanced",
+    "lesson": "advanced/lessons/03_transactions_savepoints.md",
+    "title": "Roll back two updates",
+    "kind": "script",
+    "prompt": "In one transaction: create a savepoint, set product 4's price to 14900 and product 8's price to 5900, roll back to the savepoint (undoing both), then deactivate product 2 (active = 0) and commit. The checker reads products 2, 4 and 8 afterwards.",
+    "verify": [
+      "SELECT product_id, unit_price_cents, active FROM products WHERE product_id IN (2, 4, 8) ORDER BY product_id"
+    ],
+    "hints": [
+      "Both price updates come after the savepoint.",
+      "After ROLLBACK TO, the transaction is still open; later work still needs COMMIT.",
+      "BEGIN; SAVEPOINT s; UPDATE ...; UPDATE ...; ROLLBACK TO s; RELEASE s; UPDATE products SET active = 0 ...; COMMIT;"
+    ]
+  },
+  {
+    "id": "PA08",
+    "level": "advanced",
+    "lesson": "advanced/lessons/04_upsert_idempotency.md",
+    "title": "Idempotency keys",
+    "kind": "script",
+    "prompt": "Create a table idempotency_keys(request_key TEXT, request_hash TEXT NOT NULL, response_code INTEGER NOT NULL, created_at TEXT NOT NULL) where request_key is unique. Then store ('req-1', 'h1', 201, '2026-11-01') twice so that the second attempt is silently ignored. The checker then tries to insert a duplicate key and a new key.",
+    "probe": [
+      "INSERT INTO idempotency_keys VALUES ('req-1', 'h9', 500, '2026-11-02')",
+      "INSERT INTO idempotency_keys VALUES ('req-2', 'h2', 201, '2026-11-02')"
+    ],
+    "verify": [
+      "SELECT request_key, request_hash, response_code FROM idempotency_keys ORDER BY request_key"
+    ],
+    "hints": [
+      "Uniqueness must be enforced by the database, not by checking first.",
+      "A plain INSERT of a duplicate key fails; you need a conflict policy for the retry.",
+      "request_key TEXT PRIMARY KEY ... INSERT OR IGNORE INTO idempotency_keys VALUES (...);"
+    ]
+  },
+  {
+    "id": "PA09",
+    "level": "advanced",
+    "lesson": "advanced/lessons/04_upsert_idempotency.md",
+    "title": "UPSERT a counter",
+    "kind": "script",
+    "prompt": "Create category_views(category_id INTEGER PRIMARY KEY, views INTEGER NOT NULL). Record five view events for categories 1, 2, 1, 3, 1, one statement per event, using INSERT ... ON CONFLICT DO UPDATE so each category ends with its total.",
+    "verify": [
+      "SELECT category_id, views FROM category_views ORDER BY category_id"
+    ],
+    "hints": [
+      "The first event for a category inserts 1; later events increase it.",
+      "ON CONFLICT names the unique column and what to do instead of failing.",
+      "INSERT INTO category_views VALUES (1, 1) ON CONFLICT(category_id) DO UPDATE SET views = views + 1;"
+    ]
+  },
+  {
+    "id": "PA10",
+    "level": "advanced",
+    "lesson": "advanced/lessons/04_upsert_idempotency.md",
+    "title": "Replay or conflict?",
+    "kind": "query",
+    "prompt": "Start your query with these CTEs: stored(request_key, request_hash) AS (VALUES ('req-1','h1'), ('req-2','h2')) and incoming(request_key, request_hash) AS (VALUES ('req-1','h1'), ('req-2','hX'), ('req-3','h3')). Return request_key, decision for each incoming request: 'replay' if stored with the same hash, 'conflict' if stored with a different hash, 'new' if not stored. Sort by request_key.",
+    "hints": [
+      "Every incoming request needs a row, stored or not.",
+      "LEFT JOIN incoming to stored by key, then classify with CASE.",
+      "CASE WHEN s.request_key IS NULL THEN 'new' WHEN s.request_hash = i.request_hash THEN 'replay' ELSE 'conflict' END"
+    ]
+  },
+  {
+    "id": "PA11",
+    "level": "advanced",
+    "lesson": "advanced/lessons/05_triggers_audit.md",
+    "title": "Price change log",
+    "kind": "script",
+    "prompt": "Create price_changes(product_id INTEGER, old_price_cents INTEGER, new_price_cents INTEGER) and a trigger that adds a row whenever a product's unit_price_cents actually changes. Updates that leave the price the same, or touch only other columns, must not log anything. The checker runs three updates.",
+    "probe": [
+      "UPDATE products SET unit_price_cents = 1300 WHERE product_id = 1",
+      "UPDATE products SET unit_price_cents = 250 WHERE product_id = 2",
+      "UPDATE products SET active = 0 WHERE product_id = 3"
+    ],
+    "verify": [
+      "SELECT product_id, old_price_cents, new_price_cents FROM price_changes ORDER BY product_id"
+    ],
+    "hints": [
+      "AFTER UPDATE OF column fires only when that column is assigned.",
+      "Assigning the same value still fires it, so compare OLD and NEW.",
+      "CREATE TRIGGER ... AFTER UPDATE OF unit_price_cents ON products WHEN OLD.unit_price_cents <> NEW.unit_price_cents BEGIN INSERT ...; END;"
+    ]
+  },
+  {
+    "id": "PA12",
+    "level": "advanced",
+    "lesson": "advanced/lessons/05_triggers_audit.md",
+    "title": "Why triggers are not audit security",
+    "kind": "written",
+    "prompt": "Your price_changes trigger records changes made through normal UPDATE statements. List at least three ways a change could happen without a trustworthy log entry (think about who can drop triggers, edit the log table, or write outside the database), and what you would add to make the audit trail reliable.",
+    "hints": []
+  },
+  {
+    "id": "PA13",
+    "level": "advanced",
+    "lesson": "advanced/lessons/06_summary_tables.md",
+    "title": "Snapshot that goes stale",
+    "kind": "script",
+    "prompt": "Create a table (not a view) category_revenue_snapshot(category_id, revenue_cents) holding paid revenue per category (quantity × unit_price_cents of order lines in paid orders), for categories with revenue. The checker then records a new paid sale and reads your snapshot, which should not change until it is rebuilt.",
+    "probe": [
+      "INSERT INTO orders VALUES (200, 1, '2026-11-01', 'paid')",
+      "INSERT INTO order_items VALUES (200, 4, 1, 15900)"
+    ],
+    "verify": [
+      "SELECT category_id, revenue_cents FROM category_revenue_snapshot ORDER BY category_id",
+      "SELECT type FROM sqlite_master WHERE name = 'category_revenue_snapshot'"
+    ],
+    "hints": [
+      "A snapshot copies results at one moment.",
+      "CREATE TABLE ... AS SELECT stores the rows; a view would recompute them.",
+      "CREATE TABLE category_revenue_snapshot AS SELECT p.category_id, SUM(...) ... WHERE o.status = 'paid' GROUP BY p.category_id;"
+    ]
+  },
+  {
+    "id": "PA14",
+    "level": "advanced",
+    "lesson": "advanced/lessons/07_constraints_migrations.md",
+    "title": "Constraints that reject bad data",
+    "kind": "script",
+    "prompt": "Create coupons(code TEXT, percent_off INTEGER, expires_at TEXT) where code is required and unique, percent_off is required and between 1 and 90, and expires_at is required. Insert one valid coupon: ('WELCOME10', 10, '2026-12-31'). The checker then tries five inserts, some of which must be rejected.",
+    "probe": [
+      "INSERT INTO coupons VALUES ('SPRING20', 20, '2027-03-31')",
+      "INSERT INTO coupons VALUES ('WELCOME10', 15, '2027-01-31')",
+      "INSERT INTO coupons VALUES ('HUGE', 95, '2027-01-31')",
+      "INSERT INTO coupons VALUES ('ZERO', 0, '2027-01-31')",
+      "INSERT INTO coupons VALUES (NULL, 10, '2027-01-31')"
+    ],
+    "verify": [
+      "SELECT code, percent_off, expires_at FROM coupons ORDER BY code"
+    ],
+    "hints": [
+      "Each rule in the prompt maps to one constraint.",
+      "UNIQUE alone allows NULL codes; required means NOT NULL too.",
+      "code TEXT NOT NULL UNIQUE, percent_off INTEGER NOT NULL CHECK (percent_off BETWEEN 1 AND 90)"
+    ]
+  },
+  {
+    "id": "PA15",
+    "level": "advanced",
+    "lesson": "advanced/lessons/07_constraints_migrations.md",
+    "title": "Additive migration",
+    "kind": "script",
+    "prompt": "Add a column marketing_opt_in to customers that existing INSERT statements (which list only the original five columns) keep working with: integer, required, default 0, only 0 or 1 allowed. Then backfill it to 1 for customers who have at least one paid order. The checker inserts customers the old way and with a bad value.",
+    "probe": [
+      "INSERT INTO customers (customer_id, full_name, email, city, joined_at) VALUES (50, 'New Old-Style', 'old@example.test', 'Arad', '2026-11-01')",
+      "INSERT INTO customers (customer_id, full_name, email, city, joined_at, marketing_opt_in) VALUES (51, 'Bad Flag', 'bad@example.test', 'Arad', '2026-11-01', 2)"
+    ],
+    "verify": [
+      "SELECT customer_id, marketing_opt_in FROM customers ORDER BY customer_id"
+    ],
+    "hints": [
+      "A new NOT NULL column needs a default so old rows and old inserts stay valid.",
+      "SQLite's ALTER TABLE ADD COLUMN can carry a DEFAULT and a CHECK.",
+      "ALTER TABLE customers ADD COLUMN marketing_opt_in INTEGER NOT NULL DEFAULT 0 CHECK (...); UPDATE customers SET ... WHERE EXISTS (...);"
+    ]
+  },
+  {
+    "id": "PA16",
+    "level": "advanced",
+    "lesson": "advanced/lessons/07_constraints_migrations.md",
+    "title": "Plan a zero-downtime migration",
+    "kind": "written",
+    "prompt": "You must rename customers.city to customers.city_name while two versions of the application run at once. Write the expand/migrate/contract steps, what each application version reads and writes during each step, and how you would roll back at every point.",
+    "hints": []
+  },
+  {
+    "id": "PA17",
+    "level": "advanced",
+    "lesson": "advanced/lessons/08_null_semantics.md",
+    "title": "The NOT IN trap",
+    "kind": "query",
+    "prompt": "Return employee_id, full_name for employees who manage nobody, sorted by employee_id. Try NOT IN (SELECT manager_id FROM employees) first and explain to yourself why it returns no rows, then write a version that works.",
+    "hints": [
+      "manager_id contains NULL for top-level employees.",
+      "x NOT IN (..., NULL) is never true: it is either false or unknown.",
+      "Use NOT EXISTS, or filter NULLs out of the subquery with WHERE manager_id IS NOT NULL."
+    ]
+  },
+  {
+    "id": "PA18",
+    "level": "advanced",
+    "lesson": "advanced/lessons/09_advanced_capstone.md",
+    "title": "Order-to-payment reconciliation",
+    "kind": "query",
+    "prompt": "For every order return order_id, status, items_cents, paid_cents (0 if none) and flag: 'missing_payment' (paid, no payment), 'mismatch' (paid, amounts differ), 'ok' (paid, amounts match), 'unexpected_payment' (not paid but has a payment), 'not_due' otherwise. Sort by order_id.",
+    "hints": [
+      "Aggregate items and payments separately (see PI02) before comparing them.",
+      "CASE stops at the first true branch, so order the branches from most to least specific.",
+      "Two CTEs, two LEFT JOINs, and a CASE that checks missing payment before mismatch before ok."
+    ]
+  },
+  {
+    "id": "PA19",
+    "level": "advanced",
+    "lesson": "advanced/lessons/09_advanced_capstone.md",
+    "title": "Top customers with DENSE_RANK",
+    "kind": "query",
+    "prompt": "Return customer_id, lifetime_cents (sum of payments) and spend_rank (DENSE_RANK, highest spender = 1) for customers with payments. Sort by spend_rank, then customer_id.",
+    "hints": [
+      "Aggregate per customer first, then rank the totals.",
+      "DENSE_RANK leaves no gaps after ties; RANK does.",
+      "DENSE_RANK() OVER (ORDER BY lifetime_cents DESC) AS spend_rank"
+    ]
+  },
+  {
+    "id": "PA20",
+    "level": "advanced",
+    "lesson": "advanced/lessons/09_advanced_capstone.md",
+    "title": "Revenue report checklist",
+    "kind": "written",
+    "prompt": "Write the checklist you would run before trusting a monthly revenue report: which statuses count, refunds and partial payments, time zones and month boundaries, join fan-out, NULLs, currency units, and how you would cross-check the total against an independent source.",
+    "hints": []
+  }
+]

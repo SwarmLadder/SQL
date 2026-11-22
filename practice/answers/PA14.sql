@@ -1,0 +1,6 @@
+CREATE TABLE coupons (
+  code TEXT NOT NULL UNIQUE,
+  percent_off INTEGER NOT NULL CHECK (percent_off BETWEEN 1 AND 90),
+  expires_at TEXT NOT NULL
+);
+INSERT INTO coupons VALUES ('WELCOME10', 10, '2026-12-31');

@@ -63,7 +63,7 @@ def run_file(path: Path, *, verbose: bool = False) -> int:
 def sql_files():
     paths = []
     for level in ("basics", "intermediate", "advanced"):
-        for part in ("lessons", "projects", "solutions"):
+        for part in ("lessons", "projects", "solutions", "worked_examples"):
             paths.extend((ROOT / level / part).glob("*.sql"))
     paths.extend((ROOT / "backend" / "sql").glob("*.sql"))
     return sorted(paths)

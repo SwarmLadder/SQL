@@ -1,0 +1,8 @@
+-- PI07: Two-stage order report  (intermediate, query)
+-- Stage 1: total each paid order (sum of quantity × unit_price_cents). Stage 2: per
+-- customer, return customer_id, paid_orders (count) and avg_order_cents (average order
+-- total rounded to the nearest cent). Sort by customer_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI07
+-- Hints:  python tools/practice.py hint PI07 1

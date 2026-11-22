@@ -1,0 +1,7 @@
+-- PI10: Salary rank within team  (intermediate, query)
+-- Return team_name, full_name, salary_rank where salary_rank is RANK() by salary (highest
+-- = 1) within each team. Sort by team_name, salary_rank, full_name.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI10
+-- Hints:  python tools/practice.py hint PI10 1

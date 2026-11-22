@@ -1,0 +1,7 @@
+-- PB18: Employees and managers  (basics, query)
+-- Return employee (the employee's name) and manager (the manager's name, NULL when there
+-- is none) for every employee, sorted by employee_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB18
+-- Hints:  python tools/practice.py hint PB18 1

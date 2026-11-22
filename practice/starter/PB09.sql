@@ -1,0 +1,7 @@
+-- PB09: Product labels  (basics, query)
+-- Return one column named product_label in the form 'P01: Notebook' (sku, colon, space,
+-- product name) for every product, sorted by sku. The column name is checked.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PB09
+-- Hints:  python tools/practice.py hint PB09 1

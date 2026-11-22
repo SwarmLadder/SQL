@@ -1,0 +1,8 @@
+-- PI12: Previous order date  (intermediate, query)
+-- Return customer_id, order_id, ordered_at, previous_ordered_at (the same customer's
+-- previous order date, NULL for their first order). Sort by customer_id, ordered_at,
+-- order_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PI12
+-- Hints:  python tools/practice.py hint PI12 1

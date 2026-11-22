@@ -1,0 +1,8 @@
+-- PA04: Correlated subquery to aggregate CTE  (advanced, query)
+-- Return customer_id, order_count and last_ordered_at for every customer (0 and NULL for
+-- customers without orders), computed with one aggregate CTE joined back to customers
+-- rather than two correlated subqueries. Sort by customer_id.
+--
+-- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
+-- Check:  python tools/practice.py check PA04
+-- Hints:  python tools/practice.py hint PA04 1

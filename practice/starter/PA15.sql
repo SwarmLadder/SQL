@@ -1,0 +1,9 @@
+-- PA15: Additive migration  (advanced, script)
+-- Add a column marketing_opt_in to customers that existing INSERT statements (which list
+-- only the original five columns) keep working with: integer, required, default 0, only 0
+-- or 1 allowed. Then backfill it to 1 for customers who have at least one paid order. The
+-- checker inserts customers the old way and with a bad value.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PA15
+-- Hints:  python tools/practice.py hint PA15 1

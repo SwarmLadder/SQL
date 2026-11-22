@@ -1,0 +1,8 @@
+-- PA07: Roll back two updates  (advanced, script)
+-- In one transaction: create a savepoint, set product 4's price to 14900 and product 8's
+-- price to 5900, roll back to the savepoint (undoing both), then deactivate product 2
+-- (active = 0) and commit. The checker reads products 2, 4 and 8 afterwards.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PA07
+-- Hints:  python tools/practice.py hint PA07 1

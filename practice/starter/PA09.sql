@@ -1,0 +1,8 @@
+-- PA09: UPSERT a counter  (advanced, script)
+-- Create category_views(category_id INTEGER PRIMARY KEY, views INTEGER NOT NULL). Record
+-- five view events for categories 1, 2, 1, 3, 1, one statement per event, using INSERT ...
+-- ON CONFLICT DO UPDATE so each category ends with its total.
+--
+-- Write a SQL script. End every statement with a semicolon.
+-- Check:  python tools/practice.py check PA09
+-- Hints:  python tools/practice.py hint PA09 1
