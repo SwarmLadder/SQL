@@ -29,3 +29,9 @@ jobs:
 
       - name: Practice tables are up to date
         run: python tools/practice_docs.py --check
+
+      - name: Lesson results, exercise lists and quizzes are up to date
+        run: python tools/lessons.py --check
+
+      - name: Level indexes are up to date
+        run: python tools/level_index.py --check

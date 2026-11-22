@@ -1,6 +1,6 @@
 # Basics Final Assessment
 
-Complete this after the 10 Basics lessons, the 20 graded practice exercises and the two projects.
+Complete this after the 10 Basics lessons, their 58 graded exercises and the three projects.
 
 ## 1. Automatic check
 
@@ -8,7 +8,7 @@ Complete this after the 10 Basics lessons, the 20 graded practice exercises and 
 python tools/verify_level.py basics
 ```
 
-All 36 graded exercises (20 practice, 16 interview) must pass.
+All 74 graded exercises (58 practice, 16 interview) must pass.
 
 ## 2. Skills checklist
 

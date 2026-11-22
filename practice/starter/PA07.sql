@@ -6,3 +6,4 @@
 -- Write a SQL script. End every statement with a semicolon.
 -- Check:  python tools/practice.py check PA07
 -- Hints:  python tools/practice.py hint PA07 1
+

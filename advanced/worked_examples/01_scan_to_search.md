@@ -20,7 +20,7 @@ Two costs: every row is read (`SCAN`), and the matches are sorted in a temporary
 | `status = 'pending'` | equality filter | first |
 | `ORDER BY ordered_at DESC` | sort | second (SQLite walks the index backwards for `DESC`) |
 
-```sql
+```sql norun
 CREATE INDEX idx_orders_status_date ON orders(status, ordered_at);
 ```
 

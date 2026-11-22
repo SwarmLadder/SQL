@@ -14,10 +14,10 @@ class CourseStructureTests(unittest.TestCase):
             self.assertEqual(len(markdown), 10, level)
             self.assertEqual({p.stem for p in markdown}, {p.stem for p in sql})
 
-    def test_six_projects(self):
+    def test_three_projects_per_level(self):
         for level in ("basics", "intermediate", "advanced"):
             directory = ROOT / level / "projects"
-            self.assertEqual(len(list(directory.glob("*.sql"))), 2)
+            self.assertEqual(len(list(directory.glob("*.sql"))), 3)
 
     def test_reference_queries(self):
         for level in ("basics", "intermediate", "advanced"):
@@ -28,7 +28,7 @@ class CourseStructureTests(unittest.TestCase):
             for name in ("ASSESSMENT.md", "GLOSSARY.md", "worked_examples/README.md"):
                 self.assertTrue((ROOT / level / name).is_file(), f"{level}/{name}")
             examples = sorted((ROOT / level / "worked_examples").glob("[0-9][0-9]_*.md"))
-            self.assertGreaterEqual(len(examples), 2, level)
+            self.assertEqual(len(examples), 6, level)
             for md in examples:
                 self.assertTrue(md.with_suffix(".sql").is_file(), md)
 
@@ -46,7 +46,8 @@ class CourseStructureTests(unittest.TestCase):
     def test_exercise_sets(self):
         for level in ("basics", "intermediate", "advanced"):
             content = (ROOT / level / "exercises" / "README.md").read_text(encoding="utf-8")
-            self.assertIn("20 tasks", content)
+            self.assertRegex(content, r"Practice · \d+ tasks")
+            self.assertIn("<!-- exercises:start -->", content)
 
 
 if __name__ == "__main__":

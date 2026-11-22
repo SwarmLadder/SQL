@@ -302,5 +302,314 @@
     "kind": "written",
     "prompt": "Write the checklist you would run before trusting a monthly revenue report: which statuses count, refunds and partial payments, time zones and month boundaries, join fan-out, NULLs, currency units, and how you would cross-check the total against an independent source.",
     "hints": []
+  },
+  {
+    "id": "PA21",
+    "level": "advanced",
+    "lesson": "advanced/lessons/00_indexes_explain.md",
+    "title": "Index the pending-orders queue",
+    "kind": "script",
+    "prompt": "An operations screen runs: SELECT order_id, ordered_at FROM orders WHERE status = 'pending' ORDER BY ordered_at. Create one index so the plan searches an index and needs no temporary sort.",
+    "verify": [
+      "SELECT COUNT(*) > 0 FROM sqlite_master WHERE type = 'index' AND tbl_name = 'orders' AND name <> 'idx_orders_customer_date' AND sql IS NOT NULL"
+    ],
+    "plan": {
+      "query": "SELECT order_id, ordered_at FROM orders WHERE status = 'pending' ORDER BY ordered_at",
+      "require_any": [
+        "USING INDEX",
+        "USING COVERING INDEX"
+      ],
+      "forbid": [
+        "TEMP B-TREE",
+        "SCAN orders"
+      ]
+    },
+    "hints": [
+      "The existing index starts with customer_id, which this query never filters on.",
+      "Equality column first, sort column second.",
+      "CREATE INDEX ... ON orders(status, ordered_at);"
+    ]
+  },
+  {
+    "id": "PA22",
+    "level": "advanced",
+    "lesson": "advanced/lessons/01_query_rewrites.md",
+    "title": "Keyset page 2",
+    "kind": "query",
+    "prompt": "Orders are listed by ordered_at, then order_id, four per page. Page 1 ended with ('2026-03-12', 104). Using keyset pagination (no OFFSET), return order_id, ordered_at for page 2.",
+    "hints": [
+      "Continue after the last row you showed, instead of skipping rows.",
+      "Compare the sort columns as a pair against the last-seen values.",
+      "WHERE (ordered_at, order_id) > ('2026-03-12', 104) ORDER BY ordered_at, order_id LIMIT 4"
+    ]
+  },
+  {
+    "id": "PA23",
+    "level": "advanced",
+    "lesson": "advanced/lessons/01_query_rewrites.md",
+    "title": "OR rewritten as UNION ALL",
+    "kind": "query",
+    "prompt": "Return order_id for orders of customer 2 or with status 'cancelled', each once, sorted by order_id, written as two queries combined with UNION ALL (not UNION, not OR).",
+    "hints": [
+      "UNION ALL keeps duplicates, so a cancelled order of customer 2 would appear twice.",
+      "Exclude from the second branch the rows the first branch already returns.",
+      "... UNION ALL SELECT order_id FROM orders WHERE status = 'cancelled' AND customer_id <> 2"
+    ]
+  },
+  {
+    "id": "PA24",
+    "level": "advanced",
+    "lesson": "advanced/lessons/02_recursive_cte.md",
+    "title": "A complete calendar",
+    "kind": "query",
+    "prompt": "Return month (YYYY-MM) and received_cents (sum of payments by month of paid_at, 0 when none) for every month from 2026-01 to 2026-12 inclusive, sorted by month. Generate the months with WITH RECURSIVE.",
+    "hints": [
+      "Generate twelve month-start dates, then LEFT JOIN the monthly totals.",
+      "date(d, '+1 month') steps one month; stop when you reach December.",
+      "WITH RECURSIVE months(d) AS (SELECT '2026-01-01' UNION ALL SELECT date(d, '+1 month') FROM months WHERE d < '2026-12-01') ..."
+    ]
+  },
+  {
+    "id": "PA25",
+    "level": "advanced",
+    "lesson": "advanced/lessons/02_recursive_cte.md",
+    "title": "Ada's organisation",
+    "kind": "query",
+    "prompt": "Return employee_id, full_name for everyone who reports to Ada (employee 1) directly or indirectly, not including Ada, sorted by employee_id.",
+    "hints": [
+      "Start from Ada's direct reports.",
+      "Each step adds the reports of the people found in the previous step.",
+      "WITH RECURSIVE team AS (SELECT ... WHERE manager_id = 1 UNION ALL SELECT e.... FROM employees e JOIN team t ON e.manager_id = t.employee_id)"
+    ]
+  },
+  {
+    "id": "PA26",
+    "level": "advanced",
+    "lesson": "advanced/lessons/02_recursive_cte.md",
+    "title": "Chain of command",
+    "kind": "query",
+    "prompt": "Return level, full_name for employee 8 (level 0) and each manager above them (level 1, 2, …), sorted by level.",
+    "hints": [
+      "Walk upwards: from an employee to their manager.",
+      "The recursive step joins employees on employee_id = the previous row's manager_id.",
+      "JOIN chain ON m.employee_id = chain.manager_id, with level + 1"
+    ]
+  },
+  {
+    "id": "PA27",
+    "level": "advanced",
+    "lesson": "advanced/lessons/03_transactions_savepoints.md",
+    "title": "Withdraw only if covered",
+    "kind": "script",
+    "prompt": "Create wallets(customer_id INTEGER PRIMARY KEY, balance_cents INTEGER NOT NULL CHECK (balance_cents >= 0)) with (1, 1000) and (2, 200). Then withdraw 300 cents from each wallet with conditional UPDATEs that succeed only when the balance covers it. The script must not fail.",
+    "probe": [
+      "UPDATE wallets SET balance_cents = balance_cents - 5000 WHERE customer_id = 1"
+    ],
+    "verify": [
+      "SELECT customer_id, balance_cents FROM wallets ORDER BY customer_id"
+    ],
+    "hints": [
+      "Customer 2 can't afford it; their UPDATE must change 0 rows instead of failing.",
+      "Put the balance condition in the UPDATE's WHERE.",
+      "UPDATE wallets SET balance_cents = balance_cents - 300 WHERE customer_id = ? AND balance_cents >= 300;"
+    ]
+  },
+  {
+    "id": "PA28",
+    "level": "advanced",
+    "lesson": "advanced/lessons/03_transactions_savepoints.md",
+    "title": "Optimistic locking",
+    "kind": "script",
+    "prompt": "Create documents(doc_id INTEGER PRIMARY KEY, body TEXT NOT NULL, version INTEGER NOT NULL) with (1, 'draft', 1). Two clients both read version 1. Write client A's save (body 'A') and then client B's save (body 'B'), each as an UPDATE that only succeeds if the version is still the one they read, and bumps the version.",
+    "verify": [
+      "SELECT doc_id, body, version FROM documents"
+    ],
+    "hints": [
+      "Both clients send version = 1 in their WHERE.",
+      "The first save bumps the version, so the second matches nothing.",
+      "UPDATE documents SET body = ..., version = version + 1 WHERE doc_id = 1 AND version = 1;"
+    ]
+  },
+  {
+    "id": "PA29",
+    "level": "advanced",
+    "lesson": "advanced/lessons/04_upsert_idempotency.md",
+    "title": "Subscribe once",
+    "kind": "script",
+    "prompt": "Create subscribers(email TEXT PRIMARY KEY, first_seen TEXT NOT NULL). Record the sign-ups ('ana@example.test', '2026-01-05'), ('bo@example.test', '2026-01-06'), ('ana@example.test', '2026-02-01') so that a repeat is ignored and the first date is kept. The checker then replays a sign-up.",
+    "probe": [
+      "INSERT INTO subscribers VALUES ('bo@example.test', '2026-03-01') ON CONFLICT(email) DO NOTHING"
+    ],
+    "verify": [
+      "SELECT email, first_seen FROM subscribers ORDER BY email"
+    ],
+    "hints": [
+      "The email is the identity: make it the key.",
+      "'Already subscribed' is success, so do nothing on conflict.",
+      "INSERT INTO subscribers VALUES (...) ON CONFLICT(email) DO NOTHING;"
+    ]
+  },
+  {
+    "id": "PA30",
+    "level": "advanced",
+    "lesson": "advanced/lessons/04_upsert_idempotency.md",
+    "title": "Keep the latest timestamp",
+    "kind": "script",
+    "prompt": "Create last_seen(product_id INTEGER PRIMARY KEY, seen_at TEXT NOT NULL). Record events (1, '2026-05-01'), (1, '2026-03-01'), (2, '2026-04-01') in that order with upserts so each product keeps its latest seen_at even when events arrive out of order.",
+    "verify": [
+      "SELECT product_id, seen_at FROM last_seen ORDER BY product_id"
+    ],
+    "hints": [
+      "The older event arrives second and must not overwrite the newer one.",
+      "excluded.seen_at is the incoming value; seen_at is the stored one.",
+      "ON CONFLICT(product_id) DO UPDATE SET seen_at = max(seen_at, excluded.seen_at)"
+    ]
+  },
+  {
+    "id": "PA31",
+    "level": "advanced",
+    "lesson": "advanced/lessons/05_triggers_audit.md",
+    "title": "Paid orders can't be deleted",
+    "kind": "script",
+    "prompt": "Create a trigger that rejects, with RAISE(ABORT, …), any DELETE of an order whose status is 'paid'. Other orders may still be deleted. The checker deletes an order's children and then the order, for one paid and one cancelled order.",
+    "probe": [
+      "DELETE FROM payments WHERE order_id = 101",
+      "DELETE FROM order_items WHERE order_id = 101",
+      "DELETE FROM orders WHERE order_id = 101",
+      "DELETE FROM order_items WHERE order_id = 106",
+      "DELETE FROM orders WHERE order_id = 106"
+    ],
+    "verify": [
+      "SELECT order_id FROM orders WHERE order_id IN (101, 106) ORDER BY order_id"
+    ],
+    "hints": [
+      "The rule depends on the row being deleted: OLD.status.",
+      "A BEFORE DELETE trigger with a WHEN clause can abort the statement.",
+      "CREATE TRIGGER ... BEFORE DELETE ON orders WHEN OLD.status = 'paid' BEGIN SELECT RAISE(ABORT, '...'); END;"
+    ]
+  },
+  {
+    "id": "PA32",
+    "level": "advanced",
+    "lesson": "advanced/lessons/05_triggers_audit.md",
+    "title": "Status change log",
+    "kind": "script",
+    "prompt": "Create status_log(order_id INTEGER, old_status TEXT, new_status TEXT) and a trigger that logs every real change of orders.status (not no-op updates, not updates of other columns). The checker runs three updates.",
+    "probe": [
+      "UPDATE orders SET status = 'paid' WHERE order_id = 104",
+      "UPDATE orders SET status = 'paid' WHERE order_id = 101",
+      "UPDATE orders SET ordered_at = '2026-05-15' WHERE order_id = 108"
+    ],
+    "verify": [
+      "SELECT order_id, old_status, new_status FROM status_log ORDER BY order_id"
+    ],
+    "hints": [
+      "Fire only on updates of the status column.",
+      "Setting a paid order to 'paid' again must not log anything.",
+      "AFTER UPDATE OF status ON orders WHEN OLD.status <> NEW.status BEGIN INSERT ...; END;"
+    ]
+  },
+  {
+    "id": "PA33",
+    "level": "advanced",
+    "lesson": "advanced/lessons/06_summary_tables.md",
+    "title": "A keyed summary table",
+    "kind": "script",
+    "prompt": "Create customer_month_revenue(customer_id INTEGER NOT NULL, month TEXT NOT NULL, revenue_cents INTEGER NOT NULL, PRIMARY KEY (customer_id, month)) and fill it with paid revenue (order lines of paid orders) per customer and month of ordered_at (YYYY-MM). The checker then tries to insert a duplicate group.",
+    "probe": [
+      "INSERT INTO customer_month_revenue VALUES (1, '2026-01', 1)"
+    ],
+    "verify": [
+      "SELECT customer_id, month, revenue_cents FROM customer_month_revenue ORDER BY customer_id, month"
+    ],
+    "hints": [
+      "The primary key is the grain: customer and month.",
+      "INSERT … SELECT with GROUP BY on the same two columns.",
+      "INSERT INTO customer_month_revenue SELECT o.customer_id, strftime('%Y-%m', o.ordered_at), SUM(...) ... GROUP BY ..."
+    ]
+  },
+  {
+    "id": "PA34",
+    "level": "advanced",
+    "lesson": "advanced/lessons/07_constraints_migrations.md",
+    "title": "One review per customer and product",
+    "kind": "script",
+    "prompt": "Create reviews(customer_id, product_id, stars) where both IDs are required foreign keys, stars is required and between 1 and 5, and a customer can review a product only once. The checker tries five inserts.",
+    "probe": [
+      "INSERT INTO reviews VALUES (1, 3, 5)",
+      "INSERT INTO reviews VALUES (1, 3, 4)",
+      "INSERT INTO reviews VALUES (2, 3, 6)",
+      "INSERT INTO reviews VALUES (2, 999, 4)",
+      "INSERT INTO reviews VALUES (2, 3, NULL)"
+    ],
+    "verify": [
+      "SELECT customer_id, product_id, stars FROM reviews ORDER BY customer_id, product_id"
+    ],
+    "hints": [
+      "Four rules: two foreign keys, a range check, and uniqueness of a pair.",
+      "A CHECK alone accepts NULL; required means NOT NULL as well.",
+      "stars INTEGER NOT NULL CHECK (stars BETWEEN 1 AND 5), UNIQUE (customer_id, product_id)"
+    ]
+  },
+  {
+    "id": "PA35",
+    "level": "advanced",
+    "lesson": "advanced/lessons/07_constraints_migrations.md",
+    "title": "At most one default address",
+    "kind": "script",
+    "prompt": "Create addresses(address_id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL, is_default INTEGER NOT NULL DEFAULT 0 CHECK (is_default IN (0, 1))) and an index that allows any number of non-default addresses per customer but at most one default. The checker tries four inserts.",
+    "probe": [
+      "INSERT INTO addresses (customer_id, is_default) VALUES (1, 1)",
+      "INSERT INTO addresses (customer_id, is_default) VALUES (1, 0)",
+      "INSERT INTO addresses (customer_id, is_default) VALUES (1, 0)",
+      "INSERT INTO addresses (customer_id, is_default) VALUES (1, 1)"
+    ],
+    "verify": [
+      "SELECT customer_id, is_default, COUNT(*) FROM addresses GROUP BY customer_id, is_default ORDER BY is_default"
+    ],
+    "hints": [
+      "A plain UNIQUE (customer_id, is_default) would also forbid a second non-default address.",
+      "A unique index can apply to only some rows.",
+      "CREATE UNIQUE INDEX ... ON addresses(customer_id) WHERE is_default = 1;"
+    ]
+  },
+  {
+    "id": "PA36",
+    "level": "advanced",
+    "lesson": "advanced/lessons/08_null_semantics.md",
+    "title": "Not managed by Ada",
+    "kind": "query",
+    "prompt": "Return employee_id, full_name for employees whose manager is not employee 1, including employees who have no manager. Sort by employee_id.",
+    "hints": [
+      "manager_id <> 1 drops rows where manager_id is NULL.",
+      "SQLite has a NULL-safe 'is different from' operator.",
+      "WHERE manager_id IS NOT 1 (or: manager_id <> 1 OR manager_id IS NULL)"
+    ]
+  },
+  {
+    "id": "PA37",
+    "level": "advanced",
+    "lesson": "advanced/lessons/08_null_semantics.md",
+    "title": "Average of rated products",
+    "kind": "query",
+    "prompt": "Start with WITH ratings(product_id, stars) AS (VALUES (1, 5), (1, NULL), (1, 3), (2, NULL), (3, 4)). Return product_id, rated (number of non-NULL ratings) and avg_stars (average of the non-NULL ratings, NULL if none) per product, sorted by product_id.",
+    "hints": [
+      "COUNT(*) would count the missing ratings too.",
+      "AVG already ignores NULLs.",
+      "SELECT product_id, COUNT(stars) AS rated, AVG(stars) AS avg_stars ... GROUP BY product_id"
+    ]
+  },
+  {
+    "id": "PA38",
+    "level": "advanced",
+    "lesson": "advanced/lessons/09_advanced_capstone.md",
+    "title": "Category revenue shares",
+    "kind": "query",
+    "prompt": "Return category_name, revenue_cents (lines of paid orders) and share_pct (percentage of all paid revenue, rounded to 1 decimal) for categories with paid revenue, sorted by revenue_cents descending, then category_name.",
+    "hints": [
+      "Revenue per category first, then each category's share of the total.",
+      "SUM(...) OVER () gives the grand total on every row; use 100.0 for real division.",
+      "ROUND(100.0 * revenue_cents / SUM(revenue_cents) OVER (), 1) AS share_pct"
+    ]
   }
 ]

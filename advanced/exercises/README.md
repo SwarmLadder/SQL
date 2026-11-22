@@ -1,6 +1,6 @@
-# Advanced Practice · 20 tasks
+# Advanced Practice · 38 tasks
 
-16 of these tasks are **graded automatically** on the course dataset and on an edge-case fixture. Each one has three hints that get more specific.
+34 of these tasks are **graded automatically** on the course dataset and on an edge-case fixture. Each one has three hints that get more specific.
 
 ```bash
 python tools/practice.py list --level advanced
@@ -33,6 +33,24 @@ python tools/practice.py progress advanced
 | `PA18` | [Order-to-payment reconciliation](../../practice/starter/PA18.sql) | query | [09 advanced capstone](../../advanced/lessons/09_advanced_capstone.md) |
 | `PA19` | [Top customers with DENSE_RANK](../../practice/starter/PA19.sql) | query | [09 advanced capstone](../../advanced/lessons/09_advanced_capstone.md) |
 | `PA20` | Revenue report checklist | written ✍️ | [09 advanced capstone](../../advanced/lessons/09_advanced_capstone.md) |
+| `PA21` | [Index the pending-orders queue](../../practice/starter/PA21.sql) | script | [00 indexes explain](../../advanced/lessons/00_indexes_explain.md) |
+| `PA22` | [Keyset page 2](../../practice/starter/PA22.sql) | query | [01 query rewrites](../../advanced/lessons/01_query_rewrites.md) |
+| `PA23` | [OR rewritten as UNION ALL](../../practice/starter/PA23.sql) | query | [01 query rewrites](../../advanced/lessons/01_query_rewrites.md) |
+| `PA24` | [A complete calendar](../../practice/starter/PA24.sql) | query | [02 recursive cte](../../advanced/lessons/02_recursive_cte.md) |
+| `PA25` | [Ada's organisation](../../practice/starter/PA25.sql) | query | [02 recursive cte](../../advanced/lessons/02_recursive_cte.md) |
+| `PA26` | [Chain of command](../../practice/starter/PA26.sql) | query | [02 recursive cte](../../advanced/lessons/02_recursive_cte.md) |
+| `PA27` | [Withdraw only if covered](../../practice/starter/PA27.sql) | script | [03 transactions savepoints](../../advanced/lessons/03_transactions_savepoints.md) |
+| `PA28` | [Optimistic locking](../../practice/starter/PA28.sql) | script | [03 transactions savepoints](../../advanced/lessons/03_transactions_savepoints.md) |
+| `PA29` | [Subscribe once](../../practice/starter/PA29.sql) | script | [04 upsert idempotency](../../advanced/lessons/04_upsert_idempotency.md) |
+| `PA30` | [Keep the latest timestamp](../../practice/starter/PA30.sql) | script | [04 upsert idempotency](../../advanced/lessons/04_upsert_idempotency.md) |
+| `PA31` | [Paid orders can't be deleted](../../practice/starter/PA31.sql) | script | [05 triggers audit](../../advanced/lessons/05_triggers_audit.md) |
+| `PA32` | [Status change log](../../practice/starter/PA32.sql) | script | [05 triggers audit](../../advanced/lessons/05_triggers_audit.md) |
+| `PA33` | [A keyed summary table](../../practice/starter/PA33.sql) | script | [06 summary tables](../../advanced/lessons/06_summary_tables.md) |
+| `PA34` | [One review per customer and product](../../practice/starter/PA34.sql) | script | [07 constraints migrations](../../advanced/lessons/07_constraints_migrations.md) |
+| `PA35` | [At most one default address](../../practice/starter/PA35.sql) | script | [07 constraints migrations](../../advanced/lessons/07_constraints_migrations.md) |
+| `PA36` | [Not managed by Ada](../../practice/starter/PA36.sql) | query | [08 null semantics](../../advanced/lessons/08_null_semantics.md) |
+| `PA37` | [Average of rated products](../../practice/starter/PA37.sql) | query | [08 null semantics](../../advanced/lessons/08_null_semantics.md) |
+| `PA38` | [Category revenue shares](../../practice/starter/PA38.sql) | query | [09 advanced capstone](../../advanced/lessons/09_advanced_capstone.md) |
 <!-- exercises:end -->
 
 ## Written tasks

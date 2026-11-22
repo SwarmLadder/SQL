@@ -13,6 +13,8 @@ How the course is maintained. Questions, typo reports and "this confused me" iss
 ## Run every check
 
 ```bash
+python tools/lessons.py --check
+python tools/level_index.py --check
 python tools/run_sql.py --check
 python tools/interview_practice.py verify-reference
 python tools/schema_practice.py verify-reference
@@ -22,6 +24,16 @@ python -m unittest discover -s tests -v
 ```
 
 CI runs the same commands on every pull request.
+
+## Write or change a lesson
+
+Read the [authoring guide](curriculum/AUTHORING.md) first. In short: edit the lesson's Markdown, never type result tables by hand, and run
+
+```bash
+python tools/lessons.py
+```
+
+to execute the examples and refresh results, exercise lists, quizzes and the lesson's `.sql` file. Then update [`curriculum/concepts.json`](curriculum/concepts.json) if the lesson introduces or relies on new concepts, and run `python tools/level_index.py` if you changed a title or time.
 
 ## Add or change a practice exercise
 
@@ -40,7 +52,17 @@ Exercises live in `practice/<level>.json`. Each one has:
 | `verify` | script only: read-only queries whose results must match the reference |
 | `plan` | script only: `query`, `require_any`, `forbid`: rules on `EXPLAIN QUERY PLAN` output |
 
-Then add `practice/answers/<id>.sql` (the reference) and `practice/starter/<id>.sql` (comments only, as in the existing files), and run `python tools/practice_docs.py` to refresh the tables.
+Then add `practice/answers/<id>.sql` (the reference) and `practice/starter/<id>.sql` (comments only, as in the existing files), and run `python tools/practice_docs.py` and `python tools/lessons.py` to refresh the tables and the lesson's *Your turn* section.
+
+## Add or change a quiz question
+
+Quizzes live in `quizzes/<level>.json`. Answers are stored as hashes, never as letters:
+
+```bash
+python tools/quiz.py --fingerprint basics/05 2 c   # the value for "answer"
+```
+
+Each question needs `question`, `options` (a, b, c), `answer` (the fingerprint), `section` (the exact lesson heading to re-read) and `explain` (shown after a correct answer). Then run `python tools/lessons.py`.
 
 **Make the edge fixture matter.** Before submitting, write the most likely *wrong* answer and confirm the checker rejects it:
 

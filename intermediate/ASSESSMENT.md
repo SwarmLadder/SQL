@@ -1,6 +1,6 @@
 # Intermediate Final Assessment
 
-Complete this after the 10 Intermediate lessons, the 20 graded practice exercises and the two projects.
+Complete this after the 10 Intermediate lessons, their 47 graded exercises and the three projects.
 
 ## 1. Automatic check
 
@@ -8,7 +8,7 @@ Complete this after the 10 Intermediate lessons, the 20 graded practice exercise
 python tools/verify_level.py intermediate
 ```
 
-All 36 graded exercises (20 practice, 16 interview) must pass.
+All 63 graded exercises (47 practice, 16 interview) must pass.
 
 ## 2. Skills checklist
 

@@ -1,6 +1,6 @@
 # Advanced Final Assessment
 
-Complete this after the 10 Advanced lessons, the 16 graded and 4 written practice exercises, the two projects and the [backend lab](../backend/README.md).
+Complete this after the 10 Advanced lessons, their 34 graded exercises and 4 written exercises, the three projects and the [backend lab](../backend/README.md).
 
 ## 1. Automatic check
 
@@ -8,7 +8,7 @@ Complete this after the 10 Advanced lessons, the 16 graded and 4 written practic
 python tools/verify_level.py advanced
 ```
 
-All 32 graded exercises (16 practice, 16 interview) must pass. Bring written answers to PA02, PA12, PA16 and PA20 to your review.
+All 50 graded exercises (34 practice, 16 interview) must pass. Bring written answers to PA02, PA12, PA16 and PA20 to your review.
 
 ## 2. Skills checklist
 

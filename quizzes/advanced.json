@@ -1,0 +1,481 @@
+{
+ "advanced/00": {
+  "lesson": "advanced/lessons/00_indexes_explain.md",
+  "questions": [
+   {
+    "question": "What does `USE TEMP B-TREE FOR ORDER BY` in a plan mean?",
+    "options": {
+     "a": "The result is sorted separately because no index provides the order",
+     "b": "A temporary index was created permanently",
+     "c": "The query failed"
+    },
+    "answer": "23b0a70ff353",
+    "section": "2. Reading EXPLAIN QUERY PLAN",
+    "explain": "An index whose order matches the ORDER BY lets SQLite skip the sort."
+   },
+   {
+    "question": "An index on (customer_id, ordered_at) helps which filter?",
+    "options": {
+     "a": "WHERE ordered_at = ?",
+     "b": "WHERE customer_id = ? ORDER BY ordered_at",
+     "c": "WHERE status = ?"
+    },
+    "answer": "b4589c29de11",
+    "section": "3. Composite indexes: column order matters",
+    "explain": "Only a left prefix can be searched; ordered_at alone isn't sorted globally."
+   },
+   {
+    "question": "Why can't `WHERE substr(ordered_at, 1, 7) = '2026-06'` search an index on ordered_at?",
+    "options": {
+     "a": "The function hides the bare column",
+     "b": "substr is slow",
+     "c": "Text can't be indexed"
+    },
+    "answer": "6e697bc102a9",
+    "section": "4. What stops an index from being used",
+    "explain": "Rewrite as a range on the bare column, or create an expression index."
+   },
+   {
+    "question": "What is the main cost of an index?",
+    "options": {
+     "a": "Every write must update it, and it takes space",
+     "b": "Reads get slower",
+     "c": "None"
+    },
+    "answer": "d9d1c1c96a1d",
+    "section": "6. What indexes cost",
+    "explain": "Indexes speed reads at the expense of writes and storage."
+   }
+  ]
+ },
+ "advanced/01": {
+  "lesson": "advanced/lessons/01_query_rewrites.md",
+  "questions": [
+   {
+    "question": "Rewriting a correlated COUNT as an aggregate with an INNER JOIN loses…",
+    "options": {
+     "a": "entities with zero rows",
+     "b": "duplicates",
+     "c": "nothing"
+    },
+    "answer": "a3d8d993620e",
+    "section": "2. Correlated subqueries → one aggregate",
+    "explain": "Use LEFT JOIN and COALESCE(count, 0) to keep them."
+   },
+   {
+    "question": "Replacing EXISTS with a JOIN requires…",
+    "options": {
+     "a": "DISTINCT on the key, because a JOIN repeats rows per match",
+     "b": "a GROUP BY on every column",
+     "c": "nothing"
+    },
+    "answer": "dd5397806f32",
+    "section": "3. EXISTS ↔ JOIN: watch the duplicates",
+    "explain": "DISTINCT on a non-unique display column would also merge different entities."
+   },
+   {
+    "question": "Why is keyset pagination better than a deep OFFSET?",
+    "options": {
+     "a": "Each page costs the same, and rows don't shift between pages",
+     "b": "It allows jumping to any page",
+     "c": "It needs no ORDER BY"
+    },
+    "answer": "82d7f702dd5c",
+    "section": "5. OFFSET → keyset pagination",
+    "explain": "OFFSET reads and discards all skipped rows; keyset continues from the last seen key."
+   },
+   {
+    "question": "How do you prove two queries return the same rows?",
+    "options": {
+     "a": "EXCEPT both ways, plus row counts",
+     "b": "Compare the first row",
+     "c": "Compare their plans"
+    },
+    "answer": "770c4ed8ccda",
+    "section": "1. The rewrite workflow",
+    "explain": "Plans show speed, not correctness."
+   }
+  ]
+ },
+ "advanced/02": {
+  "lesson": "advanced/lessons/02_recursive_cte.md",
+  "questions": [
+   {
+    "question": "What are the two parts of a recursive CTE?",
+    "options": {
+     "a": "An anchor query and a recursive step joined by UNION ALL",
+     "b": "Two anchors",
+     "c": "A SELECT and a trigger"
+    },
+    "answer": "a415b5720021",
+    "section": "1. How recursion works",
+    "explain": "The step runs on the previous step's rows until it produces none."
+   },
+   {
+    "question": "Why generate a calendar with a recursive CTE?",
+    "options": {
+     "a": "So months without data appear as explicit zeros",
+     "b": "Dates can't be grouped otherwise",
+     "c": "For speed"
+    },
+    "answer": "e6b763afee2b",
+    "section": "2. Generating a complete calendar",
+    "explain": "LAG and charts need every month present."
+   },
+   {
+    "question": "A path check `instr(path, '1')` is wrong because…",
+    "options": {
+     "a": "'1' also matches '11'; delimit IDs like '/1/'",
+     "b": "instr doesn't exist",
+     "c": "paths can't contain numbers"
+    },
+    "answer": "f02bc5d405e0",
+    "section": "5. Cycles and runaway depth",
+    "explain": "Delimiters make the visited check exact."
+   },
+   {
+    "question": "Does UNION (instead of UNION ALL) prevent cycles when rows carry a depth column?",
+    "options": {
+     "a": "Yes, always",
+     "b": "No: depth makes every row unique",
+     "c": "Only in PostgreSQL"
+    },
+    "answer": "8ec10cb77aa7",
+    "section": "6. UNION vs UNION ALL in recursion",
+    "explain": "Use an explicit visited check and a depth limit."
+   }
+  ]
+ },
+ "advanced/03": {
+  "lesson": "advanced/lessons/03_transactions_savepoints.md",
+  "questions": [
+   {
+    "question": "Which statement prevents a lost update on a balance?",
+    "options": {
+     "a": "SELECT balance, then UPDATE SET balance = <computed value>",
+     "b": "UPDATE … SET balance = balance - 100 WHERE id = ? AND balance >= 100",
+     "c": "Two separate transactions"
+    },
+    "answer": "78d10be04d1d",
+    "section": "3. Lost updates and how to stop them",
+    "explain": "The read and the write happen in one atomic statement; check the row count."
+   },
+   {
+    "question": "In optimistic locking, the second writer with a stale version…",
+    "options": {
+     "a": "overwrites the first",
+     "b": "changes 0 rows and must reload",
+     "c": "gets a deadlock"
+    },
+    "answer": "15124e9ead46",
+    "section": "3. Lost updates and how to stop them",
+    "explain": "WHERE version = <old> no longer matches after the first writer bumped it."
+   },
+   {
+    "question": "`ROLLBACK TO outer` when `inner` was created after `outer`…",
+    "options": {
+     "a": "undoes both inner and outer work since outer",
+     "b": "undoes only inner",
+     "c": "commits everything"
+    },
+    "answer": "b508b0587f1d",
+    "section": "4. Nested savepoints",
+    "explain": "Rolling back to a savepoint undoes everything after it, including nested savepoints."
+   },
+   {
+    "question": "How many writers can change a SQLite database file at the same moment?",
+    "options": {
+     "a": "One",
+     "b": "Unlimited",
+     "c": "One per table"
+    },
+    "answer": "4453b26b3e70",
+    "section": "5. Isolation: SQLite vs PostgreSQL",
+    "explain": "SQLite serialises writers; others wait or get SQLITE_BUSY."
+   }
+  ]
+ },
+ "advanced/04": {
+  "lesson": "advanced/lessons/04_upsert_idempotency.md",
+  "questions": [
+   {
+    "question": "What reliably prevents duplicate inserts under concurrency?",
+    "options": {
+     "a": "SELECT first, then INSERT",
+     "b": "A unique constraint",
+     "c": "A transaction alone"
+    },
+    "answer": "8aa391588f62",
+    "section": "1. Check-then-insert is a race",
+    "explain": "Only the database's unique index guarantees one winner."
+   },
+   {
+    "question": "In `ON CONFLICT … DO UPDATE SET units = units + excluded.units`, `excluded.units` is…",
+    "options": {
+     "a": "the stored value",
+     "b": "the value from the INSERT that conflicted",
+     "c": "always NULL"
+    },
+    "answer": "f41d70c6ee21",
+    "section": "3. ON CONFLICT DO UPDATE (UPSERT)",
+    "explain": "Unqualified columns are the existing row; excluded is the proposed row."
+   },
+   {
+    "question": "What does `INSERT OR REPLACE` do to columns you didn't supply?",
+    "options": {
+     "a": "Keeps them",
+     "b": "Resets them to defaults, because it deletes and re-inserts",
+     "c": "Raises an error"
+    },
+    "answer": "a2e041c25a6b",
+    "section": "4. INSERT OR REPLACE is not an update",
+    "explain": "Use ON CONFLICT DO UPDATE to change specific columns."
+   },
+   {
+    "question": "A retry arrives with a known idempotency key but a different payload. The server should…",
+    "options": {
+     "a": "return the stored response",
+     "b": "reject it",
+     "c": "process it as new"
+    },
+    "answer": "1f9b0d6fb56b",
+    "section": "5. Idempotency keys for API requests",
+    "explain": "Same key + different hash is a client bug, not a replay."
+   }
+  ]
+ },
+ "advanced/05": {
+  "lesson": "advanced/lessons/05_triggers_audit.md",
+  "questions": [
+   {
+    "question": "Inside an UPDATE trigger, OLD and NEW are…",
+    "options": {
+     "a": "the row before and after the change",
+     "b": "the previous and next statement",
+     "c": "two tables"
+    },
+    "answer": "7cf3f2d02b54",
+    "section": "1. Anatomy of a trigger",
+    "explain": "INSERT has only NEW; DELETE has only OLD."
+   },
+   {
+    "question": "Why add `WHEN OLD.price <> NEW.price` to an `AFTER UPDATE OF price` trigger?",
+    "options": {
+     "a": "UPDATE OF fires even when the value is assigned unchanged",
+     "b": "It's required syntax",
+     "c": "To make it faster"
+    },
+    "answer": "4d9cc7ec6516",
+    "section": "2. Recording an audit trail",
+    "explain": "Without it, no-op updates create audit rows."
+   },
+   {
+    "question": "What does `RAISE(ABORT, 'msg')` in a BEFORE trigger do?",
+    "options": {
+     "a": "Logs a warning",
+     "b": "Undoes the current statement with an error",
+     "c": "Rolls back all past transactions"
+    },
+    "answer": "6e7a22e521cf",
+    "section": "3. Rejecting invalid changes",
+    "explain": "The statement fails; earlier statements of the transaction remain."
+   },
+   {
+    "question": "Why isn't a trigger-based audit table trustworthy evidence on its own?",
+    "options": {
+     "a": "Writers with access can edit it or drop the trigger, and it doesn't know the real user",
+     "b": "Triggers can't insert rows",
+     "c": "It is always trustworthy"
+    },
+    "answer": "53038bb7d21f",
+    "section": "5. Why a trigger is not audit security",
+    "explain": "Trust needs permissions, identity and tamper-resistant storage."
+   }
+  ]
+ },
+ "advanced/06": {
+  "lesson": "advanced/lessons/06_summary_tables.md",
+  "questions": [
+   {
+    "question": "After a new sale, a view and a snapshot table…",
+    "options": {
+     "a": "both show it",
+     "b": "the view shows it, the snapshot doesn't until refreshed",
+     "c": "neither shows it"
+    },
+    "answer": "f046125bc32d",
+    "section": "1. View vs snapshot",
+    "explain": "A view recomputes; a snapshot stores rows from one moment."
+   },
+   {
+    "question": "Why do a full refresh's DELETE and INSERT go in one transaction?",
+    "options": {
+     "a": "Readers never see an empty or half-filled table",
+     "b": "It's required syntax",
+     "c": "To make the refresh incremental"
+    },
+    "answer": "123994f83d3e",
+    "section": "3. Full refresh, atomically",
+    "explain": "Readers see either the old or the new contents."
+   },
+   {
+    "question": "An incremental refresh should set `revenue = excluded.revenue` rather than add to it because…",
+    "options": {
+     "a": "re-running the refresh must not double-count",
+     "b": "addition is slower",
+     "c": "SQLite forbids +"
+    },
+    "answer": "11fe9cf5d126",
+    "section": "4. Incremental refresh with an upsert",
+    "explain": "Recomputing a group makes the refresh idempotent."
+   },
+   {
+    "question": "Which operator compares two possibly-NULL values as 'different'?",
+    "options": {
+     "a": "<>",
+     "b": "IS NOT",
+     "c": "!="
+    },
+    "answer": "beb3f4307924",
+    "section": "5. Freshness and reconciliation",
+    "explain": "a IS NOT b is true when exactly one side is NULL, unlike <>."
+   }
+  ]
+ },
+ "advanced/07": {
+  "lesson": "advanced/lessons/07_constraints_migrations.md",
+  "questions": [
+   {
+    "question": "A column is `UNIQUE` but nullable. How many rows may have NULL there?",
+    "options": {
+     "a": "One",
+     "b": "Many",
+     "c": "None"
+    },
+    "answer": "c014e808b1cb",
+    "section": "1. The constraint toolbox",
+    "explain": "NULL isn't equal to NULL, so UNIQUE allows several. Add NOT NULL if required."
+   },
+   {
+    "question": "\"At most one default address per customer\" is best expressed as…",
+    "options": {
+     "a": "UNIQUE (customer_id, is_default)",
+     "b": "a partial unique index WHERE is_default = 1",
+     "c": "a CHECK constraint"
+    },
+    "answer": "03db2dad709f",
+    "section": "2. Composite and partial uniqueness",
+    "explain": "A plain composite unique would also forbid two non-default addresses."
+   },
+   {
+    "question": "Which ON DELETE option is wrong for orders that reference a customer?",
+    "options": {
+     "a": "RESTRICT",
+     "b": "CASCADE",
+     "c": "NO ACTION"
+    },
+    "answer": "45d5bca34699",
+    "section": "3. Foreign keys and ON DELETE",
+    "explain": "Cascading would erase business history when a customer is deleted."
+   },
+   {
+    "question": "How do you rename a column while old and new app versions both run?",
+    "options": {
+     "a": "ALTER TABLE RENAME COLUMN in one deploy",
+     "b": "Expand, migrate, switch, then contract",
+     "c": "Drop and recreate the table"
+    },
+    "answer": "e70321632f13",
+    "section": "5. Expand → migrate → contract",
+    "explain": "Each step stays compatible with the versions still running."
+   }
+  ]
+ },
+ "advanced/08": {
+  "lesson": "advanced/lessons/08_null_semantics.md",
+  "questions": [
+   {
+    "question": "A `CHECK (price > 0)` on a nullable column accepts a NULL price?",
+    "options": {
+     "a": "No",
+     "b": "Yes: CHECK rejects only false, and NULL > 0 is unknown",
+     "c": "Only in PostgreSQL"
+    },
+    "answer": "3e77362356aa",
+    "section": "1. Three-valued logic, as a table",
+    "explain": "Add NOT NULL when a value is required."
+   },
+   {
+    "question": "`AVG(stars)` over 5, NULL, 3 is…",
+    "options": {
+     "a": "4",
+     "b": "2.67",
+     "c": "NULL"
+    },
+    "answer": "f1d713b28571",
+    "section": "4. NULL in aggregates and outer joins",
+    "explain": "Aggregates ignore NULLs. AVG(COALESCE(stars, 0)) treats them as zero."
+   },
+   {
+    "question": "How does GROUP BY treat NULL values?",
+    "options": {
+     "a": "Each NULL is its own group",
+     "b": "All NULLs form one group",
+     "c": "NULL rows are dropped"
+    },
+    "answer": "cbabdc0dd6aa",
+    "section": "5. NULL in DISTINCT, GROUP BY, ORDER BY and UNIQUE",
+    "explain": "GROUP BY and DISTINCT treat NULLs as equal; UNIQUE is the exception."
+   },
+   {
+    "question": "What is the cheapest way to catch NULL, tie and empty-group bugs in a report?",
+    "options": {
+     "a": "Run it against an edge-case fixture",
+     "b": "Read the SQL carefully",
+     "c": "Check the plan"
+    },
+    "answer": "df7dd1773d37",
+    "section": "6. Test queries against an edge-case fixture",
+    "explain": "One row per edge case, in a BEGIN … ROLLBACK, exposes most of them."
+   }
+  ]
+ },
+ "advanced/09": {
+  "lesson": "advanced/lessons/09_advanced_capstone.md",
+  "questions": [
+   {
+    "question": "Why are items and payments aggregated in separate CTEs in the reconciliation?",
+    "options": {
+     "a": "To avoid fan-out between two one-to-many tables",
+     "b": "CTEs are faster",
+     "c": "SQLite requires it"
+    },
+    "answer": "c943bb0345f2",
+    "section": "2. Reconciliation: one row per order, one flag",
+    "explain": "Each summary is one row per order, so the joins can't multiply amounts."
+   },
+   {
+    "question": "Why does the CASE check 'missing_payment' before 'amount_mismatch'?",
+    "options": {
+     "a": "Branches are tested in order; the most specific must come first",
+     "b": "Alphabetical order",
+     "c": "It doesn't matter"
+    },
+    "answer": "2685c32aa578",
+    "section": "2. Reconciliation: one row per order, one flag",
+    "explain": "A missing payment would otherwise be compared as a NULL mismatch."
+   },
+   {
+    "question": "A verification check \"returns zero rows when correct\". Why also run it on deliberately broken data?",
+    "options": {
+     "a": "To prove the check can fail at all",
+     "b": "To make it faster",
+     "c": "To fill the cache"
+    },
+    "answer": "4faf00ae4854",
+    "section": "2. Reconciliation: one row per order, one flag",
+    "explain": "A check that has never been seen to fail hasn't been tested."
+   }
+  ]
+ }
+}

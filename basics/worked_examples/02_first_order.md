@@ -6,7 +6,7 @@
 
 ## 1. The tempting query
 
-```sql
+```sql norun
 SELECT customer_id, order_id, MIN(ordered_at) FROM orders GROUP BY customer_id;
 ```
 

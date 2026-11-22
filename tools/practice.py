@@ -67,12 +67,17 @@ def _deny_attach(action, *_):
     return sqlite3.SQLITE_OK
 
 
-# Extra rows for practice only (the interview fixture stays unchanged): a product
-# bought only in a cancelled order, so "never paid for" differs from "never ordered".
+# Extra rows for practice only (the interview fixture stays unchanged):
+# - a product bought only in a cancelled order ("never paid for" ≠ "never ordered");
+# - a large pending order, so forgetting the status filter changes "top" lists;
+# - a customer with no orders at all, so COUNT(*) after a LEFT JOIN is caught.
 PRACTICE_EDGE_SQL = """
 INSERT INTO products VALUES (11,'P11',5,'Gift Card',1500,1);
 INSERT INTO orders VALUES (114,9,'2026-07-20','cancelled');
 INSERT INTO order_items VALUES (114,11,1,1500);
+INSERT INTO orders VALUES (115,9,'2026-08-03','pending');
+INSERT INTO order_items VALUES (115,4,3,15900);
+INSERT INTO customers VALUES (10,'Jon Gol','jon@example.test','Arad','2026-08-10');
 """
 
 

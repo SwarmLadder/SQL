@@ -6,3 +6,4 @@
 -- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
 -- Check:  python tools/practice.py check PA17
 -- Hints:  python tools/practice.py hint PA17 1
+

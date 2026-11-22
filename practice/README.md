@@ -1,6 +1,6 @@
 # Graded practice
 
-56 graded SQL exercises plus 4 written ones, one set per level, tied to the lessons. Each graded exercise:
+139 graded SQL exercises plus 4 written ones, attached to the lessons that teach them (58 Basics, 47 Intermediate, 34 Advanced). Each graded exercise:
 
 - has a **precise prompt**: columns, filters and sort order are specified, so there is one correct result;
 - runs your SQL on **two datasets**: the course data and an edge-case fixture (an extra customer with no orders, an unordered product, a product only bought in a cancelled order, a short payment, a new team member...). A query that only works on the visible data fails the second run;
@@ -64,6 +64,44 @@ A level is complete when every graded practice exercise **and** every interview 
 | `PB18` | [Employees and managers](../practice/starter/PB18.sql) | query | [07 left join](../basics/lessons/07_left_join.md) |
 | `PB19` | [Never ordered](../practice/starter/PB19.sql) | query | [07 left join](../basics/lessons/07_left_join.md) |
 | `PB20` | [Paid order summary](../practice/starter/PB20.sql) | query | [09 review](../basics/lessons/09_review.md) |
+| `PB21` | [Customer directory](../practice/starter/PB21.sql) | query | [00 select](../basics/lessons/00_select.md) |
+| `PB22` | [Cities we ship to](../practice/starter/PB22.sql) | query | [00 select](../basics/lessons/00_select.md) |
+| `PB23` | [Category and active pairs](../practice/starter/PB23.sql) | query | [00 select](../basics/lessons/00_select.md) |
+| `PB24` | [Mid-priced active products](../practice/starter/PB24.sql) | query | [01 where null](../basics/lessons/01_where_null.md) |
+| `PB25` | [Paid orders of two customers](../practice/starter/PB25.sql) | query | [01 where null](../basics/lessons/01_where_null.md) |
+| `PB26` | [Managed staff under 8 000 000](../practice/starter/PB26.sql) | query | [01 where null](../basics/lessons/01_where_null.md) |
+| `PB27` | [Two cheapest active products](../practice/starter/PB27.sql) | query | [02 sort limit](../basics/lessons/02_sort_limit.md) |
+| `PB28` | [Second page of products](../practice/starter/PB28.sql) | query | [02 sort limit](../basics/lessons/02_sort_limit.md) |
+| `PB29` | [Customers Z to A](../practice/starter/PB29.sql) | query | [02 sort limit](../basics/lessons/02_sort_limit.md) |
+| `PB30` | [Managers last](../practice/starter/PB30.sql) | query | [02 sort limit](../basics/lessons/02_sort_limit.md) |
+| `PB31` | [Line totals](../practice/starter/PB31.sql) | query | [03 expressions](../basics/lessons/03_expressions.md) |
+| `PB32` | [Ten percent off](../practice/starter/PB32.sql) | query | [03 expressions](../basics/lessons/03_expressions.md) |
+| `PB33` | [Prices in euros](../practice/starter/PB33.sql) | query | [03 expressions](../basics/lessons/03_expressions.md) |
+| `PB34` | [Upper-case names](../practice/starter/PB34.sql) | query | [03 expressions](../basics/lessons/03_expressions.md) |
+| `PB35` | [Longest names first](../practice/starter/PB35.sql) | query | [03 expressions](../basics/lessons/03_expressions.md) |
+| `PB36` | [Who has a manager](../practice/starter/PB36.sql) | query | [04 aggregates](../basics/lessons/04_aggregates.md) |
+| `PB37` | [Average salary](../practice/starter/PB37.sql) | query | [04 aggregates](../basics/lessons/04_aggregates.md) |
+| `PB38` | [Distinct buyers](../practice/starter/PB38.sql) | query | [04 aggregates](../basics/lessons/04_aggregates.md) |
+| `PB39` | [Categories with several products](../practice/starter/PB39.sql) | query | [05 group by having](../basics/lessons/05_group_by_having.md) |
+| `PB40` | [Orders per month](../practice/starter/PB40.sql) | query | [05 group by having](../basics/lessons/05_group_by_having.md) |
+| `PB41` | [Products that sell in volume](../practice/starter/PB41.sql) | query | [05 group by having](../basics/lessons/05_group_by_having.md) |
+| `PB42` | [Order city and status](../practice/starter/PB42.sql) | query | [06 joins](../basics/lessons/06_joins.md) |
+| `PB43` | [Staff by team](../practice/starter/PB43.sql) | query | [06 joins](../basics/lessons/06_joins.md) |
+| `PB44` | [What was ordered](../practice/starter/PB44.sql) | query | [06 joins](../basics/lessons/06_joins.md) |
+| `PB45` | [Paid revenue by category name](../practice/starter/PB45.sql) | query | [06 joins](../basics/lessons/06_joins.md) |
+| `PB46` | [Order count including zero](../practice/starter/PB46.sql) | query | [07 left join](../basics/lessons/07_left_join.md) |
+| `PB47` | [Empty teams](../practice/starter/PB47.sql) | query | [07 left join](../basics/lessons/07_left_join.md) |
+| `PB48` | [Paid orders including zero](../practice/starter/PB48.sql) | query | [07 left join](../basics/lessons/07_left_join.md) |
+| `PB49` | [Add a product](../practice/starter/PB49.sql) | script | [08 dml](../basics/lessons/08_dml.md) |
+| `PB50` | [Stationery price rise](../practice/starter/PB50.sql) | script | [08 dml](../basics/lessons/08_dml.md) |
+| `PB51` | [Cancel stale pending orders](../practice/starter/PB51.sql) | script | [08 dml](../basics/lessons/08_dml.md) |
+| `PB52` | [Remove an order completely](../practice/starter/PB52.sql) | script | [08 dml](../basics/lessons/08_dml.md) |
+| `PB53` | [Archive cancelled orders](../practice/starter/PB53.sql) | script | [08 dml](../basics/lessons/08_dml.md) |
+| `PB54` | [Top three paid orders](../practice/starter/PB54.sql) | query | [09 review](../basics/lessons/09_review.md) |
+| `PB55` | [Paying customers](../practice/starter/PB55.sql) | query | [09 review](../basics/lessons/09_review.md) |
+| `PB56` | [Revenue by payment month](../practice/starter/PB56.sql) | query | [09 review](../basics/lessons/09_review.md) |
+| `PB57` | [Best sellers by units](../practice/starter/PB57.sql) | query | [09 review](../basics/lessons/09_review.md) |
+| `PB58` | [Revenue by city](../practice/starter/PB58.sql) | query | [09 review](../basics/lessons/09_review.md) |
 
 ### Intermediate
 
@@ -89,6 +127,33 @@ A level is complete when every graded practice exercise **and** every interview 
 | `PI18` | [Undo part of a transaction](../practice/starter/PI18.sql) | script | [09 views savepoints](../intermediate/lessons/09_views_savepoints.md) |
 | `PI19` | [No paid order yet](../practice/starter/PI19.sql) | query | [02 exists](../intermediate/lessons/02_exists.md) |
 | `PI20` | [Monthly revenue dashboard](../practice/starter/PI20.sql) | query | [06 windows running](../intermediate/lessons/06_windows_running.md) |
+| `PI21` | [Lines and payments per order](../practice/starter/PI21.sql) | query | [00 multi table reports](../intermediate/lessons/00_multi_table_reports.md) |
+| `PI22` | [Paid orders that don't add up](../practice/starter/PI22.sql) | query | [00 multi table reports](../intermediate/lessons/00_multi_table_reports.md) |
+| `PI23` | [Above their team's average](../practice/starter/PI23.sql) | query | [01 subqueries](../intermediate/lessons/01_subqueries.md) |
+| `PI24` | [Products sold in paid orders](../practice/starter/PI24.sql) | query | [01 subqueries](../intermediate/lessons/01_subqueries.md) |
+| `PI25` | [Bigger teams](../practice/starter/PI25.sql) | query | [01 subqueries](../intermediate/lessons/01_subqueries.md) |
+| `PI26` | [Teams without employees](../practice/starter/PI26.sql) | query | [02 exists](../intermediate/lessons/02_exists.md) |
+| `PI27` | [Quick first orders](../practice/starter/PI27.sql) | query | [02 exists](../intermediate/lessons/02_exists.md) |
+| `PI28` | [Months above average](../practice/starter/PI28.sql) | query | [03 cte](../intermediate/lessons/03_cte.md) |
+| `PI29` | [Big spenders](../practice/starter/PI29.sql) | query | [03 cte](../intermediate/lessons/03_cte.md) |
+| `PI30` | [Payment method pivot](../practice/starter/PI30.sql) | query | [04 case conditional](../intermediate/lessons/04_case_conditional.md) |
+| `PI31` | [High earners per team](../practice/starter/PI31.sql) | query | [04 case conditional](../intermediate/lessons/04_case_conditional.md) |
+| `PI32` | [Work queue order](../practice/starter/PI32.sql) | query | [04 case conditional](../intermediate/lessons/04_case_conditional.md) |
+| `PI33` | [Share of revenue](../practice/starter/PI33.sql) | query | [05 windows ranking](../intermediate/lessons/05_windows_ranking.md) |
+| `PI34` | [Second-highest salary per team](../practice/starter/PI34.sql) | query | [05 windows ranking](../intermediate/lessons/05_windows_ranking.md) |
+| `PI35` | [Priciest product per category](../practice/starter/PI35.sql) | query | [05 windows ranking](../intermediate/lessons/05_windows_ranking.md) |
+| `PI36` | [Days since the previous order](../practice/starter/PI36.sql) | query | [06 windows running](../intermediate/lessons/06_windows_running.md) |
+| `PI37` | [Running spend per customer](../practice/starter/PI37.sql) | query | [06 windows running](../intermediate/lessons/06_windows_running.md) |
+| `PI38` | [Three-month moving average](../practice/starter/PI38.sql) | query | [06 windows running](../intermediate/lessons/06_windows_running.md) |
+| `PI39` | [Orders per quarter](../practice/starter/PI39.sql) | query | [07 dates strings](../intermediate/lessons/07_dates_strings.md) |
+| `PI40` | [Orders by weekday](../practice/starter/PI40.sql) | query | [07 dates strings](../intermediate/lessons/07_dates_strings.md) |
+| `PI41` | [Orders in June](../practice/starter/PI41.sql) | query | [07 dates strings](../intermediate/lessons/07_dates_strings.md) |
+| `PI42` | [Email local parts](../practice/starter/PI42.sql) | query | [07 dates strings](../intermediate/lessons/07_dates_strings.md) |
+| `PI43` | [Pending or paid by transfer](../practice/starter/PI43.sql) | query | [08 set operations](../intermediate/lessons/08_set_operations.md) |
+| `PI44` | [Products in pending and paid orders](../practice/starter/PI44.sql) | query | [08 set operations](../intermediate/lessons/08_set_operations.md) |
+| `PI45` | [Ordered but never paid](../practice/starter/PI45.sql) | query | [08 set operations](../intermediate/lessons/08_set_operations.md) |
+| `PI46` | [Monthly revenue view](../practice/starter/PI46.sql) | script | [09 views savepoints](../intermediate/lessons/09_views_savepoints.md) |
+| `PI47` | [Record a sale atomically](../practice/starter/PI47.sql) | script | [09 views savepoints](../intermediate/lessons/09_views_savepoints.md) |
 
 ### Advanced
 
@@ -114,4 +179,22 @@ A level is complete when every graded practice exercise **and** every interview 
 | `PA18` | [Order-to-payment reconciliation](../practice/starter/PA18.sql) | query | [09 advanced capstone](../advanced/lessons/09_advanced_capstone.md) |
 | `PA19` | [Top customers with DENSE_RANK](../practice/starter/PA19.sql) | query | [09 advanced capstone](../advanced/lessons/09_advanced_capstone.md) |
 | `PA20` | Revenue report checklist | written ✍️ | [09 advanced capstone](../advanced/lessons/09_advanced_capstone.md) |
+| `PA21` | [Index the pending-orders queue](../practice/starter/PA21.sql) | script | [00 indexes explain](../advanced/lessons/00_indexes_explain.md) |
+| `PA22` | [Keyset page 2](../practice/starter/PA22.sql) | query | [01 query rewrites](../advanced/lessons/01_query_rewrites.md) |
+| `PA23` | [OR rewritten as UNION ALL](../practice/starter/PA23.sql) | query | [01 query rewrites](../advanced/lessons/01_query_rewrites.md) |
+| `PA24` | [A complete calendar](../practice/starter/PA24.sql) | query | [02 recursive cte](../advanced/lessons/02_recursive_cte.md) |
+| `PA25` | [Ada's organisation](../practice/starter/PA25.sql) | query | [02 recursive cte](../advanced/lessons/02_recursive_cte.md) |
+| `PA26` | [Chain of command](../practice/starter/PA26.sql) | query | [02 recursive cte](../advanced/lessons/02_recursive_cte.md) |
+| `PA27` | [Withdraw only if covered](../practice/starter/PA27.sql) | script | [03 transactions savepoints](../advanced/lessons/03_transactions_savepoints.md) |
+| `PA28` | [Optimistic locking](../practice/starter/PA28.sql) | script | [03 transactions savepoints](../advanced/lessons/03_transactions_savepoints.md) |
+| `PA29` | [Subscribe once](../practice/starter/PA29.sql) | script | [04 upsert idempotency](../advanced/lessons/04_upsert_idempotency.md) |
+| `PA30` | [Keep the latest timestamp](../practice/starter/PA30.sql) | script | [04 upsert idempotency](../advanced/lessons/04_upsert_idempotency.md) |
+| `PA31` | [Paid orders can't be deleted](../practice/starter/PA31.sql) | script | [05 triggers audit](../advanced/lessons/05_triggers_audit.md) |
+| `PA32` | [Status change log](../practice/starter/PA32.sql) | script | [05 triggers audit](../advanced/lessons/05_triggers_audit.md) |
+| `PA33` | [A keyed summary table](../practice/starter/PA33.sql) | script | [06 summary tables](../advanced/lessons/06_summary_tables.md) |
+| `PA34` | [One review per customer and product](../practice/starter/PA34.sql) | script | [07 constraints migrations](../advanced/lessons/07_constraints_migrations.md) |
+| `PA35` | [At most one default address](../practice/starter/PA35.sql) | script | [07 constraints migrations](../advanced/lessons/07_constraints_migrations.md) |
+| `PA36` | [Not managed by Ada](../practice/starter/PA36.sql) | query | [08 null semantics](../advanced/lessons/08_null_semantics.md) |
+| `PA37` | [Average of rated products](../practice/starter/PA37.sql) | query | [08 null semantics](../advanced/lessons/08_null_semantics.md) |
+| `PA38` | [Category revenue shares](../practice/starter/PA38.sql) | query | [09 advanced capstone](../advanced/lessons/09_advanced_capstone.md) |
 <!-- exercises:end -->

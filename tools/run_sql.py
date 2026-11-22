@@ -41,6 +41,7 @@ def run_file(path: Path, *, verbose: bool = False) -> int:
         raise ValueError(f"Not a .sql file: {path}")
     query_count = 0
     db = new_database()
+    db.isolation_level = None  # autocommit: lessons control BEGIN/COMMIT/ROLLBACK themselves
     try:
         for statement in statements(path.read_text(encoding="utf-8")):
             cursor = db.execute(statement)

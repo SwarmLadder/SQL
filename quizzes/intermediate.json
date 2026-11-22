@@ -1,0 +1,492 @@
+{
+ "intermediate/00": {
+  "lesson": "intermediate/lessons/00_multi_table_reports.md",
+  "questions": [
+   {
+    "question": "An order has 3 lines and 2 payments. Joining orders, order_items and payments gives how many rows for it?",
+    "options": {
+     "a": "5",
+     "b": "6",
+     "c": "3"
+    },
+    "answer": "4f38bd3ad938",
+    "section": "2. Fan-out: watching the numbers inflate",
+    "explain": "Each line pairs with each payment: 3 × 2 = 6. Sums over either side are inflated."
+   },
+   {
+    "question": "What is the reliable fix for fan-out?",
+    "options": {
+     "a": "SUM(DISTINCT amount_cents)",
+     "b": "Aggregate each detail table to the report grain, then join",
+     "c": "Use LEFT JOIN instead of JOIN"
+    },
+    "answer": "032e2f1de7dd",
+    "section": "3. The fix: aggregate each fact to the grain, then join",
+    "explain": "Summaries at the same grain join one-to-one. DISTINCT breaks when two real amounts are equal."
+   },
+   {
+    "question": "A customer has no paid orders. How do you keep them in a per-customer report?",
+    "options": {
+     "a": "Start from customers and LEFT JOIN the summaries, with COALESCE",
+     "b": "Inner-join the summaries",
+     "c": "Filter WHERE revenue IS NOT NULL"
+    },
+    "answer": "467ff2c8de3a",
+    "section": "4. Report at the customer grain",
+    "explain": "The entity table drives the report; missing facts become 0 through COALESCE."
+   },
+   {
+    "question": "How can you detect inflated totals?",
+    "options": {
+     "a": "Compare the report's grand total with the source table's total",
+     "b": "Check the query runs without errors",
+     "c": "Look at the first row"
+    },
+    "answer": "9fe9204d3d3c",
+    "section": "5. Verify: totals must survive the reshaping",
+    "explain": "Reshaping must not change the grand total. A mismatch reveals fan-out or lost rows."
+   }
+  ]
+ },
+ "intermediate/01": {
+  "lesson": "intermediate/lessons/01_subqueries.md",
+  "questions": [
+   {
+    "question": "Why does `employee_id NOT IN (SELECT manager_id FROM employees)` return no rows?",
+    "options": {
+     "a": "manager_id contains NULL",
+     "b": "NOT IN is not supported",
+     "c": "Every employee is a manager"
+    },
+    "answer": "4a9b50a5c180",
+    "section": "2. IN subqueries: a list of values",
+    "explain": "x NOT IN (…, NULL) is unknown for every x that isn't in the list, so nothing passes WHERE."
+   },
+   {
+    "question": "What does a scalar subquery return when it finds no rows?",
+    "options": {
+     "a": "0",
+     "b": "An error",
+     "c": "NULL"
+    },
+    "answer": "e123b82ad67d",
+    "section": "1. Scalar subqueries: exactly one value",
+    "explain": "An empty scalar subquery evaluates to NULL."
+   },
+   {
+    "question": "A correlated subquery…",
+    "options": {
+     "a": "runs once for the whole query",
+     "b": "refers to a column of the outer query's current row",
+     "c": "must be in FROM"
+    },
+    "answer": "1220f27b4d82",
+    "section": "4. Correlated subqueries",
+    "explain": "It is logically evaluated per outer row, using that row's values."
+   },
+   {
+    "question": "What must a derived table (subquery in FROM) have?",
+    "options": {
+     "a": "An ORDER BY",
+     "b": "An alias",
+     "c": "A GROUP BY"
+    },
+    "answer": "885302d19e62",
+    "section": "3. Derived tables: a subquery in FROM",
+    "explain": "You refer to its columns through the alias: (SELECT …) AS s."
+   }
+  ]
+ },
+ "intermediate/02": {
+  "lesson": "intermediate/lessons/02_exists.md",
+  "questions": [
+   {
+    "question": "What does the subquery of EXISTS usually select?",
+    "options": {
+     "a": "SELECT 1, because only existence matters",
+     "b": "SELECT * for correctness",
+     "c": "The primary key"
+    },
+    "answer": "886839973073",
+    "section": "1. EXISTS: is there at least one?",
+    "explain": "EXISTS ignores the selected columns; SELECT 1 states that clearly."
+   },
+   {
+    "question": "A customer has three pending orders. `WHERE EXISTS (…pending…)` returns them…",
+    "options": {
+     "a": "three times",
+     "b": "once",
+     "c": "not at all"
+    },
+    "answer": "c1bd27763815",
+    "section": "1. EXISTS: is there at least one?",
+    "explain": "EXISTS is a semi-join: it filters outer rows and never duplicates them."
+   },
+   {
+    "question": "Why is NOT EXISTS safer than NOT IN?",
+    "options": {
+     "a": "It's faster in every database",
+     "b": "It's never unknown, so NULLs can't empty the result",
+     "c": "It allows ORDER BY"
+    },
+    "answer": "6f7898db1b82",
+    "section": "3. Why NOT EXISTS beats NOT IN",
+    "explain": "EXISTS returns only true or false."
+   },
+   {
+    "question": "Where does the condition `o.status = 'paid'` go in \"products not in any paid order\"?",
+    "options": {
+     "a": "Inside the NOT EXISTS subquery",
+     "b": "In the outer WHERE",
+     "c": "In ORDER BY"
+    },
+    "answer": "43c10cf3b6f2",
+    "section": "2. NOT EXISTS: there is none",
+    "explain": "It describes which related rows count; outside, it would refer to nothing or change the question."
+   }
+  ]
+ },
+ "intermediate/03": {
+  "lesson": "intermediate/lessons/03_cte.md",
+  "questions": [
+   {
+    "question": "How long does a CTE exist?",
+    "options": {
+     "a": "Until the connection closes",
+     "b": "For the one statement it's defined in",
+     "c": "Forever, like a table"
+    },
+    "answer": "f80c5f5eb646",
+    "section": "1. WITH name AS (…)",
+    "explain": "Use a view for a reusable named query."
+   },
+   {
+    "question": "How are several CTEs written?",
+    "options": {
+     "a": "WITH a AS (…), b AS (…) SELECT …",
+     "b": "WITH a AS (…) WITH b AS (…) SELECT …",
+     "c": "WITH (a, b) AS (…)"
+    },
+    "answer": "62d729e8f354",
+    "section": "2. A pipeline of stages",
+    "explain": "One WITH, then comma-separated definitions; later ones can use earlier ones."
+   },
+   {
+    "question": "Do CTEs make queries faster?",
+    "options": {
+     "a": "Always",
+     "b": "Never",
+     "c": "Not necessarily: write them for clarity"
+    },
+    "answer": "3be91a455337",
+    "section": "1. WITH name AS (…)",
+    "explain": "The optimiser may inline or materialise them. Measure if speed matters."
+   },
+   {
+    "question": "A stage should be one row per order, but `COUNT(*)` ≠ `COUNT(DISTINCT order_id)`. What does that mean?",
+    "options": {
+     "a": "The stage is not at the grain you think",
+     "b": "Nothing, that's normal",
+     "c": "The data is corrupted"
+    },
+    "answer": "2deea37c4532",
+    "section": "4. Debugging stage by stage",
+    "explain": "Duplicate keys in a stage mean a join or grouping is at the wrong grain."
+   }
+  ]
+ },
+ "intermediate/04": {
+  "lesson": "intermediate/lessons/04_case_conditional.md",
+  "questions": [
+   {
+    "question": "Which branch of a CASE wins when several are true?",
+    "options": {
+     "a": "The last one",
+     "b": "The first one",
+     "c": "An error is raised"
+    },
+    "answer": "fdafe4aec818",
+    "section": "1. Searched CASE",
+    "explain": "Branches are tested top to bottom; order them from most specific to broadest."
+   },
+   {
+    "question": "What does a CASE without ELSE return when nothing matches?",
+    "options": {
+     "a": "0",
+     "b": "''",
+     "c": "NULL"
+    },
+    "answer": "7c97b2739da4",
+    "section": "1. Searched CASE",
+    "explain": "Decide explicitly with ELSE what an unmatched row should get."
+   },
+   {
+    "question": "`COUNT(CASE WHEN status = 'paid' THEN 1 ELSE 0 END)` counts…",
+    "options": {
+     "a": "paid orders",
+     "b": "all orders",
+     "c": "unpaid orders"
+    },
+    "answer": "92b65b0ec34b",
+    "section": "3. Conditional aggregation: many counts in one pass",
+    "explain": "0 is not NULL, so COUNT counts it. Use SUM(… ELSE 0) or COUNT(… END) without ELSE."
+   },
+   {
+    "question": "Why keep a total column next to pivoted method columns?",
+    "options": {
+     "a": "To detect values none of the branches cover",
+     "b": "SQL requires it",
+     "c": "For sorting"
+    },
+    "answer": "85937dd59078",
+    "section": "4. Conditional sums of money",
+    "explain": "If the method columns don't add up to the total, a new or unexpected value exists."
+   }
+  ]
+ },
+ "intermediate/05": {
+  "lesson": "intermediate/lessons/05_windows_ranking.md",
+  "questions": [
+   {
+    "question": "How does `AVG(x) OVER (PARTITION BY team_id)` differ from `GROUP BY team_id`?",
+    "options": {
+     "a": "It keeps every row and adds the team average to each",
+     "b": "It is faster",
+     "c": "It ignores NULLs"
+    },
+    "answer": "0b27ee4485fd",
+    "section": "1. Aggregates over a window",
+    "explain": "Window functions compute across related rows without collapsing them."
+   },
+   {
+    "question": "Salaries 100, 90, 90, 80. What does RANK give the 80?",
+    "options": {
+     "a": "3",
+     "b": "4",
+     "c": "2"
+    },
+    "answer": "8258022ec7cd",
+    "section": "2. Numbering and ranking",
+    "explain": "RANK skips after ties (1, 2, 2, 4). DENSE_RANK would give 3."
+   },
+   {
+    "question": "Why can't you write `WHERE ROW_NUMBER() OVER (…) <= 2`?",
+    "options": {
+     "a": "WHERE runs before window functions are computed",
+     "b": "ROW_NUMBER needs GROUP BY",
+     "c": "It is allowed"
+    },
+    "answer": "35f05ed02257",
+    "section": "3. Top N per group",
+    "explain": "Compute the number in a CTE or subquery and filter in the outer query."
+   },
+   {
+    "question": "What does `SUM(revenue_cents) OVER ()` return on each row?",
+    "options": {
+     "a": "A running total",
+     "b": "The grand total of all rows",
+     "c": "The row's own value"
+    },
+    "answer": "325dee85a182",
+    "section": "4. Ranking aggregated values",
+    "explain": "An empty OVER () makes the whole result one window."
+   }
+  ]
+ },
+ "intermediate/06": {
+  "lesson": "intermediate/lessons/06_windows_running.md",
+  "questions": [
+   {
+    "question": "What does LAG return on the first row of a partition?",
+    "options": {
+     "a": "0",
+     "b": "The same row's value",
+     "c": "NULL, unless you give a default"
+    },
+    "answer": "58f749533fa1",
+    "section": "1. LAG and LEAD",
+    "explain": "There is no previous row; LAG(x, 1, default) supplies a value instead."
+   },
+   {
+    "question": "Monthly rows skip a month with no sales. What does LAG(revenue) compare with?",
+    "options": {
+     "a": "The previous calendar month, as 0",
+     "b": "The previous row, i.e. two months back",
+     "c": "Nothing, it errors"
+    },
+    "answer": "6f9b1d103c74",
+    "section": "2. Period-over-period change",
+    "explain": "LAG works on rows, not calendars. Generate a complete calendar first."
+   },
+   {
+    "question": "Which frame gives a three-row moving average?",
+    "options": {
+     "a": "ROWS BETWEEN 2 PRECEDING AND CURRENT ROW",
+     "b": "ROWS BETWEEN 3 PRECEDING AND 3 FOLLOWING",
+     "c": "RANGE UNBOUNDED PRECEDING"
+    },
+    "answer": "95151435edb9",
+    "section": "4. Window frames: which rows count?",
+    "explain": "Two previous rows plus the current one."
+   },
+   {
+    "question": "Two rows share the same ORDER BY value. With the default frame, their running totals are…",
+    "options": {
+     "a": "different, one step at a time",
+     "b": "equal, because RANGE treats ties as one step",
+     "c": "NULL"
+    },
+    "answer": "1c8c8dd81770",
+    "section": "5. ROWS vs RANGE: the duplicate trap",
+    "explain": "The default frame is RANGE … CURRENT ROW, which includes all peers. Make the order unique or use ROWS."
+   }
+  ]
+ },
+ "intermediate/07": {
+  "lesson": "intermediate/lessons/07_dates_strings.md",
+  "questions": [
+   {
+    "question": "Which filter covers all of June 2026, even for timestamps?",
+    "options": {
+     "a": "BETWEEN '2026-06-01' AND '2026-06-30'",
+     "b": ">= '2026-06-01' AND < '2026-07-01'",
+     "c": "LIKE '2026-06'"
+    },
+    "answer": "942b18a1f932",
+    "section": "4. Ranges: \"last 30 days\" done right",
+    "explain": "A half-open range never misses the last day's later hours or double-counts a boundary."
+   },
+   {
+    "question": "`strftime('%m', '2026-03-12') = 3` is…",
+    "options": {
+     "a": "true",
+     "b": "false, because strftime returns the text '03'",
+     "c": "an error"
+    },
+    "answer": "589bbfa704ba",
+    "section": "1. Dates are ISO text",
+    "explain": "Compare with '03' or CAST the result to INTEGER."
+   },
+   {
+    "question": "What is `date('2026-01-31', '+1 month')` in SQLite?",
+    "options": {
+     "a": "2026-02-28",
+     "b": "2026-03-03",
+     "c": "NULL"
+    },
+    "answer": "9069462e0616",
+    "section": "2. Date arithmetic",
+    "explain": "SQLite normalises February 31 to March 3. Test month-end arithmetic."
+   },
+   {
+    "question": "How do you get the number of days between two ISO dates?",
+    "options": {
+     "a": "d2 - d1",
+     "b": "julianday(d2) - julianday(d1)",
+     "c": "strftime('%d', d2 - d1)"
+    },
+    "answer": "f3944a478a0f",
+    "section": "2. Date arithmetic",
+    "explain": "Subtracting text doesn't give days; julianday turns dates into day numbers."
+   }
+  ]
+ },
+ "intermediate/08": {
+  "lesson": "intermediate/lessons/08_set_operations.md",
+  "questions": [
+   {
+    "question": "What's the difference between UNION and UNION ALL?",
+    "options": {
+     "a": "UNION removes duplicate rows; UNION ALL keeps them",
+     "b": "UNION ALL removes duplicates",
+     "c": "None"
+    },
+    "answer": "0bb0da4cc4df",
+    "section": "1. UNION ALL and UNION",
+    "explain": "UNION ALL is cheaper and keeps genuine repeats; use UNION only when you need de-duplication."
+   },
+   {
+    "question": "Set operations match columns…",
+    "options": {
+     "a": "by name",
+     "b": "by position",
+     "c": "by type"
+    },
+    "answer": "502a8c2f4f87",
+    "section": "1. UNION ALL and UNION",
+    "explain": "The first SELECT's names are used; values line up by position."
+   },
+   {
+    "question": "Which keeps rows of the first query that are not in the second?",
+    "options": {
+     "a": "INTERSECT",
+     "b": "EXCEPT",
+     "c": "UNION"
+    },
+    "answer": "8eec41e8302c",
+    "section": "4. EXCEPT: in the first, not the second",
+    "explain": "EXCEPT is set difference."
+   },
+   {
+    "question": "To prove a rewritten query returns the same rows, run EXCEPT…",
+    "options": {
+     "a": "old EXCEPT new only",
+     "b": "in both directions, and compare counts",
+     "c": "never; use UNION"
+    },
+    "answer": "80445d1ef84f",
+    "section": "5. EXCEPT as a test: do two queries agree?",
+    "explain": "One direction misses extra rows in the other; counts catch duplicate differences."
+   }
+  ]
+ },
+ "intermediate/09": {
+  "lesson": "intermediate/lessons/09_views_savepoints.md",
+  "questions": [
+   {
+    "question": "A view…",
+    "options": {
+     "a": "stores a copy of the rows",
+     "b": "stores the query and recomputes it when read",
+     "c": "is deleted at the end of the statement"
+    },
+    "answer": "c50540d8f347",
+    "section": "2. A view stores the query, not the rows",
+    "explain": "A snapshot table stores rows; a view always reflects current data."
+   },
+   {
+    "question": "After `ROLLBACK TO my_savepoint`, the transaction is…",
+    "options": {
+     "a": "still open",
+     "b": "committed",
+     "c": "rolled back completely"
+    },
+    "answer": "8e5325020c7b",
+    "section": "4. Savepoints: undo part of the work",
+    "explain": "Only the work after the savepoint is undone; you still need COMMIT or ROLLBACK."
+   },
+   {
+    "question": "Why should transactions be short?",
+    "options": {
+     "a": "They expire after one second",
+     "b": "Open transactions hold locks that make other writers wait",
+     "c": "SQLite limits statements per transaction"
+    },
+    "answer": "7b6e32ecdf08",
+    "section": "5. What do other connections see?",
+    "explain": "SQLite allows one writer at a time; PostgreSQL long transactions hold row locks and block clean-up."
+   },
+   {
+    "question": "Two requests read stock = 1 and both write stock = 0. What prevents selling the item twice?",
+    "options": {
+     "a": "A view",
+     "b": "A conditional UPDATE … WHERE stock >= 1 and checking rows changed",
+     "c": "Using UNION ALL"
+    },
+    "answer": "9cca995810f4",
+    "section": "5. What do other connections see?",
+    "explain": "Make the write itself check the condition, so only one request can succeed."
+   }
+  ]
+ }
+}

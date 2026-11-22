@@ -1,0 +1,384 @@
+{
+ "description": "Concept map: what each lesson introduces and which earlier lessons it builds on. Validated by tests/test_curriculum.py.",
+ "lessons": {
+  "basics/00": {
+   "file": "basics/lessons/00_select.md",
+   "introduces": [
+    "table",
+    "row",
+    "column",
+    "select",
+    "alias",
+    "distinct"
+   ],
+   "builds_on": []
+  },
+  "basics/01": {
+   "file": "basics/lessons/01_where_null.md",
+   "introduces": [
+    "where",
+    "comparison",
+    "and_or",
+    "in_between_like",
+    "null",
+    "three_valued_logic"
+   ],
+   "builds_on": [
+    "basics/00"
+   ]
+  },
+  "basics/02": {
+   "file": "basics/lessons/02_sort_limit.md",
+   "introduces": [
+    "order_by",
+    "tie_breaker",
+    "limit_offset",
+    "null_sorting"
+   ],
+   "builds_on": [
+    "basics/01"
+   ]
+  },
+  "basics/03": {
+   "file": "basics/lessons/03_expressions.md",
+   "introduces": [
+    "expressions",
+    "integer_division",
+    "integer_cents",
+    "text_functions",
+    "typeof_cast"
+   ],
+   "builds_on": [
+    "basics/00"
+   ]
+  },
+  "basics/04": {
+   "file": "basics/lessons/04_aggregates.md",
+   "introduces": [
+    "aggregates",
+    "count_variants",
+    "coalesce",
+    "aggregate_null"
+   ],
+   "builds_on": [
+    "basics/01",
+    "basics/03"
+   ]
+  },
+  "basics/05": {
+   "file": "basics/lessons/05_group_by_having.md",
+   "introduces": [
+    "group_by",
+    "grain",
+    "having",
+    "logical_query_order"
+   ],
+   "builds_on": [
+    "basics/04"
+   ]
+  },
+  "basics/06": {
+   "file": "basics/lessons/06_joins.md",
+   "introduces": [
+    "primary_key",
+    "foreign_key",
+    "inner_join",
+    "table_alias",
+    "one_to_many"
+   ],
+   "builds_on": [
+    "basics/05"
+   ]
+  },
+  "basics/07": {
+   "file": "basics/lessons/07_left_join.md",
+   "introduces": [
+    "left_join",
+    "anti_join",
+    "on_vs_where",
+    "outer_joins"
+   ],
+   "builds_on": [
+    "basics/06"
+   ]
+  },
+  "basics/08": {
+   "file": "basics/lessons/08_dml.md",
+   "introduces": [
+    "insert",
+    "insert_select",
+    "update",
+    "delete",
+    "constraints",
+    "transaction"
+   ],
+   "builds_on": [
+    "basics/01"
+   ]
+  },
+  "basics/09": {
+   "file": "basics/lessons/09_review.md",
+   "introduces": [
+    "report_definitions",
+    "cross_check"
+   ],
+   "builds_on": [
+    "basics/05",
+    "basics/06",
+    "basics/07"
+   ]
+  },
+  "intermediate/00": {
+   "file": "intermediate/lessons/00_multi_table_reports.md",
+   "introduces": [
+    "fan_out",
+    "pre_aggregation",
+    "derived_table",
+    "total_check"
+   ],
+   "builds_on": [
+    "basics/06",
+    "basics/07"
+   ]
+  },
+  "intermediate/01": {
+   "file": "intermediate/lessons/01_subqueries.md",
+   "introduces": [
+    "scalar_subquery",
+    "in_subquery",
+    "not_in_trap",
+    "correlated_subquery"
+   ],
+   "builds_on": [
+    "basics/05"
+   ]
+  },
+  "intermediate/02": {
+   "file": "intermediate/lessons/02_exists.md",
+   "introduces": [
+    "exists",
+    "semi_join",
+    "not_exists"
+   ],
+   "builds_on": [
+    "intermediate/01"
+   ]
+  },
+  "intermediate/03": {
+   "file": "intermediate/lessons/03_cte.md",
+   "introduces": [
+    "cte",
+    "pipeline_stages",
+    "stage_debugging"
+   ],
+   "builds_on": [
+    "intermediate/00"
+   ]
+  },
+  "intermediate/04": {
+   "file": "intermediate/lessons/04_case_conditional.md",
+   "introduces": [
+    "case",
+    "simple_case",
+    "conditional_aggregation",
+    "pivot"
+   ],
+   "builds_on": [
+    "basics/05"
+   ]
+  },
+  "intermediate/05": {
+   "file": "intermediate/lessons/05_windows_ranking.md",
+   "introduces": [
+    "window_function",
+    "partition_by",
+    "ranking_functions",
+    "top_n_per_group",
+    "ntile"
+   ],
+   "builds_on": [
+    "intermediate/03"
+   ]
+  },
+  "intermediate/06": {
+   "file": "intermediate/lessons/06_windows_running.md",
+   "introduces": [
+    "lag_lead",
+    "running_total",
+    "window_frame",
+    "rows_vs_range"
+   ],
+   "builds_on": [
+    "intermediate/05"
+   ]
+  },
+  "intermediate/07": {
+   "file": "intermediate/lessons/07_dates_strings.md",
+   "introduces": [
+    "iso_dates",
+    "date_modifiers",
+    "julianday",
+    "period_grouping",
+    "half_open_range",
+    "group_concat"
+   ],
+   "builds_on": [
+    "basics/03",
+    "basics/05"
+   ]
+  },
+  "intermediate/08": {
+   "file": "intermediate/lessons/08_set_operations.md",
+   "introduces": [
+    "union",
+    "union_all",
+    "intersect",
+    "except",
+    "query_equivalence"
+   ],
+   "builds_on": [
+    "intermediate/02"
+   ]
+  },
+  "intermediate/09": {
+   "file": "intermediate/lessons/09_views_savepoints.md",
+   "introduces": [
+    "view",
+    "savepoint",
+    "isolation_basics"
+   ],
+   "builds_on": [
+    "intermediate/03",
+    "basics/08"
+   ]
+  },
+  "advanced/00": {
+   "file": "advanced/lessons/00_indexes_explain.md",
+   "introduces": [
+    "index",
+    "query_plan",
+    "composite_index",
+    "sargable",
+    "covering_index",
+    "index_cost"
+   ],
+   "builds_on": [
+    "intermediate/09"
+   ]
+  },
+  "advanced/01": {
+   "file": "advanced/lessons/01_query_rewrites.md",
+   "introduces": [
+    "rewrite_correctness",
+    "correlated_to_join",
+    "or_to_union",
+    "keyset_pagination"
+   ],
+   "builds_on": [
+    "advanced/00",
+    "intermediate/08"
+   ]
+  },
+  "advanced/02": {
+   "file": "advanced/lessons/02_recursive_cte.md",
+   "introduces": [
+    "recursive_cte",
+    "calendar_generation",
+    "hierarchy_walk",
+    "cycle_detection"
+   ],
+   "builds_on": [
+    "intermediate/03"
+   ]
+  },
+  "advanced/03": {
+   "file": "advanced/lessons/03_transactions_savepoints.md",
+   "introduces": [
+    "acid",
+    "lost_update",
+    "conditional_update",
+    "optimistic_locking",
+    "nested_savepoints"
+   ],
+   "builds_on": [
+    "intermediate/09"
+   ]
+  },
+  "advanced/04": {
+   "file": "advanced/lessons/04_upsert_idempotency.md",
+   "introduces": [
+    "upsert",
+    "on_conflict",
+    "insert_or_replace",
+    "idempotency_key"
+   ],
+   "builds_on": [
+    "advanced/03"
+   ]
+  },
+  "advanced/05": {
+   "file": "advanced/lessons/05_triggers_audit.md",
+   "introduces": [
+    "trigger",
+    "old_new",
+    "raise_abort",
+    "audit_limits"
+   ],
+   "builds_on": [
+    "advanced/03"
+   ]
+  },
+  "advanced/06": {
+   "file": "advanced/lessons/06_summary_tables.md",
+   "introduces": [
+    "summary_table",
+    "full_refresh",
+    "incremental_refresh",
+    "freshness",
+    "reconciliation"
+   ],
+   "builds_on": [
+    "advanced/04",
+    "intermediate/09"
+   ]
+  },
+  "advanced/07": {
+   "file": "advanced/lessons/07_constraints_migrations.md",
+   "introduces": [
+    "check_constraint",
+    "partial_unique_index",
+    "on_delete",
+    "additive_migration",
+    "expand_contract"
+   ],
+   "builds_on": [
+    "basics/08",
+    "advanced/03"
+   ]
+  },
+  "advanced/08": {
+   "file": "advanced/lessons/08_null_semantics.md",
+   "introduces": [
+    "null_safe_comparison",
+    "null_in_aggregates",
+    "edge_case_fixture"
+   ],
+   "builds_on": [
+    "intermediate/01",
+    "intermediate/02"
+   ]
+  },
+  "advanced/09": {
+   "file": "advanced/lessons/09_advanced_capstone.md",
+   "introduces": [
+    "capstone_reconciliation",
+    "verification_suite"
+   ],
+   "builds_on": [
+    "advanced/00",
+    "advanced/06",
+    "advanced/08"
+   ]
+  }
+ }
+}

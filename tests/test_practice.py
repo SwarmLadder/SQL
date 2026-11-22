@@ -49,9 +49,18 @@ class PracticeBankTests(unittest.TestCase):
 
     def test_counts_and_ids(self):
         for level, prefix in (("basics", "PB"), ("intermediate", "PI"), ("advanced", "PA")):
-            ids = [i["id"] for i in self.items.values() if i["level"] == level]
-            self.assertEqual(ids, [f"{prefix}{n:02d}" for n in range(1, 21)], level)
-        self.assertEqual(len(practice.graded()), 56)
+            ids = sorted(i["id"] for i in self.items.values() if i["level"] == level)
+            self.assertEqual(ids, [f"{prefix}{n:02d}" for n in range(1, len(ids) + 1)], level)
+            self.assertGreaterEqual(len(ids), 35, level)
+
+    def test_every_lesson_has_exercises(self):
+        lessons = {i["lesson"] for i in self.items.values()}
+        for level in ("basics", "intermediate", "advanced"):
+            for md in sorted((ROOT / level / "lessons").glob("[0-9][0-9]_*.md")):
+                rel = md.relative_to(ROOT).as_posix()
+                self.assertIn(rel, lessons, rel)
+                graded = [i for i in self.items.values() if i["lesson"] == rel and i["kind"] != "written"]
+                self.assertGreaterEqual(len(graded), 2, rel)
 
     def test_every_exercise_is_complete(self):
         for pid, item in self.items.items():
@@ -108,7 +117,8 @@ class PracticeBankTests(unittest.TestCase):
 
     def test_untouched_level_is_incomplete(self):
         report = verify_level.verify("basics")
-        self.assertEqual((report["passed"], report["total"], report["complete"]), (0, 36, False))
+        expected = len(practice.graded("basics")) + 16
+        self.assertEqual((report["passed"], report["total"], report["complete"]), (0, expected, False))
 
     def test_docs_are_generated(self):
         result = subprocess.run([sys.executable, str(ROOT / "tools" / "practice_docs.py"), "--check"],

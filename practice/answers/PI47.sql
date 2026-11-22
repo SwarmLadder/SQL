@@ -1,0 +1,5 @@
+BEGIN;
+INSERT INTO orders VALUES (300, 2, '2026-09-01', 'paid');
+INSERT INTO order_items VALUES (300, 3, 2, 4900);
+INSERT INTO payments VALUES (300, 300, 9800, 'card', '2026-09-01');
+COMMIT;

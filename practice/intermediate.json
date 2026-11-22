@@ -265,5 +265,368 @@
       "LAG(value) returns NULL on the first row, and NULL minus anything is NULL.",
       "revenue_cents - LAG(revenue_cents) OVER (ORDER BY month) AS change_cents"
     ]
+  },
+  {
+    "id": "PI21",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/00_multi_table_reports.md",
+    "title": "Lines and payments per order",
+    "kind": "query",
+    "prompt": "For paid orders, return order_id, line_count (number of order lines) and payment_count (number of payments, 0 if none), sorted by order_id. Count each table separately so neither count is multiplied by the other.",
+    "hints": [
+      "Joining items and payments together makes both counts equal to lines × payments.",
+      "Count lines per order and payments per order in two separate summaries.",
+      "Two pre-aggregated subqueries or CTEs, joined to orders; COALESCE the payment count."
+    ]
+  },
+  {
+    "id": "PI22",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/00_multi_table_reports.md",
+    "title": "Paid orders that don't add up",
+    "kind": "query",
+    "prompt": "Return order_id, items_cents, paid_cents (0 if no payment) for paid orders whose payment total differs from their item total, sorted by order_id. (The course data has none; the edge fixture has one.)",
+    "hints": [
+      "Build the per-order comparison from PI02 first.",
+      "Then keep only rows where the two totals differ.",
+      "WHERE o.status = 'paid' AND items.items_cents <> COALESCE(paid.paid_cents, 0)"
+    ]
+  },
+  {
+    "id": "PI23",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/01_subqueries.md",
+    "title": "Above their team's average",
+    "kind": "query",
+    "prompt": "Return full_name, team_id, salary_cents for employees paid more than the average salary of their own team, sorted by team_id, then salary descending.",
+    "hints": [
+      "Each employee is compared with a different average.",
+      "A correlated scalar subquery can compute the average of the outer row's team.",
+      "WHERE e.salary_cents > (SELECT AVG(x.salary_cents) FROM employees x WHERE x.team_id = e.team_id)"
+    ]
+  },
+  {
+    "id": "PI24",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/01_subqueries.md",
+    "title": "Products sold in paid orders",
+    "kind": "query",
+    "prompt": "Using IN with a subquery, return sku, product_name for products that appear in at least one paid order, sorted by sku.",
+    "hints": [
+      "The subquery returns a list of product IDs.",
+      "It needs order_items joined to orders to see the status.",
+      "WHERE product_id IN (SELECT i.product_id FROM order_items i JOIN orders o ... WHERE o.status = 'paid')"
+    ]
+  },
+  {
+    "id": "PI25",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/01_subqueries.md",
+    "title": "Bigger teams",
+    "kind": "query",
+    "prompt": "Using a derived table (a subquery in FROM), return team_name, headcount for teams with at least two employees, sorted by team_name.",
+    "hints": [
+      "Count per team inside the subquery.",
+      "Outside it, the count is an ordinary column you can filter with WHERE.",
+      "FROM (SELECT team_id, COUNT(*) AS headcount ... GROUP BY team_id) AS s JOIN teams t ..."
+    ]
+  },
+  {
+    "id": "PI26",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/02_exists.md",
+    "title": "Teams without employees",
+    "kind": "query",
+    "prompt": "Using NOT EXISTS, return team_id, team_name for teams with no employees, sorted by team_id.",
+    "hints": [
+      "The course data has none; the edge fixture adds one.",
+      "Correlate the subquery with the outer team.",
+      "WHERE NOT EXISTS (SELECT 1 FROM employees e WHERE e.team_id = t.team_id)"
+    ]
+  },
+  {
+    "id": "PI27",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/02_exists.md",
+    "title": "Quick first orders",
+    "kind": "query",
+    "prompt": "Return customer_id, full_name for customers who placed any order within 30 days of joining (at most 30 days after joined_at), sorted by customer_id.",
+    "hints": [
+      "A customer with several quick orders appears once.",
+      "julianday() lets you subtract dates in days.",
+      "WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id AND julianday(o.ordered_at) - julianday(c.joined_at) <= 30)"
+    ]
+  },
+  {
+    "id": "PI28",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/03_cte.md",
+    "title": "Months above average",
+    "kind": "query",
+    "prompt": "With a CTE of monthly paid revenue (lines of paid orders, month of ordered_at as YYYY-MM), return month, revenue_cents for months whose revenue is above the average month. Sort by month.",
+    "hints": [
+      "The monthly totals are needed twice: once to list, once to average.",
+      "A CTE can be referenced from a subquery in the same statement.",
+      "WITH monthly AS (...) SELECT ... FROM monthly WHERE revenue_cents > (SELECT AVG(revenue_cents) FROM monthly)"
+    ]
+  },
+  {
+    "id": "PI29",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/03_cte.md",
+    "title": "Big spenders",
+    "kind": "query",
+    "prompt": "Using CTEs, return customer_id, full_name, revenue_cents (paid order lines) for customers whose paid revenue is at least 15000 cents, sorted by revenue_cents descending, then customer_id.",
+    "hints": [
+      "Stage 1: revenue per customer. Stage 2: names and the threshold.",
+      "Filter the aggregated value in the second stage with an ordinary WHERE.",
+      "WITH revenue AS (... GROUP BY o.customer_id) SELECT ... FROM revenue r JOIN customers c ... WHERE r.revenue_cents >= 15000"
+    ]
+  },
+  {
+    "id": "PI30",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/04_case_conditional.md",
+    "title": "Payment method pivot",
+    "kind": "query",
+    "prompt": "Return month (paid_at as YYYY-MM), card_cents, transfer_cents, cash_cents (0 when a method has no payments that month), sorted by month.",
+    "hints": [
+      "One output column per payment method.",
+      "SUM a CASE that returns the amount for one method and 0 otherwise.",
+      "SUM(CASE WHEN method = 'card' THEN amount_cents ELSE 0 END) AS card_cents, ..."
+    ]
+  },
+  {
+    "id": "PI31",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/04_case_conditional.md",
+    "title": "High earners per team",
+    "kind": "query",
+    "prompt": "Return team_id, staff (number of employees) and high_earners (employees earning more than 8000000 cents) for each team that has employees, sorted by team_id.",
+    "hints": [
+      "Two counts per team: all rows, and only some rows.",
+      "A CASE inside SUM counts the rows that match a condition.",
+      "SUM(CASE WHEN salary_cents > 8000000 THEN 1 ELSE 0 END) AS high_earners"
+    ]
+  },
+  {
+    "id": "PI32",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/04_case_conditional.md",
+    "title": "Work queue order",
+    "kind": "query",
+    "prompt": "Return order_id, status for every order, sorted pending first, then paid, then cancelled, and by order_id within each status.",
+    "hints": [
+      "Alphabetical order is cancelled, paid, pending, which is not what you want.",
+      "ORDER BY can sort by a CASE expression that maps each status to a number.",
+      "ORDER BY CASE status WHEN 'pending' THEN 0 WHEN ... END, order_id"
+    ]
+  },
+  {
+    "id": "PI33",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/05_windows_ranking.md",
+    "title": "Share of revenue",
+    "kind": "query",
+    "prompt": "For customers with paid revenue (lines of paid orders), return customer_id, revenue_cents and pct_of_total (their percentage of all paid revenue, rounded to 1 decimal). Sort by revenue_cents descending, then customer_id.",
+    "hints": [
+      "Aggregate per customer, then compare each row with the grand total.",
+      "SUM(x) OVER () repeats the grand total on every row.",
+      "ROUND(100.0 * revenue_cents / SUM(revenue_cents) OVER (), 1)"
+    ]
+  },
+  {
+    "id": "PI34",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/05_windows_ranking.md",
+    "title": "Second-highest salary per team",
+    "kind": "query",
+    "prompt": "Return team_id, full_name, salary_cents for everyone who earns their team's second-highest distinct salary (keep ties). Sort by team_id, then full_name.",
+    "hints": [
+      "Ties must share a rank, and no rank may be skipped.",
+      "DENSE_RANK per team, computed in a CTE, then filtered.",
+      "DENSE_RANK() OVER (PARTITION BY team_id ORDER BY salary_cents DESC) ... WHERE dr = 2"
+    ]
+  },
+  {
+    "id": "PI35",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/05_windows_ranking.md",
+    "title": "Priciest product per category",
+    "kind": "query",
+    "prompt": "Return category_id, sku, unit_price_cents for the single most expensive product of each category (break price ties by sku). Sort by category_id.",
+    "hints": [
+      "Exactly one row per category, even with ties.",
+      "ROW_NUMBER with a tie-breaker in the window's ORDER BY.",
+      "ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY unit_price_cents DESC, sku) ... WHERE rn = 1"
+    ]
+  },
+  {
+    "id": "PI36",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/06_windows_running.md",
+    "title": "Days since the previous order",
+    "kind": "query",
+    "prompt": "Return customer_id, order_id, days_since_previous (whole days since the same customer's previous order; NULL for their first) for every order. Sort by customer_id, ordered_at, order_id.",
+    "hints": [
+      "LAG gives the previous order date within each customer.",
+      "julianday turns dates into numbers you can subtract.",
+      "CAST(julianday(ordered_at) - julianday(LAG(ordered_at) OVER (PARTITION BY customer_id ORDER BY ordered_at, order_id)) AS INTEGER)"
+    ]
+  },
+  {
+    "id": "PI37",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/06_windows_running.md",
+    "title": "Running spend per customer",
+    "kind": "query",
+    "prompt": "For paid orders, return customer_id, order_id, total_cents (the order's line total) and running_cents (the customer's cumulative paid total up to and including this order, by ordered_at then order_id). Sort by customer_id, ordered_at, order_id.",
+    "hints": [
+      "First one row per paid order with its total.",
+      "A running total restarts per customer: PARTITION BY.",
+      "SUM(total_cents) OVER (PARTITION BY customer_id ORDER BY ordered_at, order_id)"
+    ]
+  },
+  {
+    "id": "PI38",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/06_windows_running.md",
+    "title": "Three-month moving average",
+    "kind": "query",
+    "prompt": "Group payments by month of paid_at (YYYY-MM). Return month and moving_avg_3: the average of this month's and up to two previous months' received amounts, rounded to a whole number. Sort by month.",
+    "hints": [
+      "One row per month first.",
+      "A bounded window frame limits which rows the average sees.",
+      "AVG(revenue_cents) OVER (ORDER BY month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)"
+    ]
+  },
+  {
+    "id": "PI39",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/07_dates_strings.md",
+    "title": "Orders per quarter",
+    "kind": "query",
+    "prompt": "Return quarter (text like '2026-Q1') and orders (count of orders, any status) per quarter of ordered_at. Sort by quarter.",
+    "hints": [
+      "The quarter number comes from the month.",
+      "(month + 2) / 3 with integer division maps 1–3 to 1, 4–6 to 2…",
+      "strftime('%Y', d) || '-Q' || ((CAST(strftime('%m', d) AS INTEGER) + 2) / 3)"
+    ]
+  },
+  {
+    "id": "PI40",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/07_dates_strings.md",
+    "title": "Orders by weekday",
+    "kind": "query",
+    "prompt": "Return weekday (0 = Sunday … 6 = Saturday, as an integer) and orders (count, any status) for weekdays that have orders. Sort by weekday.",
+    "hints": [
+      "strftime has a format code for the day of the week.",
+      "strftime returns text; the prompt asks for an integer.",
+      "CAST(strftime('%w', ordered_at) AS INTEGER) AS weekday"
+    ]
+  },
+  {
+    "id": "PI41",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/07_dates_strings.md",
+    "title": "Orders in June",
+    "kind": "query",
+    "prompt": "Return order_id, ordered_at for orders placed in June 2026, using a half-open date range. Sort by ordered_at, then order_id.",
+    "hints": [
+      "Start of the month inclusive, start of the next month exclusive.",
+      "ISO dates compare correctly as text.",
+      "WHERE ordered_at >= '2026-06-01' AND ordered_at < '2026-07-01'"
+    ]
+  },
+  {
+    "id": "PI42",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/07_dates_strings.md",
+    "title": "Email local parts",
+    "kind": "query",
+    "prompt": "Return customer_id and local_part (the part of the email before '@') for every customer, sorted by customer_id.",
+    "hints": [
+      "Find the position of '@' first.",
+      "SUBSTR(text, start, length): the length is the position of '@' minus one.",
+      "SUBSTR(email, 1, INSTR(email, '@') - 1)"
+    ]
+  },
+  {
+    "id": "PI43",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/08_set_operations.md",
+    "title": "Pending or paid by transfer",
+    "kind": "query",
+    "prompt": "Using UNION, return customer_id for customers who have a pending order or who paid at least once by transfer, each once, sorted by customer_id.",
+    "hints": [
+      "Two lists of customer IDs combined, without duplicates.",
+      "Transfer payments reach customers through orders.",
+      "SELECT customer_id ... 'pending' UNION SELECT o.customer_id FROM payments p JOIN orders o ... WHERE p.method = 'transfer'"
+    ]
+  },
+  {
+    "id": "PI44",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/08_set_operations.md",
+    "title": "Products in pending and paid orders",
+    "kind": "query",
+    "prompt": "Using INTERSECT, return product_id for products that appear both in a pending order and in a paid order, sorted by product_id.",
+    "hints": [
+      "Build both product lists from order_items joined to orders.",
+      "INTERSECT keeps values present in both.",
+      "SELECT i.product_id ... 'pending' INTERSECT SELECT i.product_id ... 'paid'"
+    ]
+  },
+  {
+    "id": "PI45",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/08_set_operations.md",
+    "title": "Ordered but never paid",
+    "kind": "query",
+    "prompt": "Using EXCEPT, return customer_id for customers who placed at least one order but never had a paid order, sorted by customer_id.",
+    "hints": [
+      "Everyone who ordered, minus everyone who paid.",
+      "EXCEPT removes the second list from the first.",
+      "SELECT customer_id FROM orders EXCEPT SELECT ... WHERE status = ..."
+    ]
+  },
+  {
+    "id": "PI46",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/09_views_savepoints.md",
+    "title": "Monthly revenue view",
+    "kind": "script",
+    "prompt": "Create a view monthly_paid_revenue with columns month (ordered_at as YYYY-MM) and revenue_cents (lines of paid orders). The checker reads it, confirms it is a view, then adds a paid sale and reads it again.",
+    "probe": [
+      "INSERT INTO orders VALUES (400, 1, '2026-09-15', 'paid')",
+      "INSERT INTO order_items VALUES (400, 1, 1, 1200)"
+    ],
+    "verify": [
+      "SELECT month, revenue_cents FROM monthly_paid_revenue ORDER BY month",
+      "SELECT type FROM sqlite_master WHERE name = 'monthly_paid_revenue'"
+    ],
+    "hints": [
+      "A view is recomputed when read, so the new sale must show up.",
+      "CREATE VIEW name AS followed by your monthly SELECT.",
+      "CREATE VIEW monthly_paid_revenue AS SELECT strftime('%Y-%m', o.ordered_at) AS month, SUM(...) AS revenue_cents ..."
+    ]
+  },
+  {
+    "id": "PI47",
+    "level": "intermediate",
+    "lesson": "intermediate/lessons/09_views_savepoints.md",
+    "title": "Record a sale atomically",
+    "kind": "script",
+    "prompt": "In one transaction, record order 300 for customer 2 on '2026-09-01' with status 'paid', one line of product 3 (quantity 2 at 4900 cents), and payment 300 of 9800 cents by card on '2026-09-01'. Commit.",
+    "verify": [
+      "SELECT o.order_id, o.customer_id, o.status, SUM(i.quantity * i.unit_price_cents) FROM orders o JOIN order_items i ON i.order_id = o.order_id WHERE o.order_id = 300 GROUP BY o.order_id",
+      "SELECT payment_id, order_id, amount_cents, method, paid_at FROM payments WHERE payment_id = 300"
+    ],
+    "hints": [
+      "The order must exist before its line and payment (foreign keys).",
+      "Wrap the three inserts between BEGIN and COMMIT.",
+      "BEGIN; INSERT INTO orders ...; INSERT INTO order_items ...; INSERT INTO payments ...; COMMIT;"
+    ]
   }
 ]

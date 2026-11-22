@@ -10,7 +10,7 @@
 
 ## 2. Find, then delete with exactly one survivor
 
-```sql
+```sql norun
 ROW_NUMBER() OVER (PARTITION BY event_type, json_extract(payload_json, '$.order_id')
                    ORDER BY created_at, event_id) AS rn
 ```
@@ -19,7 +19,7 @@ ROW_NUMBER() OVER (PARTITION BY event_type, json_extract(payload_json, '$.order_
 
 ## 3. Prevent recurrence in the database
 
-```sql
+```sql norun
 CREATE UNIQUE INDEX uq_audit_event ON audit_events(event_type, json_extract(payload_json, '$.order_id'));
 ```
 

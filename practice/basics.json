@@ -260,5 +260,519 @@
       "Multiply inside SUM, per line, using the price stored on the line.",
       "JOIN order_items ... WHERE o.status = 'paid' GROUP BY o.order_id"
     ]
+  },
+  {
+    "id": "PB21",
+    "level": "basics",
+    "lesson": "basics/lessons/00_select.md",
+    "title": "Customer directory",
+    "kind": "query",
+    "prompt": "Return full_name, email, city for every customer, sorted by full_name.",
+    "hints": [
+      "Three columns from one table.",
+      "List the columns in exactly the order the prompt gives them.",
+      "SELECT full_name, email, city FROM customers ORDER BY ...;"
+    ]
+  },
+  {
+    "id": "PB22",
+    "level": "basics",
+    "lesson": "basics/lessons/00_select.md",
+    "title": "Cities we ship to",
+    "kind": "query",
+    "prompt": "Return each customer city once, in a column named city, sorted alphabetically.",
+    "hints": [
+      "Two customers can live in the same city.",
+      "DISTINCT goes straight after SELECT.",
+      "SELECT DISTINCT ... FROM customers ORDER BY ...;"
+    ]
+  },
+  {
+    "id": "PB23",
+    "level": "basics",
+    "lesson": "basics/lessons/00_select.md",
+    "title": "Category and active pairs",
+    "kind": "query",
+    "prompt": "Return each distinct combination of category_id and active from products, sorted by category_id then active.",
+    "hints": [
+      "DISTINCT compares whole rows, not single columns.",
+      "Select exactly the two columns whose combinations you want.",
+      "SELECT DISTINCT col1, col2 FROM products ORDER BY col1, col2;"
+    ]
+  },
+  {
+    "id": "PB24",
+    "level": "basics",
+    "lesson": "basics/lessons/01_where_null.md",
+    "title": "Mid-priced active products",
+    "kind": "query",
+    "prompt": "Return sku, unit_price_cents for active products priced from 1000 to 6000 cents inclusive, sorted by unit_price_cents then sku.",
+    "hints": [
+      "Two conditions must both hold.",
+      "BETWEEN includes both ends of the range.",
+      "WHERE active = 1 AND unit_price_cents BETWEEN 1000 AND 6000"
+    ]
+  },
+  {
+    "id": "PB25",
+    "level": "basics",
+    "lesson": "basics/lessons/01_where_null.md",
+    "title": "Paid orders of two customers",
+    "kind": "query",
+    "prompt": "Return order_id, customer_id for paid orders placed by customer 1 or customer 2, sorted by order_id.",
+    "hints": [
+      "Customer 2 has a pending order that must not appear.",
+      "AND binds tighter than OR.",
+      "WHERE status = 'paid' AND (customer_id = 1 OR customer_id = 2) — or use IN (1, 2)."
+    ]
+  },
+  {
+    "id": "PB26",
+    "level": "basics",
+    "lesson": "basics/lessons/01_where_null.md",
+    "title": "Managed staff under 8 000 000",
+    "kind": "query",
+    "prompt": "Return employee_id, full_name, salary_cents for employees who have a manager and earn less than 8000000 cents, sorted by employee_id.",
+    "hints": [
+      "Having a manager means manager_id is filled in.",
+      "manager_id <> NULL never matches anything.",
+      "WHERE manager_id IS NOT NULL AND salary_cents < 8000000"
+    ]
+  },
+  {
+    "id": "PB27",
+    "level": "basics",
+    "lesson": "basics/lessons/02_sort_limit.md",
+    "title": "Two cheapest active products",
+    "kind": "query",
+    "prompt": "Return sku, unit_price_cents for the two cheapest active products, cheapest first, ties broken by sku.",
+    "hints": [
+      "The edge fixture adds a second product at the lowest price.",
+      "A tie-breaker makes 'the two cheapest' well defined.",
+      "ORDER BY unit_price_cents, sku LIMIT 2"
+    ]
+  },
+  {
+    "id": "PB28",
+    "level": "basics",
+    "lesson": "basics/lessons/02_sort_limit.md",
+    "title": "Second page of products",
+    "kind": "query",
+    "prompt": "Products are listed by sku, three per page. Return sku, product_name for page 2.",
+    "hints": [
+      "Page 2 skips the rows of page 1.",
+      "OFFSET says how many rows to skip, LIMIT how many to keep.",
+      "ORDER BY sku LIMIT 3 OFFSET 3"
+    ]
+  },
+  {
+    "id": "PB29",
+    "level": "basics",
+    "lesson": "basics/lessons/02_sort_limit.md",
+    "title": "Customers Z to A",
+    "kind": "query",
+    "prompt": "Return full_name, city for every customer, sorted by full_name from Z to A.",
+    "hints": [
+      "Descending order for text means Z first.",
+      "DESC goes after the sort column.",
+      "ORDER BY full_name DESC"
+    ]
+  },
+  {
+    "id": "PB30",
+    "level": "basics",
+    "lesson": "basics/lessons/02_sort_limit.md",
+    "title": "Managers last",
+    "kind": "query",
+    "prompt": "Return full_name, manager_id for every employee: employees with a manager first (by manager_id, then employee_id), and employees without a manager last (by employee_id).",
+    "hints": [
+      "SQLite puts NULL first in ascending order, which is the opposite of what you want.",
+      "manager_id IS NULL is 0 or 1 and can itself be a sort key.",
+      "ORDER BY manager_id IS NULL, manager_id, employee_id"
+    ]
+  },
+  {
+    "id": "PB31",
+    "level": "basics",
+    "lesson": "basics/lessons/03_expressions.md",
+    "title": "Line totals",
+    "kind": "query",
+    "prompt": "Return order_id, product_id, line_cents (quantity × unit_price_cents) for every order line, sorted by order_id then product_id.",
+    "hints": [
+      "Use the price stored on the order line, not the product's current price.",
+      "Arithmetic works directly in the SELECT list.",
+      "SELECT order_id, product_id, quantity * unit_price_cents AS line_cents ..."
+    ]
+  },
+  {
+    "id": "PB32",
+    "level": "basics",
+    "lesson": "basics/lessons/03_expressions.md",
+    "title": "Ten percent off",
+    "kind": "query",
+    "prompt": "Return sku, discounted_cents for every product, where discounted_cents is the price with 10% off, rounded down to whole cents using integer arithmetic. Sort by sku.",
+    "hints": [
+      "90% of the price, kept in whole cents.",
+      "Integer division rounds down; multiply before you divide.",
+      "unit_price_cents * 90 / 100"
+    ]
+  },
+  {
+    "id": "PB33",
+    "level": "basics",
+    "lesson": "basics/lessons/03_expressions.md",
+    "title": "Prices in euros",
+    "kind": "query",
+    "prompt": "Return sku and price_eur, the price as text with two decimals (1200 cents → '12.00'), for active products, sorted by sku.",
+    "hints": [
+      "Divide by 100.0, not 100, to keep the cents.",
+      "printf formats a number as text with a fixed number of decimals.",
+      "printf('%.2f', unit_price_cents / 100.0)"
+    ]
+  },
+  {
+    "id": "PB34",
+    "level": "basics",
+    "lesson": "basics/lessons/03_expressions.md",
+    "title": "Upper-case names",
+    "kind": "query",
+    "prompt": "Return customer_id and name_upper (the full name in upper case) for every customer, sorted by customer_id.",
+    "hints": [
+      "One text function does it.",
+      "UPPER changes ASCII letters.",
+      "SELECT customer_id, UPPER(full_name) AS name_upper ..."
+    ]
+  },
+  {
+    "id": "PB35",
+    "level": "basics",
+    "lesson": "basics/lessons/03_expressions.md",
+    "title": "Longest names first",
+    "kind": "query",
+    "prompt": "Return full_name, name_length (number of characters) for every customer, longest first, ties by full_name.",
+    "hints": [
+      "LENGTH counts characters.",
+      "You can sort by an alias from the SELECT list.",
+      "ORDER BY name_length DESC, full_name"
+    ]
+  },
+  {
+    "id": "PB36",
+    "level": "basics",
+    "lesson": "basics/lessons/04_aggregates.md",
+    "title": "Who has a manager",
+    "kind": "query",
+    "prompt": "Return one row with all_employees (number of employees) and with_manager (number of employees whose manager_id is set).",
+    "hints": [
+      "Two different COUNTs over the same rows.",
+      "COUNT(column) skips NULLs; COUNT(*) does not.",
+      "SELECT COUNT(...) AS all_employees, COUNT(...) AS with_manager FROM employees;"
+    ]
+  },
+  {
+    "id": "PB37",
+    "level": "basics",
+    "lesson": "basics/lessons/04_aggregates.md",
+    "title": "Average salary",
+    "kind": "query",
+    "prompt": "Return one row, avg_salary_cents: the average employee salary rounded to the nearest cent.",
+    "hints": [
+      "AVG returns a real number.",
+      "ROUND without a second argument rounds to a whole number.",
+      "ROUND(AVG(...)) AS avg_salary_cents"
+    ]
+  },
+  {
+    "id": "PB38",
+    "level": "basics",
+    "lesson": "basics/lessons/04_aggregates.md",
+    "title": "Distinct buyers",
+    "kind": "query",
+    "prompt": "Return one row, buyers: the number of different customers who have placed at least one order of any status.",
+    "hints": [
+      "Customers with several orders must be counted once.",
+      "COUNT can count distinct values.",
+      "COUNT(DISTINCT ...) AS buyers"
+    ]
+  },
+  {
+    "id": "PB39",
+    "level": "basics",
+    "lesson": "basics/lessons/05_group_by_having.md",
+    "title": "Categories with several products",
+    "kind": "query",
+    "prompt": "Return category_id, product_count for categories that have more than one product (active or not), sorted by category_id.",
+    "hints": [
+      "Count per category, then keep only some groups.",
+      "A condition on a COUNT belongs in HAVING.",
+      "GROUP BY category_id HAVING COUNT(*) > 1"
+    ]
+  },
+  {
+    "id": "PB40",
+    "level": "basics",
+    "lesson": "basics/lessons/05_group_by_having.md",
+    "title": "Orders per month",
+    "kind": "query",
+    "prompt": "Return month (ordered_at as YYYY-MM) and order_count (orders of any status) per month, sorted by month.",
+    "hints": [
+      "The first seven characters of an ISO date are the month.",
+      "You can group by a computed value or its alias.",
+      "SELECT SUBSTR(ordered_at, 1, 7) AS month, COUNT(*) ... GROUP BY month"
+    ]
+  },
+  {
+    "id": "PB41",
+    "level": "basics",
+    "lesson": "basics/lessons/05_group_by_having.md",
+    "title": "Products that sell in volume",
+    "kind": "query",
+    "prompt": "Return product_id, units (total quantity over all order lines, any status) for products with at least 3 units, sorted by units descending, then product_id.",
+    "hints": [
+      "Aggregate order_items per product.",
+      "'At least 3' is a condition on the sum, so it goes in HAVING.",
+      "GROUP BY product_id HAVING SUM(quantity) >= 3 ORDER BY units DESC, product_id"
+    ]
+  },
+  {
+    "id": "PB42",
+    "level": "basics",
+    "lesson": "basics/lessons/06_joins.md",
+    "title": "Order city and status",
+    "kind": "query",
+    "prompt": "Return order_id, city (the customer's city), status for every order, sorted by order_id.",
+    "hints": [
+      "city lives on customers, status on orders.",
+      "Join on the customer key.",
+      "FROM orders o JOIN customers c ON c.customer_id = o.customer_id"
+    ]
+  },
+  {
+    "id": "PB43",
+    "level": "basics",
+    "lesson": "basics/lessons/06_joins.md",
+    "title": "Staff by team",
+    "kind": "query",
+    "prompt": "Return team_name, full_name for every employee, sorted by team_name then full_name.",
+    "hints": [
+      "Every employee belongs to one team.",
+      "employees.team_id references teams.team_id.",
+      "FROM employees e JOIN teams t ON t.team_id = e.team_id"
+    ]
+  },
+  {
+    "id": "PB44",
+    "level": "basics",
+    "lesson": "basics/lessons/06_joins.md",
+    "title": "What was ordered",
+    "kind": "query",
+    "prompt": "Return order_id, sku, quantity for every order line, sorted by order_id then sku.",
+    "hints": [
+      "order_items stores product_id; the sku is on products.",
+      "Start from the lines; each line has exactly one product.",
+      "FROM order_items i JOIN products p ON p.product_id = i.product_id"
+    ]
+  },
+  {
+    "id": "PB45",
+    "level": "basics",
+    "lesson": "basics/lessons/06_joins.md",
+    "title": "Paid revenue by category name",
+    "kind": "query",
+    "prompt": "Return category_name, revenue_cents (quantity × unit_price_cents of lines in paid orders) for categories with paid sales, sorted by revenue_cents descending, then category_name.",
+    "hints": [
+      "Four tables: lines, orders (status), products, categories (name).",
+      "Join first, filter paid, then group by category.",
+      "GROUP BY c.category_id, c.category_name ORDER BY revenue_cents DESC, c.category_name"
+    ]
+  },
+  {
+    "id": "PB46",
+    "level": "basics",
+    "lesson": "basics/lessons/07_left_join.md",
+    "title": "Order count including zero",
+    "kind": "query",
+    "prompt": "Return customer_id, full_name, order_count (orders of any status, 0 for none) for every customer, sorted by customer_id.",
+    "hints": [
+      "The edge fixture has a customer with no orders.",
+      "COUNT(*) would count the unmatched row as 1.",
+      "LEFT JOIN orders o ... COUNT(o.order_id)"
+    ]
+  },
+  {
+    "id": "PB47",
+    "level": "basics",
+    "lesson": "basics/lessons/07_left_join.md",
+    "title": "Empty teams",
+    "kind": "query",
+    "prompt": "Return team_name for teams that have no employees, sorted by team_name. (The course data has none; the edge fixture adds one.)",
+    "hints": [
+      "Start from teams so every team is kept.",
+      "An unmatched team has NULL in every employee column.",
+      "LEFT JOIN employees e ON e.team_id = t.team_id WHERE e.employee_id IS NULL"
+    ]
+  },
+  {
+    "id": "PB48",
+    "level": "basics",
+    "lesson": "basics/lessons/07_left_join.md",
+    "title": "Paid orders including zero",
+    "kind": "query",
+    "prompt": "Return customer_id, paid_orders (number of paid orders, 0 for none) for every customer, sorted by customer_id.",
+    "hints": [
+      "A customer whose only order was cancelled must show 0, not disappear.",
+      "A WHERE on orders would turn the left join into an inner join.",
+      "LEFT JOIN orders o ON o.customer_id = c.customer_id AND o.status = 'paid'"
+    ]
+  },
+  {
+    "id": "PB49",
+    "level": "basics",
+    "lesson": "basics/lessons/08_dml.md",
+    "title": "Add a product",
+    "kind": "script",
+    "prompt": "Insert product 20: sku 'P20', category 2, name 'Stapler', price 1800 cents, active. List the columns explicitly. The checker reads product 20 and then tries to insert another product with sku 'P20'.",
+    "probe": [
+      "INSERT INTO products (product_id, sku, category_id, product_name, unit_price_cents) VALUES (21, 'P20', 2, 'Copy', 100)"
+    ],
+    "verify": [
+      "SELECT product_id, sku, category_id, product_name, unit_price_cents, active FROM products WHERE product_id = 20"
+    ],
+    "hints": [
+      "One INSERT statement.",
+      "List the six columns, then the six values in the same order.",
+      "INSERT INTO products (product_id, sku, category_id, product_name, unit_price_cents, active) VALUES (...);"
+    ]
+  },
+  {
+    "id": "PB50",
+    "level": "basics",
+    "lesson": "basics/lessons/08_dml.md",
+    "title": "Stationery price rise",
+    "kind": "script",
+    "prompt": "Raise the price of every active Stationery product (category 2) by 10%, rounding down to whole cents with integer arithmetic. Other products must not change.",
+    "verify": [
+      "SELECT product_id, unit_price_cents FROM products ORDER BY product_id"
+    ],
+    "hints": [
+      "Preview the rows with SELECT ... WHERE first.",
+      "Both conditions belong in one WHERE.",
+      "UPDATE products SET unit_price_cents = ... WHERE ... AND ...;"
+    ]
+  },
+  {
+    "id": "PB51",
+    "level": "basics",
+    "lesson": "basics/lessons/08_dml.md",
+    "title": "Cancel stale pending orders",
+    "kind": "script",
+    "prompt": "Set status to 'cancelled' for pending orders placed before 2026-04-01. Leave every other order unchanged.",
+    "verify": [
+      "SELECT order_id, status FROM orders ORDER BY order_id"
+    ],
+    "hints": [
+      "Two conditions: the status and the date.",
+      "ISO date text compares correctly with <.",
+      "UPDATE orders SET status = ... WHERE status = ... AND ordered_at < ...;"
+    ]
+  },
+  {
+    "id": "PB52",
+    "level": "basics",
+    "lesson": "basics/lessons/08_dml.md",
+    "title": "Remove an order completely",
+    "kind": "script",
+    "prompt": "Delete order 106 together with its order lines, in an order the foreign keys accept. Nothing else may be deleted.",
+    "verify": [
+      "SELECT COUNT(*) FROM orders",
+      "SELECT COUNT(*) FROM order_items",
+      "SELECT COUNT(*) FROM orders WHERE order_id = 106"
+    ],
+    "hints": [
+      "The order lines reference the order.",
+      "Children first, then the parent.",
+      "Two DELETE statements: first FROM order_items, then FROM orders."
+    ]
+  },
+  {
+    "id": "PB53",
+    "level": "basics",
+    "lesson": "basics/lessons/08_dml.md",
+    "title": "Archive cancelled orders",
+    "kind": "script",
+    "prompt": "Create table archived_orders(order_id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL, ordered_at TEXT NOT NULL) and fill it with every cancelled order using INSERT … SELECT.",
+    "verify": [
+      "SELECT order_id, customer_id, ordered_at FROM archived_orders ORDER BY order_id"
+    ],
+    "hints": [
+      "Two statements: CREATE TABLE, then INSERT.",
+      "INSERT can take its rows from a SELECT instead of VALUES.",
+      "INSERT INTO archived_orders (order_id, customer_id, ordered_at) SELECT ... FROM orders WHERE status = 'cancelled';"
+    ]
+  },
+  {
+    "id": "PB54",
+    "level": "basics",
+    "lesson": "basics/lessons/09_review.md",
+    "title": "Top three paid orders",
+    "kind": "query",
+    "prompt": "Return order_id, full_name, total_cents (sum of quantity × unit_price_cents) for the three paid orders with the highest total, highest first, ties by order_id.",
+    "hints": [
+      "Total per order first, then sort and limit.",
+      "Join customers for the name; group by the order.",
+      "GROUP BY o.order_id, c.full_name ORDER BY total_cents DESC, o.order_id LIMIT 3"
+    ]
+  },
+  {
+    "id": "PB55",
+    "level": "basics",
+    "lesson": "basics/lessons/09_review.md",
+    "title": "Paying customers",
+    "kind": "query",
+    "prompt": "Return one row, paying_customers: the number of different customers with at least one paid order.",
+    "hints": [
+      "Filter, then count distinct customers.",
+      "A customer with two paid orders counts once.",
+      "COUNT(DISTINCT ...) with a WHERE on status."
+    ]
+  },
+  {
+    "id": "PB56",
+    "level": "basics",
+    "lesson": "basics/lessons/09_review.md",
+    "title": "Revenue by payment month",
+    "kind": "query",
+    "prompt": "Return month (paid_at as YYYY-MM) and received_cents (sum of payments.amount_cents) per month, sorted by month.",
+    "hints": [
+      "This report uses payments, not order lines.",
+      "Group by the month part of paid_at.",
+      "SELECT SUBSTR(paid_at, 1, 7) AS month, SUM(amount_cents) ... GROUP BY month"
+    ]
+  },
+  {
+    "id": "PB57",
+    "level": "basics",
+    "lesson": "basics/lessons/09_review.md",
+    "title": "Best sellers by units",
+    "kind": "query",
+    "prompt": "Return sku, units (total quantity on lines of paid orders) for the three best-selling products, most units first, ties by sku.",
+    "hints": [
+      "Units from pending orders don't count.",
+      "Join lines, orders and products; group by product.",
+      "WHERE o.status = 'paid' GROUP BY p.product_id, p.sku ORDER BY units DESC, p.sku LIMIT 3"
+    ]
+  },
+  {
+    "id": "PB58",
+    "level": "basics",
+    "lesson": "basics/lessons/09_review.md",
+    "title": "Revenue by city",
+    "kind": "query",
+    "prompt": "Return city, revenue_cents (paid order lines of customers in that city) for cities with paid revenue, sorted by revenue_cents descending, then city.",
+    "hints": [
+      "The grain is one row per city.",
+      "Chain customers → orders → order_items.",
+      "WHERE o.status = 'paid' GROUP BY c.city ORDER BY revenue_cents DESC, c.city"
+    ]
   }
 ]

@@ -17,7 +17,7 @@ Missing rows mean `LEFT JOIN` from `categories`.
 
 ## 2. First attempt and why it fails
 
-```sql
+```sql norun
 ... LEFT JOIN orders o ON o.order_id = i.order_id
 WHERE o.status = 'paid'
 ```
@@ -28,7 +28,7 @@ For a category with no sales every right-hand column is `NULL`, so `o.status = '
 
 Keep every row and decide *inside the aggregate* which lines count:
 
-```sql
+```sql norun
 COALESCE(SUM(CASE WHEN o.status = 'paid' THEN i.quantity * i.unit_price_cents END), 0)
 ```
 

@@ -5,3 +5,4 @@
 -- Write ONE read-only SELECT (or WITH ... SELECT) ending with a semicolon.
 -- Check:  python tools/practice.py check PI06
 -- Hints:  python tools/practice.py hint PI06 1
+
