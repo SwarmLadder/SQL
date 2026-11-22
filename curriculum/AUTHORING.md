@@ -27,6 +27,7 @@ The tests enforce this structure and a minimum length.
 - Mark fragments, pseudo-code and other dialects with ```sql norun.
 - Every number quoted in prose must match a result on the page. Re-read the prose after changing an example.
 - CI runs `python tools/lessons.py --check`, so a stale result fails the build.
+- `EXPLAIN QUERY PLAN` output is shown as plan text only, and `--check` ignores it: plan ids and wording differ between SQLite versions. Describe plans in prose by their stable words (`SCAN`, `SEARCH … USING INDEX`, `TEMP B-TREE`).
 
 ## Exercises
 

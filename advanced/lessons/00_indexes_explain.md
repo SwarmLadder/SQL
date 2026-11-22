@@ -55,9 +55,11 @@ SELECT order_id, ordered_at FROM orders WHERE customer_id = 1 ORDER BY ordered_a
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 3 | 0 | 55 | SEARCH orders USING COVERING INDEX idx_orders_customer_date (customer_id=?) |
+<!-- plan -->
+```text
+SEARCH orders USING COVERING INDEX idx_orders_customer_date (customer_id=?)
+```
+<!-- /plan -->
 <!-- /result -->
 
 The existing index `idx_orders_customer_date (customer_id, ordered_at)` both finds customer 1's orders and returns them already sorted by date, so no temp B-tree is needed.
@@ -68,9 +70,11 @@ SELECT customer_id, full_name FROM customers WHERE city = 'Bucharest';
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 2 | 0 | 216 | SCAN customers |
+<!-- plan -->
+```text
+SCAN customers
+```
+<!-- /plan -->
 <!-- /result -->
 
 No index on `city`, so this is a full scan. Add one and ask again:
@@ -83,9 +87,11 @@ SELECT customer_id, full_name FROM customers WHERE city = 'Bucharest';
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 3 | 0 | 62 | SEARCH customers USING INDEX idx_customers_city (city=?) |
+<!-- plan -->
+```text
+SEARCH customers USING INDEX idx_customers_city (city=?)
+```
+<!-- /plan -->
 <!-- /result -->
 
 A plan is a **prediction**, not a measurement. On tiny tables SQLite may still choose a scan, because reading 8 rows is cheaper than using an index. Always check plans on realistic data volumes, and measure the actual time before claiming a speed-up.
@@ -104,9 +110,11 @@ SELECT order_id FROM orders WHERE ordered_at >= '2026-06-01';
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 2 | 0 | 213 | SCAN orders USING COVERING INDEX idx_orders_customer_date |
+<!-- plan -->
+```text
+SCAN orders USING COVERING INDEX idx_orders_customer_date
+```
+<!-- /plan -->
 <!-- /result -->
 
 `idx_orders_customer_date` starts with `customer_id`, so SQLite can't *search* it for a date. It reads the **whole** index instead (`SCAN … USING COVERING INDEX`): cheaper than reading the table, but still every entry. The design rule for one query: **equality columns first, then the range or sort column.**
@@ -121,9 +129,11 @@ ORDER BY ordered_at;
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 3 | 0 | 47 | SEARCH orders USING COVERING INDEX idx_orders_status_date (status=? AND ordered_at>?) |
+<!-- plan -->
+```text
+SEARCH orders USING COVERING INDEX idx_orders_status_date (status=? AND ordered_at>?)
+```
+<!-- /plan -->
 <!-- /result -->
 
 ## 4. What stops an index from being used
@@ -136,9 +146,11 @@ SELECT order_id FROM orders WHERE substr(ordered_at, 1, 7) = '2026-06';
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 2 | 0 | 213 | SCAN orders USING COVERING INDEX idx_orders_customer_date |
+<!-- plan -->
+```text
+SCAN orders USING COVERING INDEX idx_orders_customer_date
+```
+<!-- /plan -->
 <!-- /result -->
 
 ```sql
@@ -147,9 +159,11 @@ SELECT order_id FROM orders WHERE status = 'paid' AND ordered_at >= '2026-06-01'
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 2 | 0 | 47 | SEARCH orders USING COVERING INDEX idx_orders_status_date (status=? AND ordered_at>? AND ordered_at<?) |
+<!-- plan -->
+```text
+SEARCH orders USING COVERING INDEX idx_orders_status_date (status=? AND ordered_at>? AND ordered_at<?)
+```
+<!-- /plan -->
 <!-- /result -->
 
 The first plan is a `SCAN` (of an index, but of all of it); the second, the same question as a range on the bare column, is a `SEARCH` that touches only June's paid orders. Other index-killers: `LIKE '%word'` (leading wildcard), `col + 0 = ?`, comparing a text column with a number, and `OR` across different columns (sometimes). When you can't rewrite the query, an **expression index** (`CREATE INDEX … ON t(lower(email))`) indexes the computed value.
@@ -166,9 +180,11 @@ SELECT product_id, SUM(quantity) FROM order_items GROUP BY product_id;
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 6 | 0 | 213 | SCAN order_items USING COVERING INDEX idx_items_product_qty |
+<!-- plan -->
+```text
+SCAN order_items USING COVERING INDEX idx_items_product_qty
+```
+<!-- /plan -->
 <!-- /result -->
 
 Covering indexes are a strong optimisation for hot read paths, at the cost of a bigger index.

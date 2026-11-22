@@ -175,9 +175,11 @@ SELECT order_id, SUM(amount_cents) FROM payments WHERE order_id = 101;
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 4 | 0 | 216 | SCAN payments |
+<!-- plan -->
+```text
+SCAN payments
+```
+<!-- /plan -->
 <!-- /result -->
 
 ```sql
@@ -188,9 +190,11 @@ SELECT order_id, SUM(amount_cents) FROM payments WHERE order_id = 101;
 ```
 
 <!-- result -->
-| id | parent | notused | detail |
-|---|---|---|---|
-| 4 | 0 | 53 | SEARCH payments USING COVERING INDEX idx_payments_order (order_id=?) |
+<!-- plan -->
+```text
+SEARCH payments USING COVERING INDEX idx_payments_order (order_id=?)
+```
+<!-- /plan -->
 <!-- /result -->
 
 On millions of rows, also consider: an index on `orders(status, ordered_at)` for month-close filters, running the report from a **summary table** refreshed nightly (lesson 06), and a read replica so the report doesn't compete with checkout traffic.

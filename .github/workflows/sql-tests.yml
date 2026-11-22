@@ -4,10 +4,12 @@ jobs:
   sqlite-course:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+      - name: Show SQLite version
+        run: python -c "import sqlite3; print('SQLite', sqlite3.sqlite_version)"
       - name: Check runnable SQLite lessons, solutions, worked examples, and projects
         run: python tools/run_sql.py --check
       - name: Run dataset and course tests

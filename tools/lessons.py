@@ -55,6 +55,19 @@ def table(cursor: sqlite3.Cursor) -> str:
     return "\n".join(lines)
 
 
+def plan_block(cursor: sqlite3.Cursor) -> str:
+    """Only the plan text: ids and costs vary between SQLite versions, so --check ignores it."""
+    lines = [row[-1] for row in cursor.fetchall()]
+    return "<!-- plan -->\n```text\n" + "\n".join(lines) + "\n```\n<!-- /plan -->"
+
+
+PLAN = re.compile(r"<!-- plan -->.*?<!-- /plan -->", re.S)
+
+
+def comparable(text: str) -> str:
+    return PLAN.sub("<!-- plan -->", text)
+
+
 def run_block(db: sqlite3.Connection, sql: str, mode: str | None, where: str) -> str:
     if mode == " error":
         try:
@@ -72,7 +85,10 @@ def run_block(db: sqlite3.Connection, sql: str, mode: str | None, where: str) ->
         reads = re.match(r"(?is)\s*(select|with|explain|pragma|values)\b", statement) \
             or re.search(r"(?is)\breturning\b", statement)
         if cursor.description and reads:
-            out.append(table(cursor))
+            if re.match(r"(?is)\s*explain\s+query\s+plan\b", statement):
+                out.append(plan_block(cursor))
+            else:
+                out.append(table(cursor))
         elif re.match(r"(?is)\s*(insert|update|delete)\b", statement):
             out.append(f"*Rows changed: {max(cursor.rowcount, 0)}*")
     return "\n\n".join(out) or "*Done (no rows returned).*"
@@ -181,6 +197,9 @@ def main() -> int:
         return 1
     stale = [path for path, text in outputs.items()
              if not path.exists() or path.read_text(encoding="utf-8") != text]
+    if args.check:  # query plans differ between SQLite versions; compare everything else
+        stale = [path for path in stale
+                 if not path.exists() or comparable(path.read_text(encoding="utf-8")) != comparable(outputs[path])]
     if args.check:
         if stale:
             print("Out of date (run python tools/lessons.py): "
