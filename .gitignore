@@ -8,5 +8,3 @@ venv/
 *.sqlite3
 .pytest_cache/
 .DS_Store
-achievement-report.json
-report.txt

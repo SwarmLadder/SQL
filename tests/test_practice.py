@@ -9,6 +9,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 import practice  # noqa: E402
+import verify_level  # noqa: E402
 
 WRONG = {
     # Plausible mistakes each exercise exists to catch.
@@ -104,6 +105,10 @@ class PracticeBankTests(unittest.TestCase):
         sql = "WITH RECURSIVE r(n) AS (SELECT 1 UNION ALL SELECT n + 1 FROM r) SELECT n FROM r LIMIT 3000;"
         with self.assertRaises(ValueError):
             practice.check("PB11", sql)
+
+    def test_untouched_level_is_incomplete(self):
+        report = verify_level.verify("basics")
+        self.assertEqual((report["passed"], report["total"], report["complete"]), (0, 36, False))
 
     def test_docs_are_generated(self):
         result = subprocess.run([sys.executable, str(ROOT / "tools" / "practice_docs.py"), "--check"],

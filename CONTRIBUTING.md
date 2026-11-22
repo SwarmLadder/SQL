@@ -1,8 +1,6 @@
 # Contributing
 
-Thanks for improving the course! A merged pull request adds you to [CONTRIBUTORS.md](CONTRIBUTORS.md) automatically ([how recognition works](RECOGNITION.md)).
-
-Questions, typo reports and "this confused me" issues are contributions too. Use the issue templates.
+How the course is maintained. Questions, typo reports and "this confused me" issues are welcome: use the issue templates.
 
 ## Ground rules
 

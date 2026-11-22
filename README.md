@@ -48,13 +48,6 @@ The checker compares output against **two datasets**, including edge cases. It r
 4. **Answer the interview challenges** of the level, then build the projects.
 5. **Take the level's assessment** (`<level>/ASSESSMENT.md`) and check yourself with `python tools/verify_level.py <level>`.
 
-## Get your name on the course
-
-Two tracks, both checked automatically (see [RECOGNITION.md](RECOGNITION.md)):
-
-- **Contributors:** improve the course. A merged PR adds you to [CONTRIBUTORS.md](CONTRIBUTORS.md).
-- **Achievers:** pass every graded exercise of a level. A verified claim adds you to [ACHIEVEMENTS.md](ACHIEVEMENTS.md).
-
 ## Learning paths
 
 - [Basics](basics/README.md): SQL foundations, joins, aggregation, updates.
@@ -84,4 +77,4 @@ python -m unittest discover -s tests -v
 
 **PostgreSQL:** optional dialect-specific labs require a separate disposable PostgreSQL server; they are not part of SQLite CI.
 
-[MIT License](LICENSE) · [Contributing](CONTRIBUTING.md) · [Recognition](RECOGNITION.md)
+[MIT License](LICENSE) · [Contributing](CONTRIBUTING.md)

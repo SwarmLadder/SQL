@@ -8,7 +8,7 @@ Complete this after the 10 Basics lessons, the 20 graded practice exercises and 
 python tools/verify_level.py basics
 ```
 
-All 36 graded exercises (20 practice, 16 interview) must pass. This is also the [achievement](../RECOGNITION.md#track-2-achievers) requirement.
+All 36 graded exercises (20 practice, 16 interview) must pass.
 
 ## 2. Skills checklist
 

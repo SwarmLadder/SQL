@@ -16,7 +16,7 @@ python tools/practice.py show PB05               # read the task
 python tools/practice.py check PB05              # ✅ or ❌ with a reason
 python tools/practice.py hint PB05 1             # 1 = gentle ... 3 = most specific
 python tools/practice.py progress basics         # your whole level at a glance
-python tools/verify_level.py basics              # practice + interview: the achievement check
+python tools/verify_level.py basics              # practice + interview: the whole level
 ```
 
 Everything runs locally with Python 3.10+ and the standard-library `sqlite3`. Each run uses a fresh in-memory database, so you can't damage the dataset.
@@ -31,9 +31,9 @@ Everything runs locally with Python 3.10+ and the standard-library `sqlite3`. Ea
 
 Script exercises must leave no transaction open. Learners control `BEGIN`, `SAVEPOINT` and `COMMIT` themselves.
 
-## Get credit
+## Finish a level
 
-Pass every graded practice exercise **and** every interview challenge of a level, then claim the achievement. See [RECOGNITION.md](../RECOGNITION.md#track-2-achievers).
+A level is complete when every graded practice exercise **and** every interview challenge of it passes: `python tools/verify_level.py <level>`.
 
 `practice/answers/` holds the reference answers so maintainers can keep the checker correct. Solve first; compare afterwards.
 

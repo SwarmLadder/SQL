@@ -50,8 +50,8 @@ def level_readme(level: str) -> str:
              "```", "", START, table(level, "../../"), END, ""]
     if written:
         parts += ["## Written tasks", "",
-                  "These have no automatic grade. Answer them in your notes, in a study group, or in "
-                  "your achievement PR description.", ""]
+                  "These have no automatic grade. Answer them in your notes or discuss them "
+                  "in a study group or code review.", ""]
         parts += [f"- **{i['id']} · {i['title']}.** {i['prompt']}" for i in written]
         parts.append("")
     parts += ["See [how practice works](../../practice/README.md). Stuck? Read the hints before the "

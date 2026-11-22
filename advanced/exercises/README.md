@@ -37,7 +37,7 @@ python tools/practice.py progress advanced
 
 ## Written tasks
 
-These have no automatic grade. Answer them in your notes, in a study group, or in your achievement PR description.
+These have no automatic grade. Answer them in your notes or discuss them in a study group or code review.
 
 - **PA02 · The cost of indexes.** Every index speeds up some reads and slows down every write to its table. For the index you created in PA01, list which statements get slower, estimate the storage cost, and describe how you would decide whether to keep it in production.
 - **PA12 · Why triggers are not audit security.** Your price_changes trigger records changes made through normal UPDATE statements. List at least three ways a change could happen without a trustworthy log entry (think about who can drop triggers, edit the log table, or write outside the database), and what you would add to make the audit trail reliable.

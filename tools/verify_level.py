@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check whether every graded exercise of a level passes (used for achievement claims).
+"""Check whether every graded exercise of a level passes (your level self-check).
 
     python tools/verify_level.py basics
     python tools/verify_level.py advanced --json report.json
@@ -23,27 +23,6 @@ import interview_practice  # noqa: E402
 import practice  # noqa: E402
 
 
-def _normal(sql: str) -> str:
-    return " ".join(practice.ANSWER_MARKER.sub("", sql).lower().split())
-
-
-def copied_reference(answer: Path, reference: Path) -> bool:
-    """True when an answer is the reference file with only comments/whitespace/case changed."""
-    try:
-        return _normal(answer.read_text(encoding="utf-8")) == _normal(reference.read_text(encoding="utf-8"))
-    except OSError:
-        return False
-
-
-def _flag_copies(rows, answers: Path, references: Path):
-    flagged = []
-    for pid, ok, message in rows:
-        if ok and copied_reference(answers / f"{pid}.sql", references / f"{pid}.sql"):
-            ok, message = False, "identical to the reference answer: write your own solution"
-        flagged.append((pid, ok, message))
-    return flagged
-
-
 def interview_report(level: str) -> list[tuple[str, bool, str]]:
     report = []
     for qid, item in sorted(interview_practice.questions().items()):
@@ -59,12 +38,7 @@ def interview_report(level: str) -> list[tuple[str, bool, str]]:
 
 
 def verify(level: str) -> dict:
-    sections = {
-        "practice": _flag_copies(practice.progress(level), ROOT / "practice" / "starter",
-                                 ROOT / "practice" / "answers"),
-        "interview": _flag_copies(interview_report(level), ROOT / "interview" / "starter",
-                                  ROOT / "interview" / "reference"),
-    }
+    sections = {"practice": practice.progress(level), "interview": interview_report(level)}
     total = sum(len(rows) for rows in sections.values())
     passed = sum(ok for rows in sections.values() for _, ok, _ in rows)
     return {"level": level, "passed": passed, "total": total, "complete": passed == total,
